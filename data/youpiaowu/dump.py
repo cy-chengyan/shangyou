@@ -82,6 +82,7 @@ def parse_stamp_info(stid, data):
     return True
 
 
+#子邮票
 def parse_sub_stamp(stid, data):
     items = data['items']
     sub_stamp = get_list_in_items(u'图序', items)
@@ -102,6 +103,103 @@ def parse_sub_stamp(stid, data):
             issued_number = None
         sstid = general_sub_stid(title)
         print sstid, stid, order, title, picture, face_value, issued_number
+        sql = "insert into t_sub_stamp(sstid, stid, order, title, picture, face_value, issued_number)" \ 
+              " values(%s, %s, %d, %s, %s, %s, %s)"
+        cursor_insert = db.cursor()
+        cursor_insert.execute(sql, (sstid, stid, order, title, picture, face_value, issued_number))
+        cursor_insert.close()
+        db.commit()
+        
+        return True
+
+
+#大版
+def parse_big_format(stid, data):
+    items = data['items']
+    big_format = get_list_in_items(u'大版', items)
+    if not big_format:
+        return
+
+    bgid = ''
+    bgsize = get_attr_in_list(u'尺寸', big_format)
+    bgnumber = get_attr_in_list(u'枚数', big_format)
+    print bgid, stid, bgsize, bgnumber
+    sql = "insert into t_big_format(bgid, stid, bgsize, bgnumber)" \
+          "values(%s, %s, %s, %d)"
+    cursor_insert = db.cursor()
+    cursor_insert.execute(sql, (bgid, stid, bgsize, bgnumber))
+    cursor_insert.close()
+    db.commit()
+    
+    return True
+
+
+#小版
+def parse_small_format(stid, data):
+    items = data['items']
+    small_format = get_list_in_items(u'小版', items)
+    if not small_format:
+        return
+    slfid = ''
+    slsize = get_attr_in_list(u'尺寸', small_format)
+    slnumber = get_attr_in_list(u'枚数', small_format)
+    print slfid, stid ,slsize, slnumber
+    sql = "insert into t_small_format(slfid, stid, slsize, slnumber)" \
+          "values(%s, %s, %s, %d)"
+    cursor_insert = db.cursor()
+    cursor_insert.execute(sql, (slfid, stid, slsize, slnumber))
+    cursor_insert.close()
+    db.commit()
+    
+    return True
+
+
+#赠送票
+def parse_zengsong(stid,data):
+    items = data['items']
+
+
+#小本票
+def parse_xiaoben(stid, data):
+    items = data['items']
+    xiaoben = get_list_in_items(u'小本票', items)
+    if not xiaoben:
+        return
+    xiaobenid = ''
+    number = get_attr_in_list(u'编号', xiaoben)
+    face_value = get_attr_in_list(u'面值', xiaoben)
+    print xiaobenid, stid, number, face_value
+    sql = "insert into t_xiaoben(xiaobenid, stid, number, face_value)" \
+          "values(%s, %s, %s, %s)"
+    cursor_insert = db.cursor()
+    cursor_insert.excute(sql, (slfid, stid, slsize, slnumber))
+    cursor_insert.close()
+    db.commit()
+    
+    return True
+
+
+#小型张
+def parse_small_sheet(stid, data):
+    items = data['items']
+    small_sheet = get_list_in_items(u'小型张', items)
+    if not small_sheet:
+        return
+    slsid = ''
+    face_value = get_attr_in_list(u'面值', small_sheet)
+    size = get_attr_in_list(u'尺寸', small_sheet)
+    image = get_attr_in_list(u'邮票主图', small_sheet)
+    chikong = get_attr_in_list(u'齿孔', small_sheet)
+    draw = get_ attr_in_list(u'绘画', small_sheet)
+    print slsid, stid, face_value, size, image, chikong, draw
+    sql = "insert into t_small_sheet(slsid, stid, face_value, size, image, chikong, draw)" \
+          "values(%s, %s, %s, %s, %s, %s, %s)"
+    cursor_insert = db.cursor()
+    cursor_insert.excute(sql, (slsid, stid, face_value, size, image, chikong, draw))
+    cursor_insert.close()
+    db.commit()
+    
+    return True
 
 
 def parse_line(line):
@@ -115,8 +213,7 @@ def parse_line(line):
     parse_sub_stamp(stid, data)
     #parse_big_format(stid, data)
     # parse_...
-    if not parse_sub_stamp(stid, data):
-        return
+    parse_big_format(stid, data)
 
 
 def parse():
