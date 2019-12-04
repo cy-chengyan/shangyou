@@ -79,6 +79,15 @@ def parse_stamp_info(stid, data):
     return True
 
 
+deft_list_items(list_name, d):
+    if list_name == 'list':
+
+def parse_sub_stamp(stid,data):
+    itms = data['items'][0]
+    for arg in items:
+        
+
+
 def parse_line(line):
     #print line
     j = json.loads(line)
@@ -90,6 +99,8 @@ def parse_line(line):
     #parse_sub_stamp(stid, data)
     #parse_big_format(stid, data)
     # parse_...
+    if not parse_sub_stamp(stid, data):
+        return
 
 
 def parse():
@@ -120,4 +131,4 @@ if __name__ == "__main__":
 
 
 
-
+ 
