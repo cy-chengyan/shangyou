@@ -1,11 +1,10 @@
 
 -- create database shangyou_v1;
 -- ALTER DATABASE shangyou_v1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-
-use shangyou_v1;
-
 -- create user 'shuoen'@'%' identified by 'TewtQ81_%&$';
 -- grant all on shangyou_v1.* to 'shuoen'@'%';
+
+use shangyou_v1;
 
 --用户表
 DROP TABLE IF EXISTS t_user;
