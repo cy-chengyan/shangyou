@@ -103,7 +103,7 @@ def parse_sub_stamp(stid, data):
             issued_number = None
         sstid = general_sub_stid(title)
         print sstid, stid, order, title, picture, face_value, issued_number
-        sql = "insert into t_sub_stamp(sstid, stid, order, title, picture, face_value, issued_number)" \ 
+        sql = "insert into t_sub_stamp(sstid, stid, order, title, picture, face_value, issued_number)" \
               " values(%s, %s, %d, %s, %s, %s, %s)"
         cursor_insert = db.cursor()
         cursor_insert.execute(sql, (sstid, stid, order, title, picture, face_value, issued_number))
@@ -190,7 +190,7 @@ def parse_small_sheet(stid, data):
     size = get_attr_in_list(u'尺寸', small_sheet)
     image = get_attr_in_list(u'邮票主图', small_sheet)
     chikong = get_attr_in_list(u'齿孔', small_sheet)
-    draw = get_ attr_in_list(u'绘画', small_sheet)
+    draw = get_attr_in_list(u'绘画', small_sheet)
     print slsid, stid, face_value, size, image, chikong, draw
     sql = "insert into t_small_sheet(slsid, stid, face_value, size, image, chikong, draw)" \
           "values(%s, %s, %s, %s, %s, %s, %s)"
