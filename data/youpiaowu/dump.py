@@ -3,7 +3,7 @@
 
 #
 # 1. 解析product.json
-# 2. 
+# 2. 将数据dump到数据表 
 #
 
 import sys
@@ -20,6 +20,9 @@ def general_stid(org_id):
     h = hashlib.md5(s).hexdigest() #32
     return 's' + h[25:]
 
+def general_sub_stid(title):
+    h = hashlib.md5(title.encode('utf-8')).hexdigest() #32
+    return 'z' + h[25:]
 
 def get_country_id(d):
     stage = d['stage']
@@ -43,7 +46,7 @@ def get_attr_in_list(attr_name, d):
 def parse_stamp_info(stid, data):
     items = data['items']
     countryid = get_country_id(data)
-    stamp_info  = get_list_in_items(u'基本属性', items)
+    stamp_info = get_list_in_items(u'基本属性', items)
     if not stamp_info:
         return False
 
@@ -79,13 +82,26 @@ def parse_stamp_info(stid, data):
     return True
 
 
-deft_list_items(list_name, d):
-    if list_name == 'list':
+def parse_sub_stamp(stid, data):
+    items = data['items']
+    sub_stamp = get_list_in_items(u'图序', items)
+    if not sub_stamp:
+        return
 
-def parse_sub_stamp(stid,data):
-    itms = data['items'][0]
-    for arg in items:
-        
+    for item in sub_stamp:
+        order = item[0]
+        title = item[1]
+        picture = ''
+        if len(item) > 2:
+            face_value = item[2]
+        else:
+            face_value = None
+        if len(item) > 3:
+            issued_number = item[3]
+        else:
+            issued_number = None
+        sstid = general_sub_stid(title)
+        print sstid, stid, order, title, picture, face_value, issued_number
 
 
 def parse_line(line):
@@ -96,7 +112,7 @@ def parse_line(line):
 
     if not parse_stamp_info(stid, data):
         return
-    #parse_sub_stamp(stid, data)
+    parse_sub_stamp(stid, data)
     #parse_big_format(stid, data)
     # parse_...
     if not parse_sub_stamp(stid, data):
