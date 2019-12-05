@@ -66,8 +66,8 @@ DROP TABLE IF EXISTS t_big_format;
 CREATE TABLE t_big_format(
        `bgid` char(8) PRIMARY KEY COMMENT '大版id',
        `stid` char(8) COMMENT '邮票id',
-       `bgsize` varchar(16) COMMENT '大版尺寸',
-       `bgnumber` smallint COMMENT '大版枚数'
+       `bgsize` varchar(64) COMMENT '大版尺寸',
+       `bgnumber` varchar(64) COMMENT '大版枚数'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='大版表';
 CREATE INDEX i_big_format_stid ON t_big_format(`stid`);
 
