@@ -10,6 +10,7 @@ import sys
 import MySQLdb
 import json
 import hashlib
+import re
 
 SRC_FILE = './product.json'
 
@@ -23,6 +24,11 @@ def general_stid(org_id):
 def general_sub_stid(title):
     h = hashlib.md5(title.encode('utf-8')).hexdigest() #32
     return 'z' + h[25:]
+
+def general_big_format(stid, order):
+    s = stid + 'bf' + str(order)
+    h = hashlib.md5(s).hexdigest() #32
+    return 'b' + h[25:]
 
 def get_country_id(d):
     stage = d['stage']
@@ -120,16 +126,40 @@ def parse_big_format(stid, data):
     if not big_format:
         return
 
-    bgid = ''
-    bgsize = get_attr_in_list(u'尺寸', big_format)
-    bgnumber = get_attr_in_list(u'枚数', big_format)
-    print bgid, stid, bgsize, bgnumber
-    sql = "insert into t_big_format(bgid, stid, bgsize, bgnumber)" \
-          "values(%s, %s, %s, %d)"
-    cursor_insert = db.cursor()
-    cursor_insert.execute(sql, (bgid, stid, bgsize, bgnumber))
-    cursor_insert.close()
-    db.commit()
+    org_size = get_attr_in_list(u'尺寸', big_format)
+    org_number = get_attr_in_list(u'枚数', big_format)
+
+    if (not org_size) or (not org_number):
+        return
+
+    org_size_items = org_size.split('\x01')
+    org_number_items = org_number.split('\x01')
+
+    items = []
+    i = 0
+    for org_size_item in org_size_items:
+        if i < len(org_number_items):
+            org_number_item = org_number_items[i].strip()
+        else:
+            org_number_item = None
+        items.append({"size": org_size_item.strip(), "num": org_number_item})
+        i = i + 1
+
+    order = 0
+    for item in items:
+        bgid = general_big_format(stid, order)
+        bgsize = item['size']
+        bgnumber = item['num']
+        print bgid, stid, bgsize, bgnumber
+
+        sql = "insert into t_big_format(bgid, stid, bgsize, bgnumber)" \
+              "values(%s, %s, %s, %s)"
+        cursor_insert = db.cursor()
+        cursor_insert.execute(sql, (bgid, stid, bgsize, bgnumber))
+        cursor_insert.close()
+        db.commit()
+
+        order = order + 1
     
     return True
 
@@ -208,9 +238,9 @@ def parse_line(line):
     data = j['data']
     stid = general_stid(data['id'])
 
-    if not parse_stamp_info(stid, data):
-        return
-    parse_sub_stamp(stid, data)
+    #if not parse_stamp_info(stid, data):
+    #    return
+    #parse_sub_stamp(stid, data)
     #parse_big_format(stid, data)
     # parse_...
     parse_big_format(stid, data)
