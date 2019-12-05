@@ -120,14 +120,24 @@ def parse_sub_stamp(stid, data):
         order = item[0]
         title = item[1]
         picture = ''
-        if len(item) > 2:
-            face_value = item[2]
-        else:
+
+        face_value = ''
+        issued_number = ''
+        for v in item[2:]:
+            if (v[-1:] == u'元' or v[-1:] == u'分'):
+                if len(face_value) > 0:
+                    face_value = face_value + u','
+                face_value = face_value + v
+            else:
+                if len(issued_number) > 0:
+                    issued_number = issued_number + u','
+                issued_number = v
+
+        if len(face_value) == 0:
             face_value = None
-        if len(item) > 3:
-            issued_number = item[3]
-        else:
+        if len(issued_number) == 0:
             issued_number = None
+
         sstid = general_sub_stid(stid, title, order)
         print sstid, stid, order, title, picture, face_value, issued_number
         sql = "insert into t_sub_stamp(sstid, stid, `order`, title, picture, face_value, issued_number)" \

@@ -54,10 +54,10 @@ CREATE TABLE t_sub_stamp(
        `sstid` char(8) PRIMARY KEY COMMENT '子邮票id',
        `stid` char(8) COMMENT '邮票id',
        `order` tinyint COMMENT '序号',       
-       `title` varchar(8) NOT NULL COMMENT '邮票标题',
+       `title` varchar(32) NOT NULL COMMENT '邮票标题',
        `picture` varchar(256) COMMENT '邮票图片',
-       `face_value` varchar(8) COMMENT '邮票面值',
-       `issued_number` varchar(32) COMMENT '发行量'
+       `face_value` varchar(64) COMMENT '邮票面值',
+       `issued_number` varchar(64) COMMENT '发行量'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='子邮票';
 CREATE INDEX i_sub_stamp_stid ON t_sub_stamp(`stid`);
 
