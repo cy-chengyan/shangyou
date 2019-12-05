@@ -21,14 +21,35 @@ def general_stid(org_id):
     h = hashlib.md5(s).hexdigest() #32
     return 's' + h[25:]
 
-def general_sub_stid(title):
-    h = hashlib.md5(title.encode('utf-8')).hexdigest() #32
+def general_sub_stid(stid, title, order):
+    s = stid + title + str(order)
+    h = hashlib.md5(s.encode('utf-8')).hexdigest() #32
     return 'z' + h[25:]
 
 def general_big_format(stid, order):
     s = stid + 'bf' + str(order)
     h = hashlib.md5(s).hexdigest() #32
     return 'b' + h[25:]
+
+def general_small_format_id(stid, order):
+    s = stid + 'sf' + str(order)
+    h = hashlib.md5(s).hexdigest()
+    return 'm' + h[25:]
+
+def general_zengsong_id(stid, order):
+    s = stid + 'g' + str(order)
+    h = hashlib.md5(s).hexdigest()
+    return 'g' + h[25:]
+
+def general_xiaoben_id(stid, order):
+    s = stid + 'b' + str(order)
+    h = hashlib.md5(s).hexdigest()
+    return 'b' + h[25:]
+
+def general_small_sheet_id(stid, order):
+    s = stid + 't' + str(order)
+    h = hashlib.md5(s).hexdigest()
+    return 't' + h[25:]
 
 def get_country_id(d):
     stage = d['stage']
@@ -107,10 +128,10 @@ def parse_sub_stamp(stid, data):
             issued_number = item[3]
         else:
             issued_number = None
-        sstid = general_sub_stid(title)
+        sstid = general_sub_stid(stid, title, order)
         print sstid, stid, order, title, picture, face_value, issued_number
-        sql = "insert into t_sub_stamp(sstid, stid, order, title, picture, face_value, issued_number)" \
-              " values(%s, %s, %d, %s, %s, %s, %s)"
+        sql = "insert into t_sub_stamp(sstid, stid, `order`, title, picture, face_value, issued_number)" \
+              " values(%s, %s, %s, %s, %s, %s, %s)"
         cursor_insert = db.cursor()
         cursor_insert.execute(sql, (sstid, stid, order, title, picture, face_value, issued_number))
         cursor_insert.close()
@@ -170,23 +191,82 @@ def parse_small_format(stid, data):
     small_format = get_list_in_items(u'小版', items)
     if not small_format:
         return
-    slfid = ''
-    slsize = get_attr_in_list(u'尺寸', small_format)
-    slnumber = get_attr_in_list(u'枚数', small_format)
-    print slfid, stid ,slsize, slnumber
-    sql = "insert into t_small_format(slfid, stid, slsize, slnumber)" \
-          "values(%s, %s, %s, %d)"
-    cursor_insert = db.cursor()
-    cursor_insert.execute(sql, (slfid, stid, slsize, slnumber))
-    cursor_insert.close()
-    db.commit()
     
+    org_slsize = get_attr_in_list(u'尺寸', small_format)
+    org_slnumber = get_attr_in_list(u'枚数', small_format)
+    if (not org_slsize) or (not org_slnumber):
+        return
+
+    org_slsize_items = org_slsize.split('\x01')
+    org_slnumber_items = org_slnumber.split('\x01')
+
+    items = []
+    i = 0
+    for org_slsize_item in org_slsize_items:
+        if i < len(org_slnumber_items):
+            org_slnumber_item = org_slnumber_items[i].strip()
+        else:
+            org_slnumber_item = None
+        items.append({"size":org_slsize_item.strip(), "num":org_slnumber_item})
+        i = i + 1
+
+    order = 0
+    for item in items:
+        slfid = general_small_format_id(stid, order)
+        slsize = item['size']
+        slnumber = item['num']
+        print slfid, stid ,slsize, slnumber
+        sql = "insert into t_small_format(slfid, stid, slsize, slnumber)" \
+              "values(%s, %s, %s, %s)"
+        cursor_insert = db.cursor()
+        cursor_insert.execute(sql, (slfid, stid, slsize, slnumber))
+        cursor_insert.close()
+        db.commit()
+
+        order = order + 1
+
     return True
 
 
 #赠送票
-def parse_zengsong(stid,data):
+def parse_zengsong(stid, data):
     items = data['items']
+    zengsong = get_list_in_items(u'赠送版',items)
+    if not zengsong:
+        return
+
+    org_zeng_size = get_attr_in_list(u'尺寸',zengsong)
+    org_zeng_number = get_attr_in_list(u'枚数',zengsong)
+    if (not org_zeng_size) or (not org_zeng_size):
+        return
+
+    org_zeng_size_items = org_zeng_size.split('\x01')
+    org_zeng_number_items = org_zeng_number.split('\x01')
+    items = []
+    i = 0
+    for org_zeng_size_item in org_zeng_size_items:
+        if i < len(org_zeng_number_items):
+            org_zeng_number_item = org_zeng_number_items[i].strip()
+        else:
+            org_zeng_number_item = None
+        items.append({"size":org_zeng_size_item.strip(), "num":org_zeng_number_item})
+        i = i + 1
+
+    order = 0
+    for item in items:
+        zengid = general_zengsong_id(stid, order)
+        zeng_size = item['size']
+        zeng_number = item['num']
+        print zengid, stid, zeng_size, zeng_number
+
+        sql = "insert into t_zengsong(zengid, stid, zeng_size, zeng_number)" \
+              "values(%s, %s, %s, %s)"
+        cursor_insert = db.cursor()
+        cursor_insert.execute(sql, (zengid, stid, zeng_size, zeng_number))
+        cursor_insert.close()
+        db.commit()
+        order = order + 1
+    return True
 
 
 #小本票
@@ -195,17 +275,40 @@ def parse_xiaoben(stid, data):
     xiaoben = get_list_in_items(u'小本票', items)
     if not xiaoben:
         return
-    xiaobenid = ''
-    number = get_attr_in_list(u'编号', xiaoben)
-    face_value = get_attr_in_list(u'面值', xiaoben)
-    print xiaobenid, stid, number, face_value
-    sql = "insert into t_xiaoben(xiaobenid, stid, number, face_value)" \
-          "values(%s, %s, %s, %s)"
-    cursor_insert = db.cursor()
-    cursor_insert.excute(sql, (slfid, stid, slsize, slnumber))
-    cursor_insert.close()
-    db.commit()
-    
+
+    org_number = get_attr_in_list(u'编号', xiaoben)
+    org_face_value = get_attr_in_list(u'面值', xiaoben)
+    if (not org_number) or (not org_face_value):
+        return
+    org_number_items = org_number.split('\x01')
+    org_face_value_items = org_face_value.split('\x01')
+
+    items = []
+    i = 0
+    for org_number_item in org_number_items:
+        if i < len(org_face_value_items):
+            org_face_value_item = org_face_value_items[i].strip()
+        else:
+            org_face_value_item = None
+        items.append({"num":org_number_item.strip(), "value":org_face_value_item})
+        i = i + 1
+   
+    order = 0
+    for item in items:
+        xiaobenid = general_xiaoben_id(stid, order)
+        number = item['num']
+        face_value = item['value']
+        print xiaobenid, stid, number, face_value
+        
+        sql = "insert into t_xiaoben(xiaobenid, stid, `number`, face_value)" \
+              "values(%s, %s, %s, %s)"
+        cursor_insert = db.cursor()
+        cursor_insert.execute(sql, (xiaobenid, stid, number, face_value))
+        cursor_insert.close()
+        db.commit()
+
+        order = order + 1
+
     return True
 
 
@@ -215,20 +318,67 @@ def parse_small_sheet(stid, data):
     small_sheet = get_list_in_items(u'小型张', items)
     if not small_sheet:
         return
-    slsid = ''
-    face_value = get_attr_in_list(u'面值', small_sheet)
-    size = get_attr_in_list(u'尺寸', small_sheet)
-    image = get_attr_in_list(u'邮票主图', small_sheet)
-    chikong = get_attr_in_list(u'齿孔', small_sheet)
-    draw = get_attr_in_list(u'绘画', small_sheet)
-    print slsid, stid, face_value, size, image, chikong, draw
-    sql = "insert into t_small_sheet(slsid, stid, face_value, size, image, chikong, draw)" \
-          "values(%s, %s, %s, %s, %s, %s, %s)"
-    cursor_insert = db.cursor()
-    cursor_insert.excute(sql, (slsid, stid, face_value, size, image, chikong, draw))
-    cursor_insert.close()
-    db.commit()
+    org_face_value = get_attr_in_list(u'面值', small_sheet)
+    org_size = get_attr_in_list(u'尺寸', small_sheet)
+    org_image = get_attr_in_list(u'邮票主图', small_sheet)
+    org_chikong = get_attr_in_list(u'齿孔', small_sheet)
+    org_draw = get_attr_in_list(u'绘画', small_sheet)
+    if (not org_face_value) or (not org_size) or (not org_image) or (not org_chikong) or (not org_draw):
+        return
+
+    org_face_value_items = org_face_value.split('\x01')
+    org_size_items = org_size.split('\x01')
+    org_image_items = org_image.split('\x01')
+    org_chikong_items = org_chikong.split('\x01')
+    org_draw_items = org_draw.split('\x01')
     
+    items = []
+    i = 0
+    
+    for org_face_value_item in org_face_value_items:
+
+        if i < len(org_size_items):
+            org_size_item = org_size_items[i].strip()
+        else:
+            org_size_item = None
+
+        if i < len(org_image_items):
+            org_image_item = org_image_items[i].strip()
+        else:
+            org_image_item = None
+
+        if i < len(org_chikong_items):
+            org_chikong_item = org_chikong_items[i].strip()
+        else:
+            org_chikong_item = None
+
+        if i <len(org_draw_items):
+            org_draw_item = org_draw_items[i].strip()
+        else:
+            org_draw_item = None
+        items.append({"value": org_face_value_item.strip(), "size": org_size_item, "image": org_image_item, "chikong": org_chikong_item, "draw": org_draw_item})
+        i = i + 1
+
+    order = 0
+    for item in items:
+        slsid = general_small_sheet_id(stid, order)
+        face_value = item['value']
+        size = item['size']
+        image = item['image']
+        chikong = item['chikong']
+        draw = item['draw']
+
+        print slsid, stid, face_value, size, image, chikong, draw
+ 
+        sql = "insert into t_small_sheet(slsid, stid, face_value, size, image, chikong, draw)" \
+              "values(%s, %s, %s, %s, %s, %s, %s)"
+        cursor_insert = db.cursor()
+        cursor_insert.excute(sql, (slsid, stid, face_value, size, image, chikong, draw))
+        cursor_insert.close()
+        db.commit()
+
+        order = order + 1
+
     return True
 
 
@@ -238,12 +388,14 @@ def parse_line(line):
     data = j['data']
     stid = general_stid(data['id'])
 
-    #if not parse_stamp_info(stid, data):
-    #    return
-    #parse_sub_stamp(stid, data)
-    #parse_big_format(stid, data)
-    # parse_...
+    if not parse_stamp_info(stid, data):
+        return
+    parse_sub_stamp(stid, data)
     parse_big_format(stid, data)
+    parse_small_format(stid, data)
+    parse_zengsong(stid, data)
+    parse_xiaoben(stid, data)
+    parse_small_sheet(stid, data)
 
 
 def parse():
