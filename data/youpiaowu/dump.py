@@ -51,6 +51,16 @@ def general_small_sheet_id(stid, order):
     h = hashlib.md5(s).hexdigest()
     return 't' + h[25:]
 
+def general_mini_sheet_id(stid, order):
+    s = stid + 'm' + str(order)
+    h = hashlib.md5(s).hexdigest()
+    return 'm' + h[25:]
+
+def general_four_sheet_id(stid, order):
+    s = stid + 'f' + str(order)
+    h = hashlib.md5(s).hexdigest()
+    return 'f' + h[25:]
+
 def get_country_id(d):
     stage = d['stage']
     return int(stage['id'])
@@ -326,10 +336,11 @@ def parse_xiaoben(stid, data):
 def parse_small_sheet(stid, data):
     items = data['items']
     small_sheet = get_list_in_items(u'小型张', items)
-    if not small_sheet:
+    if small_sheet:
+        print '+++++++'
         return
     org_face_value = get_attr_in_list(u'面值', small_sheet)
-    org_size = get_attr_in_list(u'尺寸', small_sheet)
+    org_size = get_attr_in_list(u'外形尺寸', small_sheet)
     org_image = get_attr_in_list(u'邮票主图', small_sheet)
     org_chikong = get_attr_in_list(u'齿孔', small_sheet)
     org_draw = get_attr_in_list(u'绘画', small_sheet)
@@ -391,6 +402,86 @@ def parse_small_sheet(stid, data):
 
     return True
 
+#小全张
+def parse_mini_sheet(stid, data):
+    item = data['items']
+    mini_sheet = get_list_in_items(u'小全张', item)
+    if not mini_sheet:
+        return
+    org_value = get_attr_in_list(u'面值', mini_sheet)
+    org_size = get_attr_in_list(u'尺寸', mini_sheet)
+    
+    if (not org_value) or (not org_size):
+        return
+    org_value_items = org_value.split('\x01')
+    org_size_items = org_size.split('\x01')
+
+    items = []
+    i = 0
+
+    for org_value_item in org_value_items:
+        if i < len(org_size_items):
+            org_size_item = org_size_items[i].strip()
+        else:
+            org_size_item = None
+        items.append({"value":org_value_item.strip(), "size":org_size_item})
+        i = i + 1
+
+    order = 0
+    for item in items:
+        minid = general_mini_sheet_id(stid, order)
+        face_value = item['value']
+        size = item['size']
+        sql = "insert into t_mini_sheet(minid, stid, face_value, size)" \
+              "values(%s, %s, %s, %s)"
+        cursor_insert = db.cursor()
+        cursor_insert.execute(sql, (minid, stid, face_value, size))
+        cursor_insert.close()
+        db.commit()
+
+        ordre  = order + 1
+
+    return True
+
+#四连体小型张
+def parse_four_sheet(stid, data):
+    item = data['items']
+    four_sheet = get_list_in_items(u'四连体小型张', item)
+    if not four_sheet:
+        return
+
+    org_value = get_attr_in_list(u'面值', four_sheet)
+    org_size = get_attr_in_list(u'外形尺寸', four_sheet)
+
+    if (not org_value) or (not org_size):
+        return
+    org_value_items = org_value.split('\x01')
+    org_size_items = org_value.split('\x01')
+    
+    items = []
+    i = 0
+    for org_value_item in org_value_items:
+        if i < len(org_size_items):
+            org_size_item = org_size_items[i].strip()
+        else:
+            org_size_item = None
+        items.append({"value":org_value_item.strip(), "size":org_size_item})
+        i = i + 1
+
+    order = 0
+    for item in items:
+        fsid = general_four_sheet_id(stid, order)
+        face_value = item['value']
+        size = item['size']
+        print fsid, stid, face_value, size
+        
+        sql = "insert into t_four_sheet(fsid, stid, face_value, size)" \
+             "values(%s, %s, %s, %s)"
+        cursor_insert = db.cursor()
+        cursor_insert.execute(sql, (fsid, stid, face_value, size))
+        cursor_insert.close()
+        db.commit()
+    return True
 
 def parse_line(line):
     #print line
@@ -400,13 +491,14 @@ def parse_line(line):
 
     if not parse_stamp_info(stid, data):
         return
-    parse_sub_stamp(stid, data)
-    parse_big_format(stid, data)
-    parse_small_format(stid, data)
-    parse_zengsong(stid, data)
-    parse_xiaoben(stid, data)
+#    parse_sub_stamp(stid, data)
+#    parse_big_format(stid, data)
+#    parse_small_format(stid, data)
+#   parse_zengsong(stid, data)
+#    parse_xiaoben(stid, data)
     parse_small_sheet(stid, data)
-
+#    parse_mini_sheet(stid, data)
+#    parse_four_sheet(stid, data)
 
 def parse():
     with open(SRC_FILE) as f:
