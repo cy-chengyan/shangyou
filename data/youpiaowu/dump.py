@@ -16,6 +16,12 @@ SRC_FILE = './product.json'
 
 db = None
 
+def is_filter(data):
+    stage = int(data['stage']['id'])
+    if stage == 7 or stage == 8:
+        return True
+    return False
+
 def general_stid(org_id):
     s = str(org_id)
     h = hashlib.md5(s).hexdigest() #32
@@ -128,8 +134,7 @@ def parse_stamp_info(stid, data):
         background = background_info[0][0]
     else:
         background = None
-
-    print stid, countryid, number, issued_date, joint_issue, size, chikong, fmt, fanwei, designer, editor, carve, side_design, draw, shoot, printing_house, background 
+    print stid, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background
     sql = "insert into t_stamp(stid, countryid, `number`, issued_date, size, chikong, format, fanwei, designer, editor, printing_house, background)" \
           " values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     cursor_insert = db.cursor()
@@ -434,15 +439,10 @@ def parse_small_sheet(stid, data):
     if not small_sheet:
         return
     org_face_value = get_attr_in_list(u'面值', small_sheet)
-    print org_face_value
     org_size = get_attr_in_list(u'外形尺寸', small_sheet)
-    print org_size
     org_image = get_attr_in_list(u'邮票主图', small_sheet)
-    print org_image
     org_chikong = get_attr_in_list(u'齿孔', small_sheet)
-    print org_chikong
     org_draw = get_attr_in_list(u'绘画', small_sheet)
-    print org_draw
     org_designer = get_attr_in_list(u'邮票设计', small_sheet)
 
     
@@ -595,7 +595,7 @@ def parse_four_sheet(stid, data):
         fsid = general_four_sheet_id(stid, order)
         face_value = item['value']
         size = item['size']
-        print fsid, stid, face_value, size
+#        print fsid, stid, face_value, size
         
         sql = "insert into t_four_sheet(fsid, stid, face_value, size)" \
              "values(%s, %s, %s, %s)"
@@ -645,6 +645,9 @@ def parse_line(line):
     data = j['data']
     stid = general_stid(data['id'])
 
+    if is_filter(data):
+	return
+
     if not parse_stamp_info(stid, data):
         return
     parse_sub_stamp(stid, data)
@@ -675,7 +678,7 @@ def main():
     db_user = "shuoen"
     db_pwd = "TewtQ81_%&$"
     db_name = "shangyou_v1"
-    db = MySQLdb.connect(db_host, db_user, db_pwd, db_name, charset="utf8")
+    db = MySQLdb.connect(db_host, db_user, db_pwd, db_name, charset="utf8mb4")
     parse()
     if db:
         db.close()
