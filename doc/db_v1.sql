@@ -49,7 +49,7 @@ CREATE TABLE t_stamp(
        `draw` varchar(64) COMMENT '绘画',
        `shoot` varchar(64) COMMENT '摄影',
        `printing_house` varchar(128) COMMENT '印刷厂',
-       `background` mediumtext COMMENT '背景资料'
+       `background` text COMMENT '背景资料'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='邮票详情表';
 CREATE INDEX i_stamp_countryid ON t_stamp(`countryid`);
 
@@ -120,7 +120,7 @@ CREATE TABLE t_small_sheet(
        `face_value` varchar(64) COMMENT '小型张面值',
        `size` varchar(64) COMMENT '小型张尺寸',
        `image` varchar(256) COMMENT '小型张邮票主图',
-       `chikong` varchar(64) COMMENT '小型张齿孔',
+       `chikong` varchar(128) COMMENT '小型张齿孔',
        `designer`  varchar(64) COMMENT '邮票设计',
        `draw` varchar(32) COMMENT '小型张绘画'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='小型张表';
