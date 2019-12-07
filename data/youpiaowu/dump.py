@@ -106,7 +106,6 @@ def parse_stamp_info(stid, data):
     editor = get_attr_in_list(u'责任编辑', stamp_info)
     printing_house = get_attr_in_list(u'印刷厂', stamp_info)
     
-    ##改动##
     joint_issue = get_attr_in_list(u'联合发行', stamp_info)
     if not joint_issue:
         joint_issue = None
@@ -130,7 +129,6 @@ def parse_stamp_info(stid, data):
     else:
         background = None
 
-#    print stid, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background
     print stid, countryid, number, issued_date, joint_issue, size, chikong, fmt, fanwei, designer, editor, carve, side_design, draw, shoot, printing_house, background 
     sql = "insert into t_stamp(stid, countryid, `number`, issued_date, size, chikong, format, fanwei, designer, editor, printing_house, background)" \
           " values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
@@ -243,15 +241,15 @@ def parse_small_format(stid, data):
     if org_slsize:
         org_slsize_items = org_slsize.split('\x01')
     else:
-        org_slsize_items = ''
+        org_slsize_items = []
     if org_slnumber:
         org_slnumber_items = org_slnumber.split('\x01')
     else:
-        org_slnumber_items = ''
+        org_slnumber_items = []
     if org_issued_number:
         org_issued_number_items = org_issued_number.split('\x01')
     else:
-        org_issued_number_items = ''
+        org_issued_number_items = []
     items = []
     i = 0
     for org_slsize_item in org_slsize_items:
@@ -347,31 +345,31 @@ def parse_xiaoben(stid, data):
     if org_number:
         org_number_items = org_number.split('\x01')
     else:
-        org_number_items = ''
+        org_number_items = []
     if org_face_value:
         org_face_value_items = org_face_value.split('\x01')
     else:
-        org_face_value_items = ''
+        org_face_value_items = []
     if org_size:
         org_size_items = org_size.split('\x01')
     else:
-        org_size_items = ''
+        org_size_items = []
     if org_issued_number:
         org_issued_number_items = org_issued_number.split('\x01')
     else:
-        org_issued_number_items = ''
+        org_issued_number_items = []
     if org_designer:
         org_designer_items = org_designer.split('\x01')
     else:
-        org_designer_items = ''
+        org_designer_items = []
     if org_editor:
         org_editor_items = org_editor.split('\x01')
     else:
-        org_editor_items = ''
+        org_editor_items = []
     if org_printing_house:
         org_printing_house_items = org_printing_house.split('\x01')
     else:
-        org_printing_house_items = ''
+        org_printing_house_items = []
 
 
     items = []
@@ -449,27 +447,27 @@ def parse_small_sheet(stid, data):
 
     
     if not org_face_value:
-        org_face_value_items = ''
+        org_face_value_items = []
     else:
         org_face_value_items = org_face_value.split('\x01')
     if not org_size:
-        org_size_items = ''
+        org_size_items = []
     else:
         org_size_items = org_size.split('\x01')
     if not org_image:
-        org_image_items = ''
+        org_image_items = []
     else:
         org_image_items = org_image.split('\x01')
     if not org_chikong:
-        org_chikong_items = ''
+        org_chikong_items = []
     else:
         org_chikong_items = org_chikong.split('\x01')
     if not org_draw:
-        org_draw_items = ''
+        org_draw_items = []
     else:
         org_draw_items = org_draw.split('\x01')
     if not org_designer:
-        org_designer_items = ''
+        org_designer_items = []
     else:
         org_designer_items = org_designer.split('\x01')
 
