@@ -42,9 +42,9 @@ def general_zengsong_id(stid, order):
     return 'g' + h[25:]
 
 def general_xiaoben_id(stid, order):
-    s = stid + 'b' + str(order)
+    s = stid + 'x' + str(order)
     h = hashlib.md5(s).hexdigest()
-    return 'b' + h[25:]
+    return 'x' + h[25:]
 
 def general_small_sheet_id(stid, order):
     s = stid + 't' + str(order)
@@ -60,6 +60,11 @@ def general_four_sheet_id(stid, order):
     s = stid + 'f' + str(order)
     h = hashlib.md5(s).hexdigest()
     return 'f' + h[25:]
+
+def general_double_sheet_id(stid, order):
+    s = stid + 'd' + str(order)
+    h = hashlib.md5(s).hexdigest()
+    return 'd' + h[25:]
 
 def get_country_id(d):
     stage = d['stage']
@@ -100,6 +105,24 @@ def parse_stamp_info(stid, data):
     designer =get_attr_in_list(u'邮票设计', stamp_info)
     editor = get_attr_in_list(u'责任编辑', stamp_info)
     printing_house = get_attr_in_list(u'印刷厂', stamp_info)
+    
+    ##改动##
+    joint_issue = get_attr_in_list(u'联合发行', stamp_info)
+    if not joint_issue:
+        joint_issue = None
+    carve = get_attr_in_list(u'雕刻', stamp_info)
+    if not carve:
+        carve = None
+    side_design = get_attr_in_list(u'边饰设计', stamp_info)
+    if not side_design:
+        side_design = None
+    draw = get_attr_in_list(u'绘画', stamp_info)
+    if not draw:
+        draw = None
+    shoot = get_attr_in_list(u'摄影', stamp_info)
+    if not shoot:
+        shoot = None
+
 
     background_info = get_list_in_items(u'背景资料', items)
     if background_info:
@@ -107,8 +130,8 @@ def parse_stamp_info(stid, data):
     else:
         background = None
 
-    print stid, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background
-
+#    print stid, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background
+    print stid, countryid, number, issued_date, joint_issue, size, chikong, fmt, fanwei, designer, editor, carve, side_design, draw, shoot, printing_house, background 
     sql = "insert into t_stamp(stid, countryid, `number`, issued_date, size, chikong, format, fanwei, designer, editor, printing_house, background)" \
           " values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     cursor_insert = db.cursor()
@@ -214,12 +237,21 @@ def parse_small_format(stid, data):
     
     org_slsize = get_attr_in_list(u'尺寸', small_format)
     org_slnumber = get_attr_in_list(u'枚数', small_format)
-    if (not org_slsize) or (not org_slnumber):
-        return
-
-    org_slsize_items = org_slsize.split('\x01')
-    org_slnumber_items = org_slnumber.split('\x01')
-
+    org_issued_number = get_attr_in_list(u'发行量', small_format)
+#    if (not org_slsize) or (not org_slnumber):
+#        return
+    if org_slsize:
+        org_slsize_items = org_slsize.split('\x01')
+    else:
+        org_slsize_items = ''
+    if org_slnumber:
+        org_slnumber_items = org_slnumber.split('\x01')
+    else:
+        org_slnumber_items = ''
+    if org_issued_number:
+        org_issued_number_items = org_issued_number.split('\x01')
+    else:
+        org_issued_number_items = ''
     items = []
     i = 0
     for org_slsize_item in org_slsize_items:
@@ -227,7 +259,11 @@ def parse_small_format(stid, data):
             org_slnumber_item = org_slnumber_items[i].strip()
         else:
             org_slnumber_item = None
-        items.append({"size":org_slsize_item.strip(), "num":org_slnumber_item})
+        if i < len(org_issued_number_items):
+            org_issued_number_item = org_issued_number_items[i].strip()
+        else:
+            org_issued_number_item = None
+        items.append({"size":org_slsize_item.strip(), "num":org_slnumber_item, "issued_number":org_issued_number_item})
         i = i + 1
 
     order = 0
@@ -235,11 +271,12 @@ def parse_small_format(stid, data):
         slfid = general_small_format_id(stid, order)
         slsize = item['size']
         slnumber = item['num']
-        print slfid, stid ,slsize, slnumber
-        sql = "insert into t_small_format(slfid, stid, slsize, slnumber)" \
-              "values(%s, %s, %s, %s)"
+        issued_number = item['issued_number']
+        print slfid, stid ,slsize, slnumber, issued_number
+        sql = "insert into t_small_format(slfid, stid, slsize, slnumber, issued_number)" \
+              "values(%s, %s, %s, %s, %s)"
         cursor_insert = db.cursor()
-        cursor_insert.execute(sql, (slfid, stid, slsize, slnumber))
+        cursor_insert.execute(sql, (slfid, stid, slsize, slnumber, issued_number))
         cursor_insert.close()
         db.commit()
 
@@ -298,10 +335,44 @@ def parse_xiaoben(stid, data):
 
     org_number = get_attr_in_list(u'编号', xiaoben)
     org_face_value = get_attr_in_list(u'面值', xiaoben)
-    if (not org_number) or (not org_face_value):
-        return
-    org_number_items = org_number.split('\x01')
-    org_face_value_items = org_face_value.split('\x01')
+    org_size = get_attr_in_list(u'尺寸', xiaoben)
+    org_issued_number = get_attr_in_list(u'发行量', xiaoben)
+    org_designer = get_attr_in_list(u'邮票设计', xiaoben)
+    org_editor = get_attr_in_list(u'责任编辑', xiaoben)
+    org_printing_house = get_attr_in_list(u'印刷厂', xiaoben)
+
+#    if (not org_number) or (not org_face_value):
+#        return
+
+    if org_number:
+        org_number_items = org_number.split('\x01')
+    else:
+        org_number_items = ''
+    if org_face_value:
+        org_face_value_items = org_face_value.split('\x01')
+    else:
+        org_face_value_items = ''
+    if org_size:
+        org_size_items = org_size.split('\x01')
+    else:
+        org_size_items = ''
+    if org_issued_number:
+        org_issued_number_items = org_issued_number.split('\x01')
+    else:
+        org_issued_number_items = ''
+    if org_designer:
+        org_designer_items = org_designer.split('\x01')
+    else:
+        org_designer_items = ''
+    if org_editor:
+        org_editor_items = org_editor.split('\x01')
+    else:
+        org_editor_items = ''
+    if org_printing_house:
+        org_printing_house_items = org_printing_house.split('\x01')
+    else:
+        org_printing_house_items = ''
+
 
     items = []
     i = 0
@@ -310,7 +381,28 @@ def parse_xiaoben(stid, data):
             org_face_value_item = org_face_value_items[i].strip()
         else:
             org_face_value_item = None
-        items.append({"num":org_number_item.strip(), "value":org_face_value_item})
+        if i < len(org_size_items):
+            org_size_item = org_size_items[i].strip()
+        else:
+            org_size_item = None
+        if i < len(org_issued_number_items):
+            org_issued_number_item = org_issued_number_items[i].strip()
+        else:
+            org_issued_number_item = None
+        if i < len(org_designer_items):
+            org_designer_item = org_designer_items[i].strip()
+        else:
+            org_designer_item = None
+        if i < len(org_editor_items):
+            org_editor_item = org_editor_items[i].strip()
+        else:
+            org_editor_item = None
+        if i < len(org_printing_house_items):
+            org_printing_house_item = org_printing_house_items[i].strip()
+        else:
+            org_printing_house_item = None
+
+        items.append({"num":org_number_item.strip(), "value":org_face_value_item, "size":org_size_item, "issued_number":org_issued_number_item, "designer":org_designer_item, "editor":org_editor_item, "printing_house":org_printing_house_item})
         i = i + 1
    
     order = 0
@@ -318,12 +410,17 @@ def parse_xiaoben(stid, data):
         xiaobenid = general_xiaoben_id(stid, order)
         number = item['num']
         face_value = item['value']
+        size = item['size']
+        issued_number = item['issued_number']
+        designer = item['designer']
+        editor = item['editor']
+        printing_house = item['printing_house']
         print xiaobenid, stid, number, face_value
         
-        sql = "insert into t_xiaoben(xiaobenid, stid, `number`, face_value)" \
-              "values(%s, %s, %s, %s)"
+        sql = "insert into t_xiaoben(xiaobenid, stid, `number`, size, issued_number, face_value, designer, editor, printing_house)" \
+              "values(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
         cursor_insert = db.cursor()
-        cursor_insert.execute(sql, (xiaobenid, stid, number, face_value))
+        cursor_insert.execute(sql, (xiaobenid, stid, number, size, issued_number, face_value, designer, editor, printing_house))
         cursor_insert.close()
         db.commit()
 
@@ -336,23 +433,46 @@ def parse_xiaoben(stid, data):
 def parse_small_sheet(stid, data):
     items = data['items']
     small_sheet = get_list_in_items(u'小型张', items)
-    if small_sheet:
-        print '+++++++'
+    if not small_sheet:
         return
     org_face_value = get_attr_in_list(u'面值', small_sheet)
+    print org_face_value
     org_size = get_attr_in_list(u'外形尺寸', small_sheet)
+    print org_size
     org_image = get_attr_in_list(u'邮票主图', small_sheet)
+    print org_image
     org_chikong = get_attr_in_list(u'齿孔', small_sheet)
+    print org_chikong
     org_draw = get_attr_in_list(u'绘画', small_sheet)
-    if (not org_face_value) or (not org_size) or (not org_image) or (not org_chikong) or (not org_draw):
-        return
+    print org_draw
+    org_designer = get_attr_in_list(u'邮票设计', small_sheet)
 
-    org_face_value_items = org_face_value.split('\x01')
-    org_size_items = org_size.split('\x01')
-    org_image_items = org_image.split('\x01')
-    org_chikong_items = org_chikong.split('\x01')
-    org_draw_items = org_draw.split('\x01')
     
+    if not org_face_value:
+        org_face_value_items = ''
+    else:
+        org_face_value_items = org_face_value.split('\x01')
+    if not org_size:
+        org_size_items = ''
+    else:
+        org_size_items = org_size.split('\x01')
+    if not org_image:
+        org_image_items = ''
+    else:
+        org_image_items = org_image.split('\x01')
+    if not org_chikong:
+        org_chikong_items = ''
+    else:
+        org_chikong_items = org_chikong.split('\x01')
+    if not org_draw:
+        org_draw_items = ''
+    else:
+        org_draw_items = org_draw.split('\x01')
+    if not org_designer:
+        org_designer_items = ''
+    else:
+        org_designer_items = org_designer.split('\x01')
+
     items = []
     i = 0
     
@@ -373,11 +493,15 @@ def parse_small_sheet(stid, data):
         else:
             org_chikong_item = None
 
-        if i <len(org_draw_items):
+        if i < len(org_draw_items):
             org_draw_item = org_draw_items[i].strip()
         else:
             org_draw_item = None
-        items.append({"value": org_face_value_item.strip(), "size": org_size_item, "image": org_image_item, "chikong": org_chikong_item, "draw": org_draw_item})
+        if i < len(org_designer_items):
+            org_designer_item = org_designer_items[i].strip()
+        else:
+            org_designer_item = None
+        items.append({"value": org_face_value_item.strip(), "size": org_size_item, "image": org_image_item, "chikong": org_chikong_item, "draw": org_draw_item, "designer":org_designer_item})
         i = i + 1
 
     order = 0
@@ -388,13 +512,13 @@ def parse_small_sheet(stid, data):
         image = item['image']
         chikong = item['chikong']
         draw = item['draw']
+        designer = item['designer']
 
         print slsid, stid, face_value, size, image, chikong, draw
- 
-        sql = "insert into t_small_sheet(slsid, stid, face_value, size, image, chikong, draw)" \
-              "values(%s, %s, %s, %s, %s, %s, %s)"
+        sql = "insert into t_small_sheet(slsid, stid, face_value, size, image, chikong, designer, draw)" \
+              "values(%s, %s, %s, %s, %s, %s, %s, %s)"
         cursor_insert = db.cursor()
-        cursor_insert.excute(sql, (slsid, stid, face_value, size, image, chikong, draw))
+        cursor_insert.execute(sql, (slsid, stid, face_value, size, image, chikong, designer, draw))
         cursor_insert.close()
         db.commit()
 
@@ -483,6 +607,40 @@ def parse_four_sheet(stid, data):
         db.commit()
     return True
 
+#双联小型张
+def parse_double_sheet(stid, data):
+    item = data['items']
+    double_sheet = get_list_in_items(u'双联小型张', item)
+    if not double_sheet:
+        return
+    org_size = get_attr_in_list(u'外形尺寸', double_sheet)
+    if not org_size:
+        return
+    org_size_items = org_size.split('\x01')
+    
+    items = []
+    i = 0
+    for org_size_item in org_size_items:
+        if i < len(org_size_items):
+            org_size_item = org_size_items[i].strip()
+        else:
+            org_size_item = None
+        items.append({"size":org_size_item.strip()})
+        i = i + 1
+    
+    order = 0
+    for item in items:
+        dsid = general_double_sheet_id(stid, order)
+        size = item['size']
+        print dsid, stid, size
+        sql = "insert into t_double_sheet(dsid, stid, size)" \
+              "values(%s, %s, %s)"
+        cursor_insert = db.cursor()
+        cursor_insert.execute(sql, (dsid, stid, size))
+        cursor_insert.close()
+        db.commit()
+    return True
+
 def parse_line(line):
     #print line
     j = json.loads(line)
@@ -491,14 +649,16 @@ def parse_line(line):
 
     if not parse_stamp_info(stid, data):
         return
-#    parse_sub_stamp(stid, data)
-#    parse_big_format(stid, data)
-#    parse_small_format(stid, data)
-#   parse_zengsong(stid, data)
-#    parse_xiaoben(stid, data)
+    parse_sub_stamp(stid, data)
+    parse_big_format(stid, data)
+    parse_small_format(stid, data)
+    parse_zengsong(stid, data)
+    parse_xiaoben(stid, data)
     parse_small_sheet(stid, data)
-#    parse_mini_sheet(stid, data)
-#    parse_four_sheet(stid, data)
+    parse_mini_sheet(stid, data)
+    parse_four_sheet(stid, data)
+    parse_double_sheet(stid, data)
+
 
 def parse():
     with open(SRC_FILE) as f:
