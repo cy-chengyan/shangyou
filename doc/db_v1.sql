@@ -36,10 +36,10 @@ CREATE TABLE t_stamp(
        `stid` char(8) PRIMARY KEY COMMENT '邮票id',
        `countryid` tinyint COMMENT '国家, 1-中国,',
        `number` varchar(32) NOT NULL COMMENT '邮票编号',
-       `issued_date` char(10) COMMENT '邮票发布日期',
-       `joint_issue` varchar(32) COMMENT '联合发行',
-       `size` varchar(32) COMMENT '邮票尺寸',
-       `chikong` varchar(32) COMMENT '邮票齿孔',
+       `issued_date` char(32) COMMENT '邮票发布日期',
+       `joint_issue` varchar(64) COMMENT '联合发行',
+       `size` varchar(128) COMMENT '邮票尺寸',
+       `chikong` varchar(128) COMMENT '邮票齿孔',
        `format` varchar(64) COMMENT '邮票版式',
        `fanwei` varchar(64) COMMENT '防伪技术',
        `designer` varchar(64) COMMENT '邮票设计',
@@ -48,8 +48,8 @@ CREATE TABLE t_stamp(
        `side_design` varchar(64) COMMENT '边饰设计',
        `draw` varchar(64) COMMENT '绘画',
        `shoot` varchar(64) COMMENT '摄影',
-       `printing_house` varchar(32) COMMENT '印刷厂',
-       `background` text COMMENT '背景资料'
+       `printing_house` varchar(128) COMMENT '印刷厂',
+       `background` mediumtext COMMENT '背景资料'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='邮票详情表';
 CREATE INDEX i_stamp_countryid ON t_stamp(`countryid`);
 
@@ -59,7 +59,7 @@ CREATE TABLE t_sub_stamp(
        `sstid` char(8) PRIMARY KEY COMMENT '子邮票id',
        `stid` char(8) COMMENT '邮票id',
        `order` tinyint COMMENT '序号',       
-       `title` varchar(32) NOT NULL COMMENT '邮票标题',
+       `title` varchar(128) NOT NULL COMMENT '邮票标题',
        `picture` varchar(256) COMMENT '邮票图片',
        `face_value` varchar(64) COMMENT '邮票面值',
        `issued_number` varchar(64) COMMENT '发行量'
@@ -72,7 +72,7 @@ CREATE TABLE t_big_format(
        `bgid` char(8) PRIMARY KEY COMMENT '大版id',
        `stid` char(8) COMMENT '邮票id',
        `bgsize` varchar(64) COMMENT '大版尺寸',
-       `bgnumber` varchar(64) COMMENT '大版枚数'
+       `bgnumber` varchar(128) COMMENT '大版枚数'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='大版表';
 CREATE INDEX i_big_format_stid ON t_big_format(`stid`);
 
@@ -117,10 +117,10 @@ DROP TABLE IF EXISTS t_small_sheet;
 CREATE TABLE t_small_sheet(
        `slsid` char(8) PRIMARY KEY COMMENT '小型张id',
        `stid` char(8) COMMENT '邮票id',
-       `face_value` varchar(8) COMMENT '小型张面值',
+       `face_value` varchar(64) COMMENT '小型张面值',
        `size` varchar(64) COMMENT '小型张尺寸',
        `image` varchar(256) COMMENT '小型张邮票主图',
-       `chikong` varchar(8) COMMENT '小型张齿孔',
+       `chikong` varchar(64) COMMENT '小型张齿孔',
        `designer`  varchar(64) COMMENT '邮票设计',
        `draw` varchar(32) COMMENT '小型张绘画'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='小型张表';
