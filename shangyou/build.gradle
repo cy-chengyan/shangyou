@@ -30,7 +30,7 @@ subprojects {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
     [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-    group = 'qilpsian'
+    group = 'shuoen'
     version = VERSION
 
     repositories {
