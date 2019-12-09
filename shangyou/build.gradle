@@ -1,0 +1,50 @@
+
+buildscript {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/spring-plugin' }
+        jcenter()
+    }
+    dependencies {
+        classpath(
+                "org.springframework.boot:spring-boot-gradle-plugin:2.2.2.RELEASE"
+        )
+    }
+}
+
+apply from: 'libraries.gradle'
+apply plugin: 'base'
+apply plugin: 'idea'
+
+def VERSION = '0.1.0'
+idea.project {
+    jdkName = '1.8'
+    languageLevel = '1.8'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'idea'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+    group = 'qilpsian'
+    version = VERSION
+
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/spring' }
+        jcenter()
+    }
+}
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+}
+

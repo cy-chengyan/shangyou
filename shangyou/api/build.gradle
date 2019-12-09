@@ -1,0 +1,16 @@
+bootJar {
+    launchScript()
+}
+
+dependencies {
+    compile(
+            libraries.spring_boot_web,
+            libraries.spring_boot_jetty,
+            libraries.spring_boot_actuator,
+    )
+}
+
+configurations {
+    runtime.exclude module: 'spring-boot-starter-tomcat'
+    compile.exclude module: 'spring-boot-starter-tomcat'
+}

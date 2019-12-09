@@ -1,0 +1,7 @@
+
+ext.libraries = [
+        spring_boot         : "org.springframework.boot:spring-boot-starter",
+        spring_boot_web     : "org.springframework.boot:spring-boot-starter-web",
+        spring_boot_jetty   : "org.springframework.boot:spring-boot-starter-jetty",
+        spring_boot_actuator: "org.springframework.boot:spring-boot-starter-actuator"
+]
