@@ -1,0 +1,10 @@
+
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.7.7:3306/shangyou_v1?characterEncoding=utf-8&useUnicode=true&autoReconnect=true
+    username: shuoen
+    password: 'TewtQ81_%&$'
+    connectionInitSqls: 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;'
+    hikari:
+      connection-init-sql: 'SET NAMES utf8mb4'

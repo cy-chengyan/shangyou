@@ -1,4 +1,4 @@
-package shangyou.data.mapper;
+package shangyou.core.data.mapper;
 
 public interface StampMapper {
 

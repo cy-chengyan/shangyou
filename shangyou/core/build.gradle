@@ -1,5 +1,9 @@
+jar {
+    enabled = true
+}
+
 bootJar {
-    launchScript()
+    enabled = false
 }
 
 dependencies {
@@ -7,15 +11,8 @@ dependencies {
     compileOnly(libraries.lombok)
 
     compile(
-            libraries.spring_boot_web,
-            libraries.spring_boot_jetty,
-            libraries.mybatis_spring_boot,
-
-            project(':core'),
-    )
-
-    runtime(
-            libraries.mysql_connector,
+            libraries.spring_boot,
+            libraries.mybatis
     )
 }
 
