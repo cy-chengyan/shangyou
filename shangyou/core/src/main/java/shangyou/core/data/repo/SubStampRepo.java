@@ -16,7 +16,7 @@ public class SubStampRepo {
     public List<SubStamp> queryByStampId(String stid) {
         List<SubStamp> subStamps = subStampMapper.queryByStampid(stid);
         if (subStamps != null) {
-            subStamps.forEach(subStamp -> subStamp.setPicture("https://img.huanliu.club//tp/coffeesalon/icon/icon_bk_06.png"));
+            subStamps.forEach(subStamp -> subStamp.setPicture("https://img.huanliu.club/tp/coffeesalon/icon/icon_bk_06.png"));
         }
         return subStamps;
     }

@@ -18,7 +18,7 @@ public class StampController {
 
     @ResponseBody
     @RequestMapping(value = "/sub-stamp/{stid}", method = {RequestMethod.GET})
-    public List<SubStamp> querySubStamps(@PathVariable("stid")String stid) {
+    public List<SubStamp> querySubStamps(@PathVariable("stid") String stid) {
         if (StringUtils.isEmpty(stid)) {
             return new ArrayList<>();
         }
