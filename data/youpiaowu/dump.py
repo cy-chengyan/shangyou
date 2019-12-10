@@ -183,7 +183,7 @@ def parse_sub_stamp(stid, data):
         cursor_insert.close()
         db.commit()
         
-        return True
+    return True
 
 
 #大版

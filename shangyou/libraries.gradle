@@ -3,5 +3,8 @@ ext.libraries = [
         spring_boot         : "org.springframework.boot:spring-boot-starter",
         spring_boot_web     : "org.springframework.boot:spring-boot-starter-web",
         spring_boot_jetty   : "org.springframework.boot:spring-boot-starter-jetty",
-        spring_boot_actuator: "org.springframework.boot:spring-boot-starter-actuator"
+        lombok              : "org.projectlombok:lombok:1.18.10",
+        mybatis_spring_boot : "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.1",
+        mybatis             : "org.mybatis:mybatis:3.5.3",
+        mysql_connector     : "mysql:mysql-connector-java:8.0.18"
 ]
