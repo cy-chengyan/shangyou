@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import shangyou.core.controller.BaseStampController;
 import shangyou.core.controller.SubStampController;
+import shangyou.core.model.BaseStamp;
 import shangyou.core.model.SubStamp;
 
 import java.util.ArrayList;
@@ -28,6 +30,16 @@ public class StampController {
             return new ArrayList<>();
         }
         return subStampController.queryByStampId(stid);
+    }
+
+
+    @Autowired
+    private BaseStampController baseStampController;
+    @ApiOperation(value = "邮票基本信息", notes = "邮票基本信息", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @RequestMapping(value = "/base-stamp/{stid}", method = {RequestMethod.GET})
+    public BaseStamp queryBaseStamps(@PathVariable("stid") String stid) {
+        return baseStampController.queryStampByStampId(stid);
     }
 
 }

@@ -4,6 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+/*
+        `sstid` char(8) PRIMARY KEY COMMENT '子邮票id',
+       `stid` char(8) COMMENT '邮票id',
+       `order` tinyint COMMENT '序号',
+       `title` varchar(128) NOT NULL COMMENT '邮票标题',
+       `picture` varchar(256) COMMENT '邮票图片',
+       `face_value` varchar(64) COMMENT '邮票面值',
+       `issued_number` varchar(64) COMMENT '发行量'
+ */
 
 @Builder
 @Getter
@@ -16,17 +25,23 @@ public class SubStamp {
     @ApiModelProperty("子邮票id")
     private String sstid;
 
+    @ApiModelProperty("邮票id")
     private String stid;
 
+    @ApiModelProperty("序号")
     private int order;
 
+    @ApiModelProperty("邮票标题")
     private String title;
 
+    @ApiModelProperty("邮票图片")
     private String picture;
 
+    @ApiModelProperty("邮票面值")
     @JsonProperty("face_value")
     private String faceValue;
 
+    @ApiModelProperty("发行量")
     @JsonProperty("issued_number")
     private String issuedNumber;
 
