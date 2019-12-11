@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/stamp")
-public class StampController {
+public class   StampController {
 
     @Autowired
     private SubStampController subStampController;
