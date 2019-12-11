@@ -6,5 +6,9 @@ ext.libraries = [
         lombok              : "org.projectlombok:lombok:1.18.10",
         mybatis_spring_boot : "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.1",
         mybatis             : "org.mybatis:mybatis:3.5.3",
-        mysql_connector     : "mysql:mysql-connector-java:8.0.18"
+        mysql_connector     : "mysql:mysql-connector-java:8.0.18",
+        jackson_bind        : "com.fasterxml.jackson.core:jackson-databind:2.10.1",
+        jackson_datatype    : "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.1",
+        swagger             : "io.springfox:springfox-swagger2:2.9.2",
+        swagger_ui          : "io.springfox:springfox-swagger-ui:2.9.2",
 ]

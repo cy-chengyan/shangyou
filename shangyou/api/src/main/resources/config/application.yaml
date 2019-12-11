@@ -8,3 +8,6 @@ spring:
     connectionInitSqls: 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;'
     hikari:
       connection-init-sql: 'SET NAMES utf8mb4'
+
+swagger:
+  host: 127.0.0.1:8080
