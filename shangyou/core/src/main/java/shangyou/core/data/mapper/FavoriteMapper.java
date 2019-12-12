@@ -26,5 +26,5 @@ public interface FavoriteMapper {
             @Result(property = "createdAt", column = "created_at"),
             @Result(property = "updatedAt", column = "update_at")
     })
-    List<Favorite> queryStampByStid(@Param("uid")String uid);
+    List<Favorite> queryStampByUid(@Param("uid")String uid);
 }

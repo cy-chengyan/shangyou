@@ -42,4 +42,6 @@ public class StampController {
         return baseStampController.queryStampByStampId(stid);
     }
 
+
+
 }
