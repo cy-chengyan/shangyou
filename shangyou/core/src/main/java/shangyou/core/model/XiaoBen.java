@@ -5,17 +5,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-/*
-        `xiaobenid` char(8) PRIMARY KEY COMMENT '小本票id',
-       `stid` char(8) COMMENT '邮票id',
-       `number` varchar(32) COMMENT '小本票编号',
-       `size` varchar(64) COMMENT '尺寸',
-       `issued_number` varchar(64) COMMENT '发行量',
-       `face_value` varchar(8) COMMENT '小本票面值',
-       `designer` varchar(64) COMMENT '邮票设计',
-       `editor` varchar(64) COMMENT '责任编辑',
-       `printing_house` varchar(32) COMMENT '印刷厂'
- */
 
 @Builder
 @Getter

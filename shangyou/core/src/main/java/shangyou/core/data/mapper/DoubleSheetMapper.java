@@ -9,11 +9,6 @@ import shangyou.core.model.DoubleSheet;
 import java.util.List;
 
 
-/*
-        `dsid` char(8) PRIMARY KEY COMMENT '双联小型张id',
-       `stid` char(8) COMMENT '邮票id',
-       `size` varchar(64) COMMENT '尺寸'
- */
 @Repository
 @Mapper
 public interface DoubleSheetMapper {

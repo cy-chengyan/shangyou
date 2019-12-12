@@ -4,12 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-/*
-`bgid` char(8) PRIMARY KEY COMMENT '大版id',
-       `stid` char(8) COMMENT '邮票id',
-       `bgsize` varchar(64) COMMENT '大版尺寸',
-       `bgnumber` varchar(128) COMMENT '大版枚数'
- */
 
 @Builder
 @Getter

@@ -5,12 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-/*
-      `faid` char(8) PRIMARY KEY,
-       `uid` char(8) NOT NULL COMMENT '用户id',
-       `stid` char(8) NOT NULL COMMENT '邮票id',
-       `created_at` bigint(20) NOT NULL COMMENT '创建时间',
- */
+
 
 @Builder
 @Getter

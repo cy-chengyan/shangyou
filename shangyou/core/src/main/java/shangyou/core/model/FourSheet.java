@@ -5,12 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-/*
-         `fsid` char(8) PRIMARY KEY COMMENT '四连体小型张id',
-       `stid` char(8) COMMENT '邮票id',
-       `face_value` varchar(8) COMMENT '面值',
-       `size` varchar(64) COMMENT '尺寸'
- */
+
 
 @Builder
 @Getter

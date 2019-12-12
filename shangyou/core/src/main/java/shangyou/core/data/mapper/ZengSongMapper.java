@@ -7,12 +7,7 @@ import shangyou.core.model.ZengSong;
 
 import java.util.List;
 
-/*
-        `zengid` char(8) PRIMARY KEY COMMENT '赠送版id',
-       `stid` char(8) COMMENT '邮票id',
-       `zeng_size` varchar(64) COMMENT '赠送版尺寸',
-       `zeng_number` varchar(64) COMMENT '赠送版枚数'
- */
+
 @Repository
 @Mapper
 public interface ZengSongMapper {
