@@ -4,8 +4,10 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+import shangyou.core.model.DoubleSheet;
 
 import java.util.List;
+
 
 /*
         `dsid` char(8) PRIMARY KEY COMMENT '双联小型张id',
@@ -20,5 +22,5 @@ public interface DoubleSheetMapper {
             "SELECT dsid, stid, size FROM t_double_sheet WHERE stid = #{stid}",
             "</script>"
     })
-    List<DoubleSheetMapper> queryStampByStid(@Param("stid") String stid);
+    List<DoubleSheet> queryStampByStid(@Param("stid") String stid);
 }
