@@ -76,6 +76,10 @@ def get_country_id(d):
     stage = d['stage']
     return int(stage['id'])
 
+def get_stamp_name(d):
+    name = d['name']
+    return name
+
 
 def get_list_in_items(list_name, d):
     for item in d:
@@ -90,9 +94,10 @@ def get_attr_in_list(attr_name, d):
             return item[1]
     return None
 
-
+#邮票信息
 def parse_stamp_info(stid, data):
     items = data['items']
+    name = get_stamp_name(data)
     countryid = get_country_id(data)
     stamp_info = get_list_in_items(u'基本属性', items)
     if not stamp_info:
@@ -135,10 +140,10 @@ def parse_stamp_info(stid, data):
     else:
         background = None
     print stid, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background
-    sql = "insert into t_stamp(stid, countryid, `number`, issued_date, size, chikong, format, fanwei, designer, editor, printing_house, background)" \
-          " values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    sql = "insert into t_stamp(stid, `name`, countryid, `number`, issued_date, size, chikong, format, fanwei, designer, editor, printing_house, background)" \
+          " values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     cursor_insert = db.cursor()
-    cursor_insert.execute(sql, (stid, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background))
+    cursor_insert.execute(sql, (stid, name, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background))
     cursor_insert.close()
     db.commit()
     
