@@ -12,7 +12,10 @@ dependencies {
 
     compile(
             libraries.spring_boot,
-            libraries.mybatis
+            libraries.mybatis,
+            libraries.jackson_bind,
+            libraries.jackson_datatype,
+            libraries.swagger,
     )
 }
 

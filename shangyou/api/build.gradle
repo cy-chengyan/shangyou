@@ -10,6 +10,8 @@ dependencies {
             libraries.spring_boot_web,
             libraries.spring_boot_jetty,
             libraries.mybatis_spring_boot,
+            libraries.swagger,
+            libraries.swagger_ui,
 
             project(':core'),
     )

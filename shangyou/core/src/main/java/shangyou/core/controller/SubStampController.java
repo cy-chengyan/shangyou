@@ -14,6 +14,7 @@ public class SubStampController {
     private SubStampRepo subStampRepo;
 
     public List<SubStamp> queryByStampId(String stid) {
+
         return subStampRepo.queryByStampId(stid);
     }
 
