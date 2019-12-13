@@ -16,7 +16,7 @@ public class BigFormat {
     private String bgid;
 
     @ApiModelProperty("邮票id")
-    private  String stid;
+    private String stid;
 
     @ApiModelProperty("大版尺寸")
     private String bgsize;

@@ -37,7 +37,7 @@ public class BaseStamp {
     private String chikong;
 
     @ApiModelProperty("邮票版式")
-    private String  format;
+    private String format;
 
     @ApiModelProperty("防伪技术")
     private String fanwei;

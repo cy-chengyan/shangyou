@@ -9,6 +9,7 @@ public class ErrMsg {
     public static final int RC_FUNC_NOT_SUPPORTED      = -4;
     public static final int RC_FUNC_CALL_FAILED        = -5;
     public static final int RC_SERVER_INTERNAL         = -6;
+    public static final int RC_CHECK_CODE_ERR          = -7;
 
     public static final String toString(int code) {
         final String[] errMsgs = {
@@ -18,7 +19,8 @@ public class ErrMsg {
                 "参数不正确",
                 "不支持该功能",
                 "功能请求失败",
-                "服务器内部错误"
+                "服务器内部错误",
+                "验证码错误"
         };
 
         String errMsg;

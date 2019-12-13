@@ -7,6 +7,8 @@ import shangyou.core.common.ErrMsg;
 import shangyou.core.data.repo.BaseStampRepo;
 import shangyou.core.model.BaseStamp;
 
+import java.util.List;
+
 
 @Controller
 public class BaseStampController extends BaseController {
@@ -20,6 +22,10 @@ public class BaseStampController extends BaseController {
             setLastErrWithPredefined(ErrMsg.RC_NOT_FOUND);
         }
         return ret;
+    }
+
+    public List<BaseStamp> queryBaseStampList(String type, String year, int offset, int size) {
+        return baseStampRepo.queryStamp(type, year, offset, size);
     }
 
 }

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import shangyou.core.data.mapper.BaseStampMapper;
 import shangyou.core.model.BaseStamp;
 
+import java.util.List;
+
 
 @Controller
 public class BaseStampRepo {
@@ -16,4 +18,9 @@ public class BaseStampRepo {
         BaseStamp stamp = baseStampMapper.queryStampByStid(stid);
         return  stamp;
     }
+
+    public List<BaseStamp> queryStamp(String type, String year, int offset, int size) {
+        return baseStampMapper.queryStamp(type, year, offset, size);
+    }
+
 }

@@ -9,7 +9,7 @@ import shangyou.core.common.Utility;
 @Builder
 @Setter
 @Getter
-@ApiModel("返回")
+@ApiModel("返回数据")
 public class SApiResponse<T> {
 
     @ApiModelProperty("错误码")

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import shangyou.api.model.SApiRequest;
 import shangyou.api.model.SApiResponse;
+import shangyou.api.model.req.StampListRequestData;
 import shangyou.core.common.ErrMsg;
 import shangyou.core.controller.BaseStampController;
 import shangyou.core.controller.StampDetailController;
@@ -15,6 +17,7 @@ import shangyou.core.model.BaseStamp;
 import shangyou.core.model.StampDetail;
 import shangyou.core.model.SubStamp;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +64,19 @@ public class StampController {
             return new SApiResponse<>(stampDetailController.getLastErrCode(), stampDetailController.getLastErrMsg());
         }
         return new SApiResponse<>(ErrMsg.RC_OK, stampDetail);
+    }
+
+    @ApiOperation(value = "邮票列表", notes = "根据不同的条件显示邮票列表", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @RequestMapping(value = "/list", method = {RequestMethod.POST})
+    public SApiResponse<List<BaseStamp>> queryStampList(@RequestBody @Valid SApiRequest<StampListRequestData> request) {
+        StampListRequestData requestData = request.getData();
+        String type = requestData.getType();
+        String year = requestData.getYear();
+        int offset = requestData.getOffset();
+        int size = requestData.getSize();
+        List<BaseStamp> baseStamps = baseStampController.queryBaseStampList(type, year, offset, size);
+        return new SApiResponse<>(ErrMsg.RC_OK, baseStamps);
     }
 
 }

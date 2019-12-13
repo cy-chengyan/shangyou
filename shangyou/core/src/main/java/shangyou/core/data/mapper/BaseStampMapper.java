@@ -29,8 +29,8 @@ public interface BaseStampMapper {
             "<script>",
             "SELECT stid, countryid, `number`, issued_date, joint_issue, size, chikong, format, fanwei, designer, editor,",
             " carve, side_design, draw, shoot, printing_house, background FROM t_stamp WHERE 1 = 1",
-            "<if test=\"type != null\"> AND `number` LIKE '#{type}%'</if>",
-            "<if test=\"year != null\"> AND LEFT(issued_date, 4) == #{type}</if>",
+            "<if test=\"type != null\"> AND `number` LIKE CONCAT(#{type}, '%')</if>",
+            "<if test=\"year != null\"> AND LEFT(issued_date, 4) = #{year}</if>",
             "<if test=\"offset >= 0 and size > 0\"> LIMIT ${offset}, #{size}</if>",
             "</script>"
     })
