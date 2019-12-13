@@ -16,11 +16,11 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class StampListRequestData {
 
-    @ApiModelProperty("todo")
+    @ApiModelProperty("邮票类型")
     @NotBlank(message = "邮票类型不能为空")
     private String type;
 
-    @ApiModelProperty("todo")
+    @ApiModelProperty("发布年份")
     private String year;
 
     @ApiModelProperty("记录偏移量")

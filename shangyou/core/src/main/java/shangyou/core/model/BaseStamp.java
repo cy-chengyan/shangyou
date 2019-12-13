@@ -16,6 +16,9 @@ public class BaseStamp {
     @ApiModelProperty("邮票id")
     private String stid;
 
+    @ApiModelProperty("邮票标题")
+    private String name;
+
     @ApiModelProperty("国家标示")
     private  int countryid;
 
