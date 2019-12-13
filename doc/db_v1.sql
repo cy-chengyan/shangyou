@@ -34,6 +34,7 @@ CREATE UNIQUE INDEX i_favorite_uid_stid ON t_favorite(`uid`, `stid`);
 DROP TABLE IF EXISTS t_stamp;
 CREATE TABLE t_stamp(
        `stid` char(8) PRIMARY KEY COMMENT '邮票id',
+       `name` varchar(128) COMMENT '邮票名称',
        `countryid` tinyint COMMENT '国家, 1-中国,',
        `number` varchar(32) NOT NULL COMMENT '邮票编号',
        `issued_date` char(32) COMMENT '邮票发布日期',
