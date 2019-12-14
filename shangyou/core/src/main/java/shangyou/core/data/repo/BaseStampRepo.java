@@ -19,7 +19,7 @@ public class BaseStampRepo {
         return  stamp;
     }
 
-    public List<BaseStamp> queryStamp(String type, String year, int offset, int size) {
+    public List<BaseStamp> queryStamp(int type, int year, int offset, int size) {
         return baseStampMapper.queryStamp(type, year, offset, size);
     }
 

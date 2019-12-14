@@ -12,7 +12,7 @@ import java.util.List;
 public interface BaseStampMapper {
     @Select({
             "<script>",
-            "SELECT stid, `name`, countryid, `number`, issued_date, joint_issue, size, chikong, format, fanwei, designer, editor," +
+            "SELECT stid, `type`, year, `name`, countryid, `number`, issued_date, joint_issue, size, chikong, format, fanwei, designer, editor," +
                     "carve, side_design, draw, shoot, printing_house, background FROM t_stamp WHERE stid = #{stid} limit 1",
             "</script>"
     })
@@ -26,10 +26,11 @@ public interface BaseStampMapper {
 
     @Select({
             "<script>",
-            "SELECT stid, `name`, countryid, `number`, issued_date, joint_issue, size, chikong, format, fanwei, designer, editor,",
+            "SELECT stid, `type`, year, `name`, countryid, `number`, issued_date, joint_issue, size, chikong, format, fanwei, designer, editor,",
             " carve, side_design, draw, shoot, printing_house, background FROM t_stamp WHERE 1 = 1",
-            "<if test=\"type != null\"> AND `number` LIKE CONCAT(#{type}, '%')</if>",
-            "<if test=\"year != null\"> AND LEFT(issued_date, 4) = #{year}</if>",
+            "<if test=\"type != 0\"> AND `type` = #{type}</if>",
+            "<if test=\"year != 0\"> AND year = #{year}</if>",
+            " ORDER BY issued_date DESC",
             "<if test=\"offset >= 0 and size > 0\"> LIMIT ${offset}, #{size}</if>",
             "</script>"
     })
@@ -39,6 +40,6 @@ public interface BaseStampMapper {
             @Result(property = "sideDesign", column = "side_design"),
             @Result(property = "printingHouse", column = "printing_house")
     })
-    List<BaseStamp> queryStamp(@Param("type")String type, @Param("year")String year, @Param("offset")int offset, @Param("size")int size);
+    List<BaseStamp> queryStamp(@Param("type")int type, @Param("year")int year, @Param("offset")int offset, @Param("size")int size);
 
 }

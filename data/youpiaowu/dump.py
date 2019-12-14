@@ -14,17 +14,68 @@ import re
 
 SRC_FILE = './product.json'
 
+'''
+中国邮票类型
+1编年邮票,
+2`纪`字头邮票,
+3`特`字头邮票,
+4`J`字头邮票,
+5`T`字头邮票,
+6普通邮票,
+7编号邮票,
+8文革邮票,
+9军用邮票,
+10个性化服务专用邮票,
+11贺年专用邮票,
+12贺卡专用邮票,
+13航空邮票,
+14欠资邮票,
+15加字改值邮票,
+16包裹邮票    
+'''
+dict_china_type = {
+    u'纪': 2,
+    u'特': 3,
+    u'J': 4,
+    u'T': 5,
+    u'普': 6,
+    u'编': 7,
+    u'文': 8,
+    u'军': 9,
+    u'个': 10,
+    u'贺': 11,
+    u'航': 13,
+    u'欠': 14,
+    u'改': 15,
+    u'包': 16          
+}
+
 db = None
 
 def is_filter(data):
     stage = int(data['stage']['id'])
-    if stage == 7 or stage == 8:
+    if stage != 4:
+    # if stage == 7 or stage == 8:
         return True
     return False
 
+def calc_type(number):
+    stamp_type = 0
+    prefix = number[0:1]
+    if prefix in dict_china_type:
+        stamp_type = dict_china_type[prefix]
+    if stamp_type == 0:
+        # 1编年邮票, 12贺卡专用邮票
+        sub_number = number[-3:-1]
+        if sub_number == '-H':
+            stamp_type = 12
+        else:
+            stamp_type = 1 # 剩下的全当编年邮票
+    return stamp_type
+
 def general_stid(org_id):
     s = str(org_id)
-    h = hashlib.md5(s).hexdigest() #32
+    h = hashlib.md5(s.encode('utf-8')).hexdigest() #32
     return 's' + h[25:]
 
 def general_sub_stid(stid, title, order):
@@ -34,47 +85,50 @@ def general_sub_stid(stid, title, order):
 
 def general_big_format(stid, order):
     s = stid + 'bf' + str(order)
-    h = hashlib.md5(s).hexdigest() #32
+    h = hashlib.md5(s.encode('utf-8')).hexdigest() #32
     return 'b' + h[25:]
 
 def general_small_format_id(stid, order):
     s = stid + 'sf' + str(order)
-    h = hashlib.md5(s).hexdigest()
+    h = hashlib.md5(s.encode('utf-8')).hexdigest()
     return 'm' + h[25:]
 
 def general_zengsong_id(stid, order):
     s = stid + 'g' + str(order)
-    h = hashlib.md5(s).hexdigest()
+    h = hashlib.md5(s.encode('utf-8')).hexdigest()
     return 'g' + h[25:]
 
 def general_xiaoben_id(stid, order):
     s = stid + 'x' + str(order)
-    h = hashlib.md5(s).hexdigest()
+    h = hashlib.md5(s.encode('utf-8')).hexdigest()
     return 'x' + h[25:]
 
 def general_small_sheet_id(stid, order):
     s = stid + 't' + str(order)
-    h = hashlib.md5(s).hexdigest()
+    h = hashlib.md5(s.encode('utf-8')).hexdigest()
     return 't' + h[25:]
 
 def general_mini_sheet_id(stid, order):
     s = stid + 'm' + str(order)
-    h = hashlib.md5(s).hexdigest()
+    h = hashlib.md5(s.encode('utf-8')).hexdigest()
     return 'm' + h[25:]
 
 def general_four_sheet_id(stid, order):
     s = stid + 'f' + str(order)
-    h = hashlib.md5(s).hexdigest()
+    h = hashlib.md5(s.encode('utf-8')).hexdigest()
     return 'f' + h[25:]
 
 def general_double_sheet_id(stid, order):
     s = stid + 'd' + str(order)
-    h = hashlib.md5(s).hexdigest()
+    h = hashlib.md5(s.encode('utf-8')).hexdigest()
     return 'd' + h[25:]
 
 def get_country_id(d):
     stage = d['stage']
-    return int(stage['id'])
+    country_id = int(stage['id'])
+    if country_id == 4:
+        country_id = 1
+    return country_id
 
 def get_stamp_name(d):
     name = d['name']
@@ -105,10 +159,12 @@ def parse_stamp_info(stid, data):
 
     number = get_attr_in_list(u'编号', stamp_info)
     if not number:
-        print '找不到 number 字段'
+        print('找不到 number 字段')
         return False
 
+    stamp_type = calc_type(number)
     issued_date = get_attr_in_list(u'发行日期', stamp_info)
+    year = int(issued_date[0:4])
     size = get_attr_in_list(u'尺寸', stamp_info)
     chikong = get_attr_in_list(u'齿孔', stamp_info)
     fmt = get_attr_in_list(u'版式', stamp_info)
@@ -139,11 +195,11 @@ def parse_stamp_info(stid, data):
         background = background_info[0][0]
     else:
         background = None
-    print stid, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background
-    sql = "insert into t_stamp(stid, `name`, countryid, `number`, issued_date, size, chikong, format, fanwei, designer, editor, printing_house, background)" \
-          " values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    print(stid, stamp_type, year, name, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background)
+    sql = "insert into t_stamp(stid, `type`, year, `name`, countryid, `number`, issued_date, size, chikong, format, fanwei, designer, editor, printing_house, background)" \
+          " values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     cursor_insert = db.cursor()
-    cursor_insert.execute(sql, (stid, name, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background))
+    cursor_insert.execute(sql, (stid, stamp_type, year, name, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background))
     cursor_insert.close()
     db.commit()
     
@@ -180,7 +236,7 @@ def parse_sub_stamp(stid, data):
             issued_number = None
 
         sstid = general_sub_stid(stid, title, order)
-        print sstid, stid, order, title, picture, face_value, issued_number
+        print(sstid, stid, order, title, picture, face_value, issued_number)
         sql = "insert into t_sub_stamp(sstid, stid, `order`, title, picture, face_value, issued_number)" \
               " values(%s, %s, %s, %s, %s, %s, %s)"
         cursor_insert = db.cursor()
@@ -222,7 +278,7 @@ def parse_big_format(stid, data):
         bgid = general_big_format(stid, order)
         bgsize = item['size']
         bgnumber = item['num']
-        print bgid, stid, bgsize, bgnumber
+        print(bgid, stid, bgsize, bgnumber)
 
         sql = "insert into t_big_format(bgid, stid, bgsize, bgnumber)" \
               "values(%s, %s, %s, %s)"
@@ -280,7 +336,7 @@ def parse_small_format(stid, data):
         slsize = item['size']
         slnumber = item['num']
         issued_number = item['issued_number']
-        print slfid, stid ,slsize, slnumber, issued_number
+        print(slfid, stid ,slsize, slnumber, issued_number)
         sql = "insert into t_small_format(slfid, stid, slsize, slnumber, issued_number)" \
               "values(%s, %s, %s, %s, %s)"
         cursor_insert = db.cursor()
@@ -322,7 +378,7 @@ def parse_zengsong(stid, data):
         zengid = general_zengsong_id(stid, order)
         zeng_size = item['size']
         zeng_number = item['num']
-        print zengid, stid, zeng_size, zeng_number
+        print(zengid, stid, zeng_size, zeng_number)
 
         sql = "insert into t_zengsong(zengid, stid, zeng_size, zeng_number)" \
               "values(%s, %s, %s, %s)"
@@ -423,7 +479,7 @@ def parse_xiaoben(stid, data):
         designer = item['designer']
         editor = item['editor']
         printing_house = item['printing_house']
-        print xiaobenid, stid, number, face_value
+        print(xiaobenid, stid, number, face_value)
         
         sql = "insert into t_xiaoben(xiaobenid, stid, `number`, size, issued_number, face_value, designer, editor, printing_house)" \
               "values(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
@@ -517,7 +573,7 @@ def parse_small_sheet(stid, data):
         draw = item['draw']
         designer = item['designer']
 
-        print slsid, stid, face_value, size, image, chikong, draw
+        print(slsid, stid, face_value, size, image, chikong, draw)
         sql = "insert into t_small_sheet(slsid, stid, face_value, size, image, chikong, designer, draw)" \
               "values(%s, %s, %s, %s, %s, %s, %s, %s)"
         cursor_insert = db.cursor()
@@ -600,7 +656,7 @@ def parse_four_sheet(stid, data):
         fsid = general_four_sheet_id(stid, order)
         face_value = item['value']
         size = item['size']
-#        print fsid, stid, face_value, size
+#        print(fsid, stid, face_value, size)
         
         sql = "insert into t_four_sheet(fsid, stid, face_value, size)" \
              "values(%s, %s, %s, %s)"
@@ -635,7 +691,7 @@ def parse_double_sheet(stid, data):
     for item in items:
         dsid = general_double_sheet_id(stid, order)
         size = item['size']
-        print dsid, stid, size
+        print(dsid, stid, size)
         sql = "insert into t_double_sheet(dsid, stid, size)" \
               "values(%s, %s, %s)"
         cursor_insert = db.cursor()
@@ -645,13 +701,13 @@ def parse_double_sheet(stid, data):
     return True
 
 def parse_line(line):
-    #print line
+    #print(line)
     j = json.loads(line)
     data = j['data']
     stid = general_stid(data['id'])
 
     if is_filter(data):
-	return
+	    return
 
     if not parse_stamp_info(stid, data):
         return

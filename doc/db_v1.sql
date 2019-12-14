@@ -34,6 +34,8 @@ CREATE UNIQUE INDEX i_favorite_uid_stid ON t_favorite(`uid`, `stid`);
 DROP TABLE IF EXISTS t_stamp;
 CREATE TABLE t_stamp(
        `stid` char(8) PRIMARY KEY COMMENT '邮票id',
+       `type` tinyint COMMENT '类型',
+       `year` smallint COMMENT '发布年份',
        `name` varchar(128) COMMENT '邮票名称',
        `countryid` tinyint COMMENT '国家, 1-中国,',
        `number` varchar(32) NOT NULL COMMENT '邮票编号',
@@ -53,6 +55,8 @@ CREATE TABLE t_stamp(
        `background` text COMMENT '背景资料'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='邮票详情表';
 CREATE INDEX i_stamp_countryid ON t_stamp(`countryid`);
+CREATE INDEX i_stamp_year ON t_stamp(`year`);
+CREATE INDEX i_stamp_type ON t_stamp(`type`);
 
 --子邮票
 DROP TABLE IF EXISTS t_sub_stamp;
