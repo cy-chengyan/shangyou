@@ -1,14 +1,10 @@
 package shangyou.api.model.req;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
@@ -16,12 +12,13 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class StampListRequestData {
 
-    @ApiModelProperty("邮票类型")
-    @NotBlank(message = "邮票类型不能为空")
-    private String type;
+    @ApiModelProperty("中国邮票类型, 0所有,1编年邮票,2`纪`字头邮票,3`特`字头邮票,4`J`字头邮票,5`T`字头邮票,6普通邮票,7编号邮票,8文革邮票,9军用邮票,10个性化服务专用邮票,11贺年专用邮票,12贺卡专用邮票,13航空邮票,14欠资邮票,15加字改值邮票,16包裹邮票")
+    @Min(0)
+    @Max(16)
+    private int type;
 
     @ApiModelProperty("发布年份")
-    private String year;
+    private int year;
 
     @ApiModelProperty("记录偏移量")
     @Min(value = 0, message = "记录偏移量不能小于0")

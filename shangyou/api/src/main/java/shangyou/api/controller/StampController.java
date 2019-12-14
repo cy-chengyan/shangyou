@@ -71,8 +71,8 @@ public class StampController {
     @RequestMapping(value = "/list", method = {RequestMethod.POST})
     public SApiResponse<List<BaseStamp>> queryStampList(@RequestBody @Valid SApiRequest<StampListRequestData> request) {
         StampListRequestData requestData = request.getData();
-        String type = requestData.getType();
-        String year = requestData.getYear();
+        int type = requestData.getType();
+        int year = requestData.getYear();
         int offset = requestData.getOffset();
         int size = requestData.getSize();
         List<BaseStamp> baseStamps = baseStampController.queryBaseStampList(type, year, offset, size);

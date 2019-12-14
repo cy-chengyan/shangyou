@@ -24,7 +24,7 @@ public class BaseStampController extends BaseController {
         return ret;
     }
 
-    public List<BaseStamp> queryBaseStampList(String type, String year, int offset, int size) {
+    public List<BaseStamp> queryBaseStampList(int type, int year, int offset, int size) {
         return baseStampRepo.queryStamp(type, year, offset, size);
     }
 
