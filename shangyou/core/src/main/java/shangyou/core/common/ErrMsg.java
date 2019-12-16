@@ -10,6 +10,8 @@ public class ErrMsg {
     public static final int RC_FUNC_CALL_FAILED        = -5;
     public static final int RC_SERVER_INTERNAL         = -6;
     public static final int RC_CHECK_CODE_ERR          = -7;
+    public static final int RC_NOT_FOUND_USER          = -8;
+    public static final int RC_USER_ALREADY_EXISTS     = -9;
 
     public static final String toString(int code) {
         final String[] errMsgs = {
@@ -20,7 +22,9 @@ public class ErrMsg {
                 "不支持该功能",
                 "功能请求失败",
                 "服务器内部错误",
-                "验证码错误"
+                "验证码错误",
+                "该用户不存在",
+                "用户已存在"
         };
 
         String errMsg;

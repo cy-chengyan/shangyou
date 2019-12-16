@@ -1,9 +1,11 @@
 package shangyou.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import org.springframework.stereotype.Controller;
 
 
 @Builder
@@ -13,6 +15,7 @@ import lombok.*;
 @NoArgsConstructor
 @ApiModel("用户")
 public class User {
+
     @ApiModelProperty("用户id")
     private String uid;
 
@@ -28,5 +31,11 @@ public class User {
 
     @ApiModelProperty("创建时间")
     @JsonProperty("created_at")
-    private int createdAt;
+    private long createdAt;
+
+    @ApiModelProperty("更新时间")
+    @JsonProperty("updated_at")
+    @JsonIgnore
+    private long updatedAt;
+
 }

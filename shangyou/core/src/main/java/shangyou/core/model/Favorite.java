@@ -1,6 +1,7 @@
 package shangyou.core.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -26,4 +27,8 @@ public class Favorite {
     @ApiModelProperty("创建时间")
     @JsonProperty("created_at")
     private int createdAt;
+
+    @ApiModelProperty("更新时间")
+    @JsonProperty("updated_at")
+    private String updatedAt;
 }
