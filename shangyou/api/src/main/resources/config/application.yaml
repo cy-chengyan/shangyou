@@ -9,5 +9,18 @@ spring:
     hikari:
       connection-init-sql: 'SET NAMES utf8mb4'
 
+  redis:
+    host: '192.168.7.7'
+    port: 6379
+    password:
+    database: 0
+    timeout: 3s
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 2
+
 swagger:
   host: 127.0.0.1:8080

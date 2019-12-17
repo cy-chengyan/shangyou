@@ -47,7 +47,7 @@ public class SyUserController {
 
     @ApiOperation(value = "用户注册", notes = "根据验证码验证用户注册结果", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @RequestMapping(value = "/registered", method = {RequestMethod.POST})
+    @RequestMapping(value = "/reg", method = {RequestMethod.POST})
     public SApiResponse<User> UserRegistered(@RequestBody @Valid SApiRequest<UserRegisteredRequestData> request) {
         UserRegisteredRequestData registeredRequestData = request.getData();
         String phone = registeredRequestData.getPhone();
