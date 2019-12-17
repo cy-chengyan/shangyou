@@ -46,14 +46,12 @@ public class SyUserController {
             return new SApiResponse<>(userController.getLastErrCode(), userController.getLastErrMsg());
         }
         return new SApiResponse<>(ErrMsg.RC_OK, user);
-
     }
-
 
     @ApiOperation(value = "用户注册", notes = "根据验证码验证用户注册结果", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @RequestMapping(value = "/reg", method = {RequestMethod.POST})
-    public SApiResponse<User> UserRegistered(@RequestBody @Valid SApiRequest<UserRegisteredRequestData> request) {
+    public SApiResponse<User> userRegistered(@RequestBody @Valid SApiRequest<UserRegisteredRequestData> request) {
         UserRegisteredRequestData registeredRequestData = request.getData();
         String phone = registeredRequestData.getPhone();
         String checkCode = registeredRequestData.getCheckCode();
@@ -67,37 +65,33 @@ public class SyUserController {
             return new SApiResponse<>(ErrMsg.RC_USER_ALREADY_EXISTS);
         }
         return new SApiResponse<>(ErrMsg.RC_CHECK_CODE_ERR);
-
     }
 
     @ApiOperation(value = "发送验证码", notes = "根据手机号给用户发送验证码", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @RequestMapping(value = "/cc/send", method = {RequestMethod.POST})
-    public SApiResponse<User> SendCheckCode(@RequestBody @Valid SApiRequest<SendCheckCodeData> request) {
+    public SApiResponse<User> sendCheckCode(@RequestBody @Valid SApiRequest<SendCheckCodeData> request) {
         SendCheckCodeData sendCheckCodeData = request.getData();
         String mobilePhone = sendCheckCodeData.getMobilePhone();
-        checkCodeController.sendCheckCode(mobilePhone);
-        return new SApiResponse<>(checkCodeController.getLastErrCode(), checkCodeController.getLastErrMsg());
-
+        if (!checkCodeController.sendCheckCode(mobilePhone)) {
+            return new SApiResponse<>(checkCodeController.getLastErrCode(), checkCodeController.getLastErrMsg());
+        }
+        return new SApiResponse<>(ErrMsg.RC_OK);
     }
-
 
     @ApiOperation(value = "校对验证码", notes = "根据用户输入的验证码进行比对验证", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @RequestMapping(value = "/cc/verific", method = {RequestMethod.POST})
-    public SApiResponse<User> VerificCheckCode(@RequestBody @Valid SApiRequest<VerificationCheckCodeData> request) {
+    @RequestMapping(value = "/cc/verify", method = {RequestMethod.POST})
+    public SApiResponse<User> verifyCheckCode(@RequestBody @Valid SApiRequest<VerificationCheckCodeData> request) {
         VerificationCheckCodeData verificationCheckCodeData = request.getData();
         verificationCheckCodeData.getMobilePhone();
         verificationCheckCodeData.getCheckCode();
         String mobilePhone = verificationCheckCodeData.getMobilePhone();
         String checkCode = verificationCheckCodeData.getCheckCode();
-        checkCodeController.isMatched(mobilePhone, checkCode);
-        return new SApiResponse<>(checkCodeController.getLastErrCode(), checkCodeController.getLastErrMsg());
-
+        if (!checkCodeController.isMatched(mobilePhone, checkCode)) {
+            return new SApiResponse<>(ErrMsg.RC_CHECK_CODE_ERR);
+        }
+        return new SApiResponse<>(ErrMsg.RC_OK);
     }
-
-
-
-
 
 }

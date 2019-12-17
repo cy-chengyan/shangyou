@@ -54,7 +54,6 @@ public class StampController {
         return new SApiResponse<>(ErrMsg.RC_OK, baseStamp);
     }
 
-
     @ApiOperation(value = "邮票详情", notes = "邮票详情", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @RequestMapping(value = "/detail/{stid}", method = {RequestMethod.GET})
