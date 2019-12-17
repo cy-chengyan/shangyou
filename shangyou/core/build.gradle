@@ -16,6 +16,7 @@ dependencies {
             libraries.mybatis,
             libraries.jackson_bind,
             libraries.jackson_datatype,
+            libraries.commons_pool2,
             libraries.aliyun_core,
             libraries.swagger,
     )

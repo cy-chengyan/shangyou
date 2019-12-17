@@ -72,7 +72,7 @@ public class SyUserController {
 
     @ApiOperation(value = "发送验证码", notes = "根据手机号给用户发送验证码", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @RequestMapping(value = "/send", method = {RequestMethod.POST})
+    @RequestMapping(value = "/cc/send", method = {RequestMethod.POST})
     public SApiResponse<User> SendCheckCode(@RequestBody @Valid SApiRequest<SendCheckCodeData> request) {
         SendCheckCodeData sendCheckCodeData = request.getData();
         String mobilePhone = sendCheckCodeData.getMobilePhone();
@@ -84,7 +84,7 @@ public class SyUserController {
 
     @ApiOperation(value = "校对验证码", notes = "根据用户输入的验证码进行比对验证", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @RequestMapping(value = "/verific", method = {RequestMethod.POST})
+    @RequestMapping(value = "/cc/verific", method = {RequestMethod.POST})
     public SApiResponse<User> VerificCheckCode(@RequestBody @Valid SApiRequest<VerificationCheckCodeData> request) {
         VerificationCheckCodeData verificationCheckCodeData = request.getData();
         verificationCheckCodeData.getMobilePhone();
