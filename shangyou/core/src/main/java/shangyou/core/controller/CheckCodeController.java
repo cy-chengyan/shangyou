@@ -41,6 +41,7 @@ public class CheckCodeController extends BaseController {
             log.info(response.getData());
         } catch (Exception e) {
             log.error("sendCheckCodeSms({}, {}) failed", mobileNumber, checkCode, e);
+            return false;
         }
         return true;
     }
