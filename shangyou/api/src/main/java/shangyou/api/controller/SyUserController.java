@@ -10,9 +10,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import shangyou.api.model.SApiRequest;
 import shangyou.api.model.SApiResponse;
+import shangyou.api.model.req.SendCheckCodeData;
 import shangyou.api.model.req.UserLoginRequestData;
 import shangyou.api.model.req.UserRegisteredRequestData;
+import shangyou.api.model.req.VerificationCheckCodeData;
 import shangyou.core.common.ErrMsg;
+import shangyou.core.controller.CheckCodeController;
 import shangyou.core.controller.UserController;
 import shangyou.core.model.User;
 
@@ -27,6 +30,8 @@ public class SyUserController {
 
     @Autowired
     private UserController userController;
+    @Autowired
+    private CheckCodeController checkCodeController;
 
 
     @ApiOperation(value = "用户登录", notes = "根据验证码验证用户登录结果", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -62,6 +67,32 @@ public class SyUserController {
             return new SApiResponse<>(ErrMsg.RC_USER_ALREADY_EXISTS);
         }
         return new SApiResponse<>(ErrMsg.RC_CHECK_CODE_ERR);
+
+    }
+
+    @ApiOperation(value = "发送验证码", notes = "根据手机号给用户发送验证码", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @RequestMapping(value = "/send", method = {RequestMethod.POST})
+    public SApiResponse<User> SendCheckCode(@RequestBody @Valid SApiRequest<SendCheckCodeData> request) {
+        SendCheckCodeData sendCheckCodeData = request.getData();
+        String mobilePhone = sendCheckCodeData.getMobilePhone();
+        checkCodeController.sendCheckCode(mobilePhone);
+        return new SApiResponse<>(checkCodeController.getLastErrCode(), checkCodeController.getLastErrMsg());
+
+    }
+
+
+    @ApiOperation(value = "校对验证码", notes = "根据用户输入的验证码进行比对验证", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @RequestMapping(value = "/verific", method = {RequestMethod.POST})
+    public SApiResponse<User> VerificCheckCode(@RequestBody @Valid SApiRequest<VerificationCheckCodeData> request) {
+        VerificationCheckCodeData verificationCheckCodeData = request.getData();
+        verificationCheckCodeData.getMobilePhone();
+        verificationCheckCodeData.getCheckCode();
+        String mobilePhone = verificationCheckCodeData.getMobilePhone();
+        String checkCode = verificationCheckCodeData.getCheckCode();
+        checkCodeController.isMatched(mobilePhone, checkCode);
+        return new SApiResponse<>(checkCodeController.getLastErrCode(), checkCodeController.getLastErrMsg());
 
     }
 
