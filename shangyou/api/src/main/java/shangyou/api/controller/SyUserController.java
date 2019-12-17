@@ -84,12 +84,10 @@ public class SyUserController {
     @RequestMapping(value = "/cc/verify", method = {RequestMethod.POST})
     public SApiResponse<User> verifyCheckCode(@RequestBody @Valid SApiRequest<VerificationCheckCodeData> request) {
         VerificationCheckCodeData verificationCheckCodeData = request.getData();
-        verificationCheckCodeData.getMobilePhone();
-        verificationCheckCodeData.getCheckCode();
         String mobilePhone = verificationCheckCodeData.getMobilePhone();
         String checkCode = verificationCheckCodeData.getCheckCode();
         if (!checkCodeController.isMatched(mobilePhone, checkCode)) {
-            return new SApiResponse<>(ErrMsg.RC_CHECK_CODE_ERR);
+            return new SApiResponse<>(checkCodeController.getLastErrCode(), checkCodeController.getLastErrMsg());
         }
         return new SApiResponse<>(ErrMsg.RC_OK);
     }

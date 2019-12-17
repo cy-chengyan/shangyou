@@ -47,6 +47,8 @@ public class CheckCodeController extends BaseController {
     }
 
     public boolean sendCheckCode(String mobileNumber) {
+        // TODO: 60秒内不允许再获取验证码
+
         Random random = new Random();
         String checkCode = random.nextInt() + "0000";
         checkCode = checkCode.substring(0, 4);
@@ -61,10 +63,11 @@ public class CheckCodeController extends BaseController {
 
     public boolean isMatched(String mobileNumber, String checkCode) {
         String rightCheckCode = checkCodeRepo.get(mobileNumber);
-        if (StringUtils.isEmpty(rightCheckCode)) {
+        if (StringUtils.isEmpty(rightCheckCode) || !rightCheckCode.equals(checkCode)) {
+            setLastErrWithPredefined(ErrMsg.RC_CHECK_CODE_ERR);
             return false;
         }
-        return rightCheckCode.equals(checkCode);
+        return true;
     }
 
 }
