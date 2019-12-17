@@ -8,12 +8,14 @@ import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import shangyou.core.common.ErrMsg;
 import shangyou.core.data.redis.CheckCodeRepo;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -21,6 +23,8 @@ public class CheckCodeController extends BaseController {
 
     @Autowired
     private CheckCodeRepo checkCodeRepo;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     private boolean sendCheckCodeSms(String mobileNumber, String checkCode) {
         DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "eehtl6b4ptxf9z4jcqxmrfz3", "m2a7yFO2qJCH+gjJffGsv4G8PVI=");
@@ -47,12 +51,18 @@ public class CheckCodeController extends BaseController {
     }
 
     public boolean sendCheckCode(String mobileNumber) {
-        // TODO: 60秒内不允许再获取验证码
-
+        //60秒内不允许再获取验证码
+        long count = stringRedisTemplate.opsForValue().increment(mobileNumber, 1);
+        if (count == 1) {
+            stringRedisTemplate.expire(mobileNumber, 60, TimeUnit.SECONDS);
+        }
+        if (count > 1) {
+            setLastErrWithPredefined(ErrMsg.RC_OPERATING_FREQUENCY);
+            return false;
+        }
         Random random = new Random();
         String checkCode = random.nextInt() + "0000";
         checkCode = checkCode.substring(0, 4);
-
         if (!sendCheckCodeSms(mobileNumber, checkCode)) {
             setLastErrWithPredefined(ErrMsg.RC_SERVER_INTERNAL);
             return false;
