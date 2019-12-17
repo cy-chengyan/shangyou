@@ -1,0 +1,16 @@
+{
+  "name": "shangyou",
+  "version": "1.0.0",
+  "description": "shangyou",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vant/weapp": "^1.0.0",
+    "uri-js": "^4.2.2"
+  },
+  "devDependencies": {}  
+}
