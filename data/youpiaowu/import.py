@@ -134,6 +134,12 @@ def get_stamp_name(d):
     name = d['name']
     return name
 
+def get_stamp_picture(d):
+    pictures = d['pictures']
+    picture = None
+    if pictures and len(pictures) > 0:
+        picture = pictures.join(',')
+    return picture
 
 def get_list_in_items(list_name, d):
     for item in d:
@@ -151,8 +157,6 @@ def get_attr_in_list(attr_name, d):
 #邮票信息
 def parse_stamp_info(stid, data):
     items = data['items']
-    name = get_stamp_name(data)
-    countryid = get_country_id(data)
     stamp_info = get_list_in_items(u'基本属性', items)
     if not stamp_info:
         return False
@@ -162,6 +166,9 @@ def parse_stamp_info(stid, data):
         print('找不到 number 字段')
         return False
 
+    name = get_stamp_name(data)
+    picture = get_stamp_picture(data)
+    countryid = get_country_id(data)
     stamp_type = calc_type(number)
     issued_date = get_attr_in_list(u'发行日期', stamp_info)
     year = int(issued_date[0:4])
@@ -189,17 +196,16 @@ def parse_stamp_info(stid, data):
     if not shoot:
         shoot = None
 
-
     background_info = get_list_in_items(u'背景资料', items)
     if background_info:
         background = background_info[0][0]
     else:
         background = None
-    print(stid, stamp_type, year, name, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background)
-    sql = "insert into t_stamp(stid, `type`, year, `name`, countryid, `number`, issued_date, size, chikong, format, fanwei, designer, editor, printing_house, background)" \
-          " values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    print(stid, stamp_type, year, name, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background, picture)
+    sql = "insert into t_stamp(stid, `type`, year, `name`, countryid, `number`, issued_date, size, chikong, format, fanwei, designer, editor, printing_house, background, picture)" \
+          " values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     cursor_insert = db.cursor()
-    cursor_insert.execute(sql, (stid, stamp_type, year, name, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background))
+    cursor_insert.execute(sql, (stid, stamp_type, year, name, countryid, number, issued_date, size, chikong, fmt, fanwei, designer, editor, printing_house, background, picture))
     cursor_insert.close()
     db.commit()
     
@@ -501,11 +507,10 @@ def parse_small_sheet(stid, data):
         return
     org_face_value = get_attr_in_list(u'面值', small_sheet)
     org_size = get_attr_in_list(u'外形尺寸', small_sheet)
-    org_image = get_attr_in_list(u'邮票主图', small_sheet)
+    org_main_picture = get_attr_in_list(u'邮票主图', small_sheet)
     org_chikong = get_attr_in_list(u'齿孔', small_sheet)
     org_draw = get_attr_in_list(u'绘画', small_sheet)
     org_designer = get_attr_in_list(u'邮票设计', small_sheet)
-
     
     if not org_face_value:
         org_face_value_items = []
@@ -515,10 +520,10 @@ def parse_small_sheet(stid, data):
         org_size_items = []
     else:
         org_size_items = org_size.split('\x01')
-    if not org_image:
-        org_image_items = []
+    if not org_main_picture or org_main_picture == u'0' :
+        org_main_picture_items = []
     else:
-        org_image_items = org_image.split('\x01')
+        org_main_picture_items = org_main_picture.split('\x01')
     if not org_chikong:
         org_chikong_items = []
     else:
@@ -542,10 +547,10 @@ def parse_small_sheet(stid, data):
         else:
             org_size_item = None
 
-        if i < len(org_image_items):
-            org_image_item = org_image_items[i].strip()
+        if i < len(org_main_picture_items):
+            org_main_picture_item = org_main_picture_items[i].strip()
         else:
-            org_image_item = None
+            org_main_picture_item = None
 
         if i < len(org_chikong_items):
             org_chikong_item = org_chikong_items[i].strip()
@@ -560,7 +565,7 @@ def parse_small_sheet(stid, data):
             org_designer_item = org_designer_items[i].strip()
         else:
             org_designer_item = None
-        items.append({"value": org_face_value_item.strip(), "size": org_size_item, "image": org_image_item, "chikong": org_chikong_item, "draw": org_draw_item, "designer":org_designer_item})
+        items.append({"value": org_face_value_item.strip(), "size": org_size_item, "main_picture": org_main_picture_item, "chikong": org_chikong_item, "draw": org_draw_item, "designer":org_designer_item})
         i = i + 1
 
     order = 0
@@ -568,16 +573,16 @@ def parse_small_sheet(stid, data):
         slsid = general_small_sheet_id(stid, order)
         face_value = item['value']
         size = item['size']
-        image = item['image']
+        main_picture = item['main_picture']
         chikong = item['chikong']
         draw = item['draw']
         designer = item['designer']
 
-        print(slsid, stid, face_value, size, image, chikong, draw)
-        sql = "insert into t_small_sheet(slsid, stid, face_value, size, image, chikong, designer, draw)" \
+        print(slsid, stid, face_value, size, main_picture, chikong, draw)
+        sql = "insert into t_small_sheet(slsid, stid, face_value, size, main_picture, chikong, designer, draw)" \
               "values(%s, %s, %s, %s, %s, %s, %s, %s)"
         cursor_insert = db.cursor()
-        cursor_insert.execute(sql, (slsid, stid, face_value, size, image, chikong, designer, draw))
+        cursor_insert.execute(sql, (slsid, stid, face_value, size, main_picture, chikong, designer, draw))
         cursor_insert.close()
         db.commit()
 

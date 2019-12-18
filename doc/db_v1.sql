@@ -52,7 +52,8 @@ CREATE TABLE t_stamp(
        `draw` varchar(64) COMMENT '绘画',
        `shoot` varchar(64) COMMENT '摄影',
        `printing_house` varchar(128) COMMENT '印刷厂',
-       `background` text COMMENT '背景资料'
+       `background` text COMMENT '背景资料',
+       `picture` TEXT COMMENT '邮票图片'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='邮票详情表';
 CREATE INDEX i_stamp_countryid ON t_stamp(`countryid`);
 CREATE INDEX i_stamp_year ON t_stamp(`year`);
@@ -77,7 +78,8 @@ CREATE TABLE t_big_format(
        `bgid` char(8) PRIMARY KEY COMMENT '大版id',
        `stid` char(8) COMMENT '邮票id',
        `bgsize` varchar(64) COMMENT '大版尺寸',
-       `bgnumber` varchar(128) COMMENT '大版枚数'
+       `bgnumber` varchar(128) COMMENT '大版枚数',
+       `picture` varchar(256) COMMENT '邮票图片'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='大版表';
 CREATE INDEX i_big_format_stid ON t_big_format(`stid`);
 
@@ -88,7 +90,8 @@ CREATE TABLE t_small_format(
        `stid` char(8) COMMENT '邮票id',
        `slsize` varchar(64) COMMENT '小版尺寸',
        `slnumber` varchar(64) COMMENT '小版枚数',
-       `issued_number` varchar(64) COMMENT '发行量'
+       `issued_number` varchar(64) COMMENT '发行量',
+       `picture` varchar(256) COMMENT '邮票图片'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='小版表';
 CREATE INDEX i_small_format_stid ON t_small_format(`stid`);
 
@@ -98,7 +101,8 @@ CREATE TABLE t_zengsong(
        `zengid` char(8) PRIMARY KEY COMMENT '赠送版id',
        `stid` char(8) COMMENT '邮票id',
        `zeng_size` varchar(64) COMMENT '赠送版尺寸',
-       `zeng_number` varchar(64) COMMENT '赠送版枚数'
+       `zeng_number` varchar(64) COMMENT '赠送版枚数',
+       `picture` varchar(256) COMMENT '邮票图片'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='赠送版表';
 CREATE INDEX i_zengsong_stid ON t_zengsong(`stid`);
 
@@ -113,7 +117,8 @@ CREATE TABLE t_xiaoben(
        `face_value` varchar(8) COMMENT '小本票面值',
        `designer` varchar(64) COMMENT '邮票设计',
        `editor` varchar(64) COMMENT '责任编辑',
-       `printing_house` varchar(32) COMMENT '印刷厂'
+       `printing_house` varchar(32) COMMENT '印刷厂',
+       `picture` varchar(256) COMMENT '邮票图片'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='小本票表';
 CREATE INDEX i_xiaoben_stid ON t_xiaoben(`stid`);
 
@@ -124,10 +129,11 @@ CREATE TABLE t_small_sheet(
        `stid` char(8) COMMENT '邮票id',
        `face_value` varchar(64) COMMENT '小型张面值',
        `size` varchar(64) COMMENT '小型张尺寸',
-       `image` varchar(256) COMMENT '小型张邮票主图',
+       `main_picture` varchar(256) COMMENT '小型张邮票主图',
        `chikong` varchar(128) COMMENT '小型张齿孔',
        `designer`  varchar(64) COMMENT '邮票设计',
-       `draw` varchar(32) COMMENT '小型张绘画'
+       `draw` varchar(32) COMMENT '小型张绘画',
+       `picture` varchar(256) COMMENT '邮票图片'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='小型张表';
 CREATE INDEX i_small_sheet_stid ON t_small_sheet(`stid`);
 
@@ -137,7 +143,8 @@ CREATE TABLE t_mini_sheet(
        `minid` char(8) PRIMARY KEY COMMENT '小全张id',
        `stid` char(8) COMMENT '邮票id',
        `face_value` varchar(8) COMMENT '面值',
-       `size` varchar(64) COMMENT '尺寸'
+       `size` varchar(64) COMMENT '尺寸',
+       `picture` varchar(256) COMMENT '邮票图片'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='小全张表';
 CREATE INDEX i_mini_sheet_stid ON t_mini_sheet(`stid`);
 
@@ -147,7 +154,8 @@ CREATE TABLE t_four_sheet(
        `fsid` char(8) PRIMARY KEY COMMENT '四连体小型张id',
        `stid` char(8) COMMENT '邮票id',
        `face_value` varchar(8) COMMENT '面值',
-       `size` varchar(64) COMMENT '尺寸'
+       `size` varchar(64) COMMENT '尺寸',
+       `picture` varchar(256) COMMENT '邮票图片'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='四连体小型张';
 CREATE INDEX i_four_sheet_stid ON t_four_sheet(`stid`);
 
@@ -156,6 +164,7 @@ DROP TABLE IF EXISTS t_double_sheet;
 CREATE TABLE t_double_sheet(
        `dsid` char(8) PRIMARY KEY COMMENT '双联小型张id',
        `stid` char(8) COMMENT '邮票id',
-       `size` varchar(64) COMMENT '尺寸'
+       `size` varchar(64) COMMENT '尺寸',
+       `picture` varchar(256) COMMENT '邮票图片'
 ) ENGINE='InnoDB' DEFAULT CHARACTER SET utf8mb4 COMMENT='双联小型张表';
 CREATE INDEX i_double_sheet_stid ON t_double_sheet(`stid`);
