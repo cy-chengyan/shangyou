@@ -34,6 +34,18 @@ public interface UserMapper {
     })
     User queryUserByPhone(@Param("mobileNumber")String mobileNumber);
 
+    @Select({
+            "<script>",
+            "SELECT uid, mobile_number, nickname, gender FROM t_user WHERE nickname = #{nickname}",
+            "</script>"
+    })
+    @Results({
+            @Result(property = "mobileNumber", column = "mobile_number"),
+            @Result(property = "createdAt", column = "created_at"),
+            @Result(property = "updateAt", column = "update_at")
+    })
+    User queryUserByNickname(@Param("nickname")String nickname);
+
 
     @Insert({
             "<script>",

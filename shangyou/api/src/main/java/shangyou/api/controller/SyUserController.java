@@ -68,7 +68,8 @@ public class SyUserController {
         String mobileNumber = registeredRequestData.getMobileNumber();
         String checkCode = registeredRequestData.getCheckCode();
         String nickname = registeredRequestData.getNickname();
-        User user = userController.userRegister(mobileNumber, nickname, checkCode);
+        int gender = registeredRequestData.getGender();
+        User user = userController.userRegister(mobileNumber, nickname, checkCode, gender);
         if (user == null) {
             return new SApiResponse<>(userController.getLastErrCode(), userController.getLastErrMsg());
         }

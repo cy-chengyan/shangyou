@@ -43,7 +43,12 @@ public class UserController extends BaseController {
         return user;
     }
 
-    public User userRegister(String mobileNumber, String nickname, String checkCode) {
+    public User queryUserByNickname(String nickname) {
+        User user = userRepo.queryUserByNickname(nickname);
+        return user;
+    }
+
+    public User userRegister(String mobileNumber, String nickname, String checkCode, int gender) {
         if (!checkCodeController.isMatched(mobileNumber, checkCode)) {
             setLastErrWithPredefined(ErrMsg.RC_CHECK_CODE_ERR);
             return null;
@@ -54,17 +59,17 @@ public class UserController extends BaseController {
             setLastErrWithPredefined(ErrMsg.RC_USER_ALREADY_EXISTS);
             return null;
         }
-        /*
-        TODO:
-        user = userController.queryUserByNickname(nickname);
+
+        user = this.queryUserByNickname(nickname);
         if (!ObjectUtils.isEmpty(user)) {
-            return new SApiResponse<>(ErrMsg.RC_USER_ALREADY_EXISTS);
+            setLastErrWithPredefined(ErrMsg.RC_NICKNAME_USED);
+            return null;
         }
-       */
+
 
         user = User.builder()
                 .uid(UUID.randomUUID().toString().substring(0, 8))
-                .gender(0)
+                .gender(gender)
                 .createdAt(ZonedDateTime.now().toEpochSecond())
                 .mobileNumber(mobileNumber)
                 .nickname(nickname)

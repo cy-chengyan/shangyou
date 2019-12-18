@@ -34,7 +34,8 @@ public class UserRegisteredRequestData {
     private String nickname;
 
     @ApiModelProperty("性别")
-    @Min(1)
+    @NotBlank
+    @Min(value = 1, message = "性别值最小是1")
     @Max(3)
     private int gender = 3;
 

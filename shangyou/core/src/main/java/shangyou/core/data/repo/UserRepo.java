@@ -5,8 +5,6 @@ import org.springframework.stereotype.Controller;
 import shangyou.core.data.mapper.UserMapper;
 import shangyou.core.model.User;
 
-import java.time.ZonedDateTime;
-import java.util.UUID;
 
 @Controller
 public class UserRepo {
@@ -21,6 +19,11 @@ public class UserRepo {
 
     public User queryUserByPhone(String mobileNumber){
         User user = userMapper.queryUserByPhone(mobileNumber);
+        return user;
+    }
+
+    public User queryUserByNickname(String nickname) {
+        User user = userMapper.queryUserByNickname(nickname);
         return user;
     }
 
