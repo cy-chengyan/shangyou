@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import java.util.List;
+
 
 @Builder
 @Setter
@@ -76,5 +78,8 @@ public class BaseStamp {
 
     @ApiModelProperty("背景资料")
     private String background;
+
+    @ApiModelProperty("邮票图片")
+    private List<String> pictures;
 
 }
