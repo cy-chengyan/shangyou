@@ -28,15 +28,19 @@ public class CheckCodeRepo {
         return redisTemplate.opsForValue().get(key);
     }
 
-    public boolean stopSendCheckCode(String mobileNumber) {
+    public boolean getCheckCodeSentStatus(String mobileNumber) {
         String key = SC_KEY_PREFIX + mobileNumber;
-        String t = redisTemplate.opsForValue().get(key);
-        if (t != null) {
-            return false;
-        }
+        return redisTemplate.opsForValue().get(key) != null;
+    }
 
-        redisTemplate.opsForValue().set(key, "");
-        redisTemplate.expire(key, 60, TimeUnit.SECONDS);
+    public boolean setCheckCodeSentStatus(String mobileNumber, boolean status) {
+        String key = SC_KEY_PREFIX + mobileNumber;
+        if (status) {
+            redisTemplate.opsForValue().set(key, "");
+            redisTemplate.expire(key, 60, TimeUnit.SECONDS);
+        } else {
+            redisTemplate.delete(key);
+        }
         return true;
     }
 

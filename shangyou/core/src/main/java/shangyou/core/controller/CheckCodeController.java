@@ -49,7 +49,8 @@ public class CheckCodeController extends BaseController {
     }
 
     public boolean sendCheckCode(String mobileNumber) {
-        if (!checkCodeRepo.stopSendCheckCode(mobileNumber)) {
+        boolean isSent = checkCodeRepo.getCheckCodeSentStatus(mobileNumber);
+        if (isSent) {
             setLastErrWithPredefined(ErrMsg.RC_OPERATING_FREQUENCY);
             return false;
         }
@@ -62,7 +63,17 @@ public class CheckCodeController extends BaseController {
             return false;
         }
 
-        return checkCodeRepo.set(mobileNumber, checkCode);
+        if (!checkCodeRepo.set(mobileNumber, checkCode)) {
+            setLastErrWithPredefined(ErrMsg.RC_SERVER_INTERNAL);
+            return false;
+        }
+
+        if (!checkCodeRepo.setCheckCodeSentStatus(mobileNumber, true)) {
+            setLastErrWithPredefined(ErrMsg.RC_SERVER_INTERNAL);
+            return false;
+        }
+
+        return true;
     }
 
     public boolean isMatched(String mobileNumber, String checkCode) {

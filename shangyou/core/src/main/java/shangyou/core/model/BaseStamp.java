@@ -1,9 +1,12 @@
 package shangyou.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+
+import java.util.List;
 
 
 @Builder
@@ -76,5 +79,12 @@ public class BaseStamp {
 
     @ApiModelProperty("背景资料")
     private String background;
+
+    @ApiModelProperty("邮票图片")
+    @JsonIgnore
+    private String picture;
+
+    @ApiModelProperty("邮票图片")
+    private List<String> pictures;
 
 }
