@@ -6,15 +6,16 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import shangyou.api.misc.ApiUtility;
 import shangyou.api.model.SApiRequest;
 import shangyou.api.model.SApiResponse;
 import shangyou.api.model.req.SendCheckCodeData;
 import shangyou.api.model.req.MobileNumberAndCheckCodeRequestData;
 import shangyou.api.model.req.UserRegisteredRequestData;
+import shangyou.api.model.res.LoginOrRegResponseData;
 import shangyou.core.common.ErrMsg;
 import shangyou.core.controller.CheckCodeController;
 import shangyou.core.controller.UserController;
@@ -29,17 +30,15 @@ import javax.validation.Valid;
 @Slf4j
 public class SyUserController {
 
-
     @Autowired
     private UserController userController;
     @Autowired
     private CheckCodeController checkCodeController;
 
-
     @ApiOperation(value = "用户登录", notes = "根据验证码验证用户登录结果", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @RequestMapping(value = "/login", method = {RequestMethod.POST})
-    public SApiResponse<User> userLogin(@RequestBody @Valid SApiRequest<MobileNumberAndCheckCodeRequestData> request, BindingResult bindingResult) {
+    public SApiResponse<LoginOrRegResponseData> userLogin(@RequestBody @Valid SApiRequest<MobileNumberAndCheckCodeRequestData> request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getDefaultMessage());
         }
@@ -50,13 +49,18 @@ public class SyUserController {
         if (StringUtils.isEmpty(user)) {
             return new SApiResponse<>(userController.getLastErrCode(), userController.getLastErrMsg());
         }
-        return new SApiResponse<>(ErrMsg.RC_OK, user);
+
+        LoginOrRegResponseData loginOrRegResponseData = LoginOrRegResponseData.builder()
+                .user(user)
+                .loginInfo(ApiUtility.generalLoginInfoWithUser(user))
+                .build();
+        return new SApiResponse<>(ErrMsg.RC_OK, loginOrRegResponseData);
     }
 
     @ApiOperation(value = "用户注册", notes = "根据验证码验证用户注册结果", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @RequestMapping(value = "/reg", method = {RequestMethod.POST})
-    public SApiResponse<User> userRegistered(@RequestBody @Valid SApiRequest<UserRegisteredRequestData> request, BindingResult bindingResult) {
+    public SApiResponse<LoginOrRegResponseData> userRegistered(@RequestBody @Valid SApiRequest<UserRegisteredRequestData> request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getDefaultMessage());
         }
@@ -64,15 +68,16 @@ public class SyUserController {
         String mobileNumber = registeredRequestData.getMobileNumber();
         String checkCode = registeredRequestData.getCheckCode();
         String nickname = registeredRequestData.getNickname();
-        if (checkCodeController.isMatched(mobileNumber, checkCode)) {
-            User user = userController.queryUserByPhone(mobileNumber);
-            if (ObjectUtils.isEmpty(user)) {
-                userController.userRegistered(mobileNumber, nickname);
-                return new SApiResponse<>(ErrMsg.RC_OK, user);
-            }
-            return new SApiResponse<>(ErrMsg.RC_USER_ALREADY_EXISTS);
+        User user = userController.userRegister(mobileNumber, nickname, checkCode);
+        if (user == null) {
+            return new SApiResponse<>(userController.getLastErrCode(), userController.getLastErrMsg());
         }
-        return new SApiResponse<>(ErrMsg.RC_CHECK_CODE_ERR);
+
+        LoginOrRegResponseData loginOrRegResponseData = LoginOrRegResponseData.builder()
+                .user(user)
+                .loginInfo(ApiUtility.generalLoginInfoWithUser(user))
+                .build();
+        return new SApiResponse<>(ErrMsg.RC_OK, loginOrRegResponseData);
     }
 
     @ApiOperation(value = "发送验证码", notes = "根据手机号给用户发送验证码", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

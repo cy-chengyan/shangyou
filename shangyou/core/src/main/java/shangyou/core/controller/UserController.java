@@ -2,10 +2,14 @@ package shangyou.core.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import shangyou.core.common.ErrMsg;
 import shangyou.core.data.repo.UserRepo;
 import shangyou.core.model.User;
+
+import java.time.ZonedDateTime;
+import java.util.UUID;
 
 @Controller
 public class UserController extends BaseController {
@@ -21,18 +25,17 @@ public class UserController extends BaseController {
     }
 
     public User userLogin(String mobileNumber, String checkCode) {
-        if (checkCodeController.isMatched(mobileNumber, checkCode)) {
-            User user = userRepo.queryUserByPhone(mobileNumber);
-            if (StringUtils.isEmpty(user)) {
-                setLastErrWithPredefined(ErrMsg.RC_NOT_FOUND_USER);
-                return null;
-            }
-            return user;
-        }else {
+        if (!checkCodeController.isMatched(mobileNumber, checkCode)) {
             setLastErrWithPredefined(ErrMsg.RC_CHECK_CODE_ERR);
             return null;
         }
 
+        User user = userRepo.queryUserByPhone(mobileNumber);
+        if (StringUtils.isEmpty(user)) {
+            setLastErrWithPredefined(ErrMsg.RC_NOT_FOUND_USER);
+            return null;
+        }
+        return user;
     }
 
     public User queryUserByPhone(String phone) {
@@ -40,10 +43,34 @@ public class UserController extends BaseController {
         return user;
     }
 
-    public void userRegistered(String mobileNumber, String nickname) {
+    public User userRegister(String mobileNumber, String nickname, String checkCode) {
+        if (!checkCodeController.isMatched(mobileNumber, checkCode)) {
+            setLastErrWithPredefined(ErrMsg.RC_CHECK_CODE_ERR);
+            return null;
+        }
 
-        userRepo.userRegistered(mobileNumber, nickname);
+        User user = this.queryUserByPhone(mobileNumber);
+        if (!ObjectUtils.isEmpty(user)) {
+            setLastErrWithPredefined(ErrMsg.RC_USER_ALREADY_EXISTS);
+            return null;
+        }
+        /*
+        TODO:
+        user = userController.queryUserByNickname(nickname);
+        if (!ObjectUtils.isEmpty(user)) {
+            return new SApiResponse<>(ErrMsg.RC_USER_ALREADY_EXISTS);
+        }
+       */
 
+        user = User.builder()
+                .uid(UUID.randomUUID().toString().substring(0, 8))
+                .gender(0)
+                .createdAt(ZonedDateTime.now().toEpochSecond())
+                .mobileNumber(mobileNumber)
+                .nickname(nickname)
+                .build();
+        userRepo.userRegister(user);
+        return user;
     }
 
 }

@@ -24,15 +24,8 @@ public class UserRepo {
         return user;
     }
 
-    public void userRegistered(String mobileNumber, String nickname){
-        User user = User.builder()
-                .uid(UUID.randomUUID().toString().substring(0, 8))
-                .gender(0)
-                .createdAt(ZonedDateTime.now().toEpochSecond())
-                .mobileNumber(mobileNumber)
-                .nickname(nickname)
-                .build();
-        userMapper.insterUser(user);
+    public void userRegister(User user){
+        userMapper.insertUser(user);
     }
 
 }

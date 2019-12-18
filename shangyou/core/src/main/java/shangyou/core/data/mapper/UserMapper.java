@@ -37,11 +37,11 @@ public interface UserMapper {
 
     @Insert({
             "<script>",
-            "INSERT INTO t_user ( uid, mobile_number, nickname, gender, created_at)",
+            "INSERT INTO t_user (uid, mobile_number, nickname, gender, created_at)",
             "VALUES (#{uid}, #{mobileNumber}, #{nickname}, #{gender}, #{createdAt})",
             "</script>"
     })
-    int insterUser(User user);
+    int insertUser(User user);
 
 }
 
