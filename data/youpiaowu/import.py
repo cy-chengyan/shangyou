@@ -138,7 +138,7 @@ def get_stamp_picture(d):
     pictures = d['pictures']
     picture = None
     if pictures and len(pictures) > 0:
-        picture = pictures.join(',')
+        picture = ','.join(pictures)
     return picture
 
 def get_list_in_items(list_name, d):
