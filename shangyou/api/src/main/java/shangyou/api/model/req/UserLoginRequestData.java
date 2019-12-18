@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 
 @Getter
@@ -15,7 +16,9 @@ public class UserLoginRequestData {
 
     @ApiModelProperty("手机号码")
     @NotBlank
-    private String phone;
+    @JsonProperty("mobile_number")
+    @Pattern(regexp = "^1(3|4|5|7|8)\\d{9}$",message = "手机号码格式错误")
+    private String mobileNumber;
 
     @ApiModelProperty("验证码")
     @NotBlank

@@ -3,6 +3,8 @@ package shangyou.api.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import shangyou.core.common.ErrMsg;
+import shangyou.core.common.Utility;
 
 import javax.validation.Valid;
 

@@ -19,17 +19,17 @@ public class UserRepo {
         return  user;
     }
 
-    public User queryUserByPhone(String phone){
-        User user = userMapper.queryUserByPhone(phone);
+    public User queryUserByPhone(String mobileNumber){
+        User user = userMapper.queryUserByPhone(mobileNumber);
         return user;
     }
 
-    public void userRegistered(String phone, String nickname){
+    public void userRegistered(String mobileNumber, String nickname){
         User user = User.builder()
                 .uid(UUID.randomUUID().toString().substring(0, 8))
                 .gender(0)
                 .createdAt(ZonedDateTime.now().toEpochSecond())
-                .mobileNumber(phone)
+                .mobileNumber(mobileNumber)
                 .nickname(nickname)
                 .build();
         userMapper.insterUser(user);

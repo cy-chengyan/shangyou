@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
@@ -17,9 +18,10 @@ import javax.validation.constraints.NotBlank;
 public class VerificationCheckCodeData {
 
     @ApiModelProperty("手机号")
-    @JsonProperty("mobile_phone")
+    @JsonProperty("mobile_number")
+    @Pattern(regexp = "^1(3|4|5|7|8)\\d{9}$",message = "手机号码格式错误")
     @NotBlank
-    private String mobilePhone;
+    private String mobileNumber;
 
     @ApiModelProperty("验证码")
     @JsonProperty("check_code")

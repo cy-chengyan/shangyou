@@ -12,15 +12,17 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private CheckCodeController checkCodeController;
 
     public User queryUserByUid(String uid){
        User user = userRepo.queryUserByUid(uid);
         return user;
     }
 
-    public User userLogin(String phone, String checkCode) {
-        if ("2222".equals(checkCode)) {
-            User user = userRepo.queryUserByPhone(phone);
+    public User userLogin(String mobileNumber, String checkCode) {
+        if (checkCodeController.isMatched(mobileNumber, checkCode)) {
+            User user = userRepo.queryUserByPhone(mobileNumber);
             if (StringUtils.isEmpty(user)) {
                 setLastErrWithPredefined(ErrMsg.RC_NOT_FOUND_USER);
                 return null;
@@ -38,8 +40,10 @@ public class UserController extends BaseController {
         return user;
     }
 
-    public void userRegistered(String phone, String nickname) {
-        userRepo.userRegistered(phone, nickname);
+    public void userRegistered(String mobileNumber, String nickname) {
+
+        userRepo.userRegistered(mobileNumber, nickname);
 
     }
+
 }
