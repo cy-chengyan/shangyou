@@ -13,7 +13,7 @@ public interface BaseStampMapper {
     @Select({
             "<script>",
             "SELECT stid, `type`, year, `name`, countryid, `number`, issued_date, joint_issue, size, chikong, format, fanwei, designer, editor," +
-                    "carve, side_design, draw, shoot, printing_house, background FROM t_stamp WHERE stid = #{stid} limit 1",
+                    "carve, side_design, draw, shoot, printing_house, background, picture FROM t_stamp WHERE stid = #{stid} limit 1",
             "</script>"
     })
     @Results({
@@ -27,7 +27,7 @@ public interface BaseStampMapper {
     @Select({
             "<script>",
             "SELECT stid, `type`, year, `name`, countryid, `number`, issued_date, joint_issue, size, chikong, format, fanwei, designer, editor,",
-            " carve, side_design, draw, shoot, printing_house, background FROM t_stamp WHERE 1 = 1",
+            " carve, side_design, draw, shoot, printing_house, background, picture FROM t_stamp WHERE 1 = 1",
             "<if test=\"type != 0\"> AND `type` = #{type}</if>",
             "<if test=\"year != 0\"> AND year = #{year}</if>",
             " ORDER BY issued_date DESC",
