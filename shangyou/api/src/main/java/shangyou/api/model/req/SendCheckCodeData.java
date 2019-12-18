@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import shangyou.core.common.Constant;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -20,6 +21,7 @@ public class SendCheckCodeData {
     @ApiModelProperty("手机号")
     @JsonProperty("mobile_number")
     @NotBlank
-    @Pattern(regexp = "^1(3|4|5|7|8)\\d{9}$",message = "手机号码格式错误")
+    @Pattern(regexp = Constant.MOBILE_NUMBER_REGEX, message = "手机号码格式错误")
     private String mobileNumber;
+
 }

@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import shangyou.api.model.SApiRequest;
 import shangyou.api.model.SApiResponse;
 import shangyou.api.model.req.SendCheckCodeData;
-import shangyou.api.model.req.UserLoginRequestData;
+import shangyou.api.model.req.MobileNumberAndCheckCodeRequestData;
 import shangyou.api.model.req.UserRegisteredRequestData;
-import shangyou.api.model.req.VerificationCheckCodeData;
 import shangyou.core.common.ErrMsg;
 import shangyou.core.controller.CheckCodeController;
 import shangyou.core.controller.UserController;
@@ -40,11 +39,11 @@ public class SyUserController {
     @ApiOperation(value = "用户登录", notes = "根据验证码验证用户登录结果", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @RequestMapping(value = "/login", method = {RequestMethod.POST})
-    public SApiResponse<User> userLogin(@RequestBody @Valid SApiRequest<UserLoginRequestData> request, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+    public SApiResponse<User> userLogin(@RequestBody @Valid SApiRequest<MobileNumberAndCheckCodeRequestData> request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getDefaultMessage());
         }
-        UserLoginRequestData requestData = request.getData();
+        MobileNumberAndCheckCodeRequestData requestData = request.getData();
         String mobileNumber = requestData.getMobileNumber();
         String checkCode = requestData.getCheckCode();
         User user = userController.userLogin(mobileNumber, checkCode);
@@ -58,7 +57,7 @@ public class SyUserController {
     @ResponseBody
     @RequestMapping(value = "/reg", method = {RequestMethod.POST})
     public SApiResponse<User> userRegistered(@RequestBody @Valid SApiRequest<UserRegisteredRequestData> request, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getDefaultMessage());
         }
         UserRegisteredRequestData registeredRequestData = request.getData();
@@ -80,7 +79,7 @@ public class SyUserController {
     @ResponseBody
     @RequestMapping(value = "/cc/send", method = {RequestMethod.POST})
     public SApiResponse sendCheckCode(@RequestBody @Valid SApiRequest<SendCheckCodeData> request, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return new SApiResponse(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getDefaultMessage());
         }
         SendCheckCodeData sendCheckCodeData = request.getData();
@@ -94,11 +93,11 @@ public class SyUserController {
     @ApiOperation(value = "校对验证码", notes = "根据用户输入的验证码进行比对验证", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @RequestMapping(value = "/cc/verify", method = {RequestMethod.POST})
-    public SApiResponse verifyCheckCode(@RequestBody @Valid SApiRequest<VerificationCheckCodeData> request, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+    public SApiResponse verifyCheckCode(@RequestBody @Valid SApiRequest<MobileNumberAndCheckCodeRequestData> request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return new SApiResponse(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getDefaultMessage());
         }
-        VerificationCheckCodeData verificationCheckCodeData = request.getData();
+        MobileNumberAndCheckCodeRequestData verificationCheckCodeData = request.getData();
         String mobileNumber = verificationCheckCodeData.getMobileNumber();
         String checkCode = verificationCheckCodeData.getCheckCode();
         if (!checkCodeController.isMatched(mobileNumber, checkCode)) {

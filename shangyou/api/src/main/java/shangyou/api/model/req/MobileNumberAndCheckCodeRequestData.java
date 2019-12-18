@@ -1,30 +1,29 @@
 package shangyou.api.model.req;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import shangyou.core.common.Constant;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class VerificationCheckCodeData {
+public class MobileNumberAndCheckCodeRequestData {
 
-    @ApiModelProperty("手机号")
-    @JsonProperty("mobile_number")
-    @Pattern(regexp = "^1(3|4|5|7|8)\\d{9}$",message = "手机号码格式错误")
+    @ApiModelProperty("手机号码")
     @NotBlank
+    @JsonProperty("mobile_number")
+    @Pattern(regexp = Constant.MOBILE_NUMBER_REGEX, message = "手机号码格式错误")
     private String mobileNumber;
 
     @ApiModelProperty("验证码")
-    @JsonProperty("check_code")
     @NotBlank
+    @JsonProperty("check_code")
     private String checkCode;
+
 }
