@@ -16,4 +16,17 @@ public class FavoriteRepo {
         List<Favorite> favorites = favoriteMapper.queryStampByUid(uid);
         return favorites;
     }
+
+    public void userFavorite(Favorite favorite) {
+
+        favoriteMapper.userFavorite(favorite);
+    }
+
+    public Favorite queryStampByStid(String stid) {
+     return favoriteMapper.queryStampByStid(stid);
+    }
+
+    public int updateStampStatusByStid(int status, String stid) {
+      return favoriteMapper.updateStampStatusByStid(status, stid);
+    }
 }

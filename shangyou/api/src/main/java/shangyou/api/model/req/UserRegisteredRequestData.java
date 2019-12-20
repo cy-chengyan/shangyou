@@ -6,10 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import shangyou.core.common.Constant;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -34,9 +31,12 @@ public class UserRegisteredRequestData {
     private String nickname;
 
     @ApiModelProperty("性别")
-    @NotBlank
-    @Min(value = 1, message = "性别值最小是1")
-    @Max(3)
-    private int gender = 3;
+    @NotNull
+    @Min(value = 1, message = "性别最小值是1")
+    @Max(value = 3, message = "性别最大值是3")
+    private int gender;
+
+    @ApiModelProperty("用户头像")
+    private String avatar;
 
 }

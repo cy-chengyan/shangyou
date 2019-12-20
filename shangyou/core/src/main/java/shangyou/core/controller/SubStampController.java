@@ -1,13 +1,13 @@
 package shangyou.core.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import shangyou.core.data.repo.SubStampRepo;
 import shangyou.core.model.SubStamp;
 
 import java.util.List;
 
-@Controller
+@Component
 public class SubStampController {
 
     @Autowired

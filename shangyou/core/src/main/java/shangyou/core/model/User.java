@@ -29,6 +29,9 @@ public class User {
     @ApiModelProperty("性别,1男,2女,3未知")
     private int gender;
 
+    @ApiModelProperty("用户头像")
+    private String avatar;
+
     @ApiModelProperty("创建时间")
     @JsonProperty("created_at")
     private long createdAt;

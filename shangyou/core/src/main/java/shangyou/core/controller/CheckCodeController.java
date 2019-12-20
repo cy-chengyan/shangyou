@@ -24,7 +24,6 @@ public class CheckCodeController extends BaseController {
 
 
     private boolean sendCheckCodeSms(String mobileNumber, String checkCode) {
-        // log.info("mobileNumber:{}, checkCode:{}", mobileNumber, checkCode);
         DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "eehtl6b4ptxf9z4jcqxmrfz3", "m2a7yFO2qJCH+gjJffGsv4G8PVI=");
         IAcsClient client = new DefaultAcsClient(profile);
 

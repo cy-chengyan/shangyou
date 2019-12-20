@@ -17,8 +17,8 @@ public class UserRepo {
         return  user;
     }
 
-    public User queryUserByPhone(String mobileNumber){
-        User user = userMapper.queryUserByPhone(mobileNumber);
+    public User queryUserByMobileNumber(String mobileNumber){
+        User user = userMapper.queryUserByMobileNumber(mobileNumber);
         return user;
     }
 
@@ -29,6 +29,18 @@ public class UserRepo {
 
     public void userRegister(User user){
         userMapper.insertUser(user);
+    }
+
+    public int updateGender(int gender, String uid) {
+        return userMapper.updateGender(gender, uid);
+    }
+
+    public int updateAvatar(String uid, String avatar) {
+        return userMapper.updateAvatar(uid, avatar);
+    }
+
+    public int updateMobileNumber(String mobileNumber, String uid) {
+        return userMapper.updateMobileNumber(mobileNumber, uid);
     }
 
 }

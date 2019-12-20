@@ -1,6 +1,6 @@
 package shangyou.api.misc;
 
-import org.apache.commons.codec.digest.Md5Crypt;
+import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import shangyou.api.model.LoginInfo;
 import shangyou.core.model.User;
@@ -14,7 +14,7 @@ public class ApiUtility {
     public static LoginInfo generalLoginInfoWithUser(User user) {
         long now = ZonedDateTime.now().toEpochSecond();
         String src = now + user.getUid() + LOGIN_SALT;
-        String token = Md5Crypt.md5Crypt(src.getBytes()).substring(0, 16);
+        String token = DigestUtils.md5DigestAsHex(src.getBytes()).substring(0, 16);
         return LoginInfo.builder()
                 .uid(user.getUid())
                 .token(token)
@@ -35,7 +35,7 @@ public class ApiUtility {
 
         long loginAt = loginInfo.getLoginAt();
         String src = loginAt + uid + LOGIN_SALT;
-        String rightToken = Md5Crypt.md5Crypt(src.getBytes()).substring(16);
+        String rightToken = DigestUtils.md5DigestAsHex(src.getBytes()).substring(0, 16);
         return rightToken.equals(token);
     }
 

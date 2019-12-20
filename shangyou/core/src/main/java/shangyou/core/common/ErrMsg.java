@@ -14,6 +14,9 @@ public class ErrMsg {
     public static final int RC_USER_ALREADY_EXISTS     = -9;
     public static final int RC_OPERATING_FREQUENCY     = -10;
     public static final int RC_NICKNAME_USED           = -11;
+    public static final int RC_NOT_LOGGED_IN           = -12;
+    public static final int RC_INITIAL_STATE_ERR       = -13;
+    public static final int RC_MOBILE_NUMBER_ALREADY_EXISTS = -14;
 
     public static final String toString(int code) {
         final String[] errMsgs = {
@@ -28,7 +31,10 @@ public class ErrMsg {
                 "该用户不存在",
                 "用户已存在",
                 "操作频繁",
-                "昵称已被使用"
+                "昵称已被使用",
+                "未登录",
+                "初始状态错误",
+                "该号码已存在"
         };
 
         String errMsg;

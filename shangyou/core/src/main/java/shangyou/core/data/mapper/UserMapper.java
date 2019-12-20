@@ -9,10 +9,9 @@ import shangyou.core.model.User;
 @Repository
 @Mapper
 public interface UserMapper {
-
     @Select({
             "<script>",
-            "SELECT uid, mobile_number, nickname, gender, created_at, update_at FROM t_user WHERE uid = #{uid}",
+            "SELECT uid, mobile_number, nickname, gender, avatar, created_at FROM t_user WHERE uid = #{uid}",
             "</script>"
     })
     @Results({
@@ -24,7 +23,7 @@ public interface UserMapper {
 
     @Select({
             "<script>",
-            "SELECT uid, mobile_number, nickname, gender FROM t_user WHERE mobile_number = #{mobileNumber}",
+            "SELECT uid, mobile_number, nickname, gender, avatar FROM t_user WHERE mobile_number = #{mobileNumber}",
             "</script>"
     })
     @Results({
@@ -32,11 +31,11 @@ public interface UserMapper {
             @Result(property = "createdAt", column = "created_at"),
             @Result(property = "updateAt", column = "update_at")
     })
-    User queryUserByPhone(@Param("mobileNumber")String mobileNumber);
+    User queryUserByMobileNumber(@Param("mobileNumber")String mobileNumber);
 
     @Select({
             "<script>",
-            "SELECT uid, mobile_number, nickname, gender FROM t_user WHERE nickname = #{nickname}",
+            "SELECT uid, mobile_number, nickname, gender, avatar FROM t_user WHERE nickname = #{nickname}",
             "</script>"
     })
     @Results({
@@ -49,11 +48,32 @@ public interface UserMapper {
 
     @Insert({
             "<script>",
-            "INSERT INTO t_user (uid, mobile_number, nickname, gender, created_at)",
-            "VALUES (#{uid}, #{mobileNumber}, #{nickname}, #{gender}, #{createdAt})",
+            "INSERT INTO t_user (uid, mobile_number, nickname, gender, avatar, created_at)",
+            "VALUES (#{uid}, #{mobileNumber}, #{nickname}, #{gender}, #{avatar}, #{createdAt})",
             "</script>"
     })
     int insertUser(User user);
+
+    @Update({
+            "<script>",
+            "UPDATE t_user SET gender = #{gender} WHERE uid = #{uid}",
+            "</script>"
+    })
+    int updateGender(@Param("gender") int gender,@Param("uid") String uid);
+
+    @Update({
+            "<script>",
+            "UPDATE t_user SET avatar = #{avatar} WHERE uid = #{uid}",
+            "</script>"
+    })
+    int updateAvatar(@Param("uid")String uid, @Param("avatar")String avatar);
+
+    @Update({
+            "<script>",
+            "UPDATE t_user SET mobile_number = #{mobileNumber} WHERE uid = #{uid}",
+            "</script>"
+    })
+    int updateMobileNumber(@Param("mobileNumber")String mobileNumber, @Param("uid")String uid);
 
 }
 

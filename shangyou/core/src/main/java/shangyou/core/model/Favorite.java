@@ -24,11 +24,14 @@ public class Favorite {
     @ApiModelProperty("邮票id")
     private String stid;
 
+    @ApiModelProperty("收藏状态")
+    private int status;
+
     @ApiModelProperty("创建时间")
     @JsonProperty("created_at")
-    private int createdAt;
+    private long createdAt;
 
     @ApiModelProperty("更新时间")
     @JsonProperty("updated_at")
-    private String updatedAt;
+    private long updatedAt;
 }

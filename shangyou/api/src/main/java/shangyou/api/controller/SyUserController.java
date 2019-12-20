@@ -6,34 +6,38 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import shangyou.api.misc.ApiUtility;
+import shangyou.api.model.LoginInfo;
 import shangyou.api.model.SApiRequest;
 import shangyou.api.model.SApiResponse;
-import shangyou.api.model.req.SendCheckCodeData;
-import shangyou.api.model.req.MobileNumberAndCheckCodeRequestData;
-import shangyou.api.model.req.UserRegisteredRequestData;
+import shangyou.api.model.req.*;
 import shangyou.api.model.res.LoginOrRegResponseData;
 import shangyou.core.common.ErrMsg;
 import shangyou.core.controller.CheckCodeController;
+import shangyou.core.controller.FavoriteController;
 import shangyou.core.controller.UserController;
+import shangyou.core.model.Favorite;
 import shangyou.core.model.User;
 
 
 import javax.validation.Valid;
 
+@Slf4j
 @RestController
 @RequestMapping("/v1/user")
 @Api(value = "User", tags = "用户")
-@Slf4j
 public class SyUserController {
 
     @Autowired
     private UserController userController;
     @Autowired
     private CheckCodeController checkCodeController;
+    @Autowired
+    private FavoriteController favoritecontroller;
 
     @ApiOperation(value = "用户登录", notes = "根据验证码验证用户登录结果", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -69,7 +73,8 @@ public class SyUserController {
         String checkCode = registeredRequestData.getCheckCode();
         String nickname = registeredRequestData.getNickname();
         int gender = registeredRequestData.getGender();
-        User user = userController.userRegister(mobileNumber, nickname, checkCode, gender);
+        String avatar = registeredRequestData.getAvatar();
+        User user = userController.userRegister(mobileNumber, nickname, checkCode, gender, avatar);
         if (user == null) {
             return new SApiResponse<>(userController.getLastErrCode(), userController.getLastErrMsg());
         }
@@ -79,6 +84,7 @@ public class SyUserController {
                 .loginInfo(ApiUtility.generalLoginInfoWithUser(user))
                 .build();
         return new SApiResponse<>(ErrMsg.RC_OK, loginOrRegResponseData);
+
     }
 
     @ApiOperation(value = "发送验证码", notes = "根据手机号给用户发送验证码", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -111,5 +117,84 @@ public class SyUserController {
         }
         return new SApiResponse(ErrMsg.RC_OK);
     }
+
+    @ApiOperation(value = "用户收藏", notes = "根据邮票id收藏；状态值status：1-收藏状态，2-未收藏状态", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @RequestMapping(value = "/favorite", method = {RequestMethod.POST})
+    public SApiResponse<Favorite> userFavorite(@RequestBody @Valid SApiRequest<FavoriteRequestData> request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getField());
+        }
+        FavoriteRequestData favoriteRequestData = request.getData();
+        LoginInfo loginInfo = request.getLoginInfo();
+        if (!ApiUtility.checkLoginInfo(loginInfo)) {
+            return new SApiResponse<>(ErrMsg.RC_NOT_LOGGED_IN);
+        }
+
+        String uid = request.getLoginInfo().getUid();
+        String stid = favoriteRequestData.getStid();
+        int status = favoriteRequestData.getStatus();
+        Favorite favorite = favoritecontroller.userFavorite(uid, stid, status);
+        if (favorite == null) {
+            return new SApiResponse<>(favoritecontroller.getLastErrCode(),favoritecontroller.getLastErrMsg());
+        }
+        return new SApiResponse<>(ErrMsg.RC_OK, favorite);
+    }
+
+    @ApiOperation(value = "用户修改性别", notes = "根据登录信息中的uid修改", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @RequestMapping(value = "/gender", method = {RequestMethod.POST})
+    public SApiResponse<User> userUpdateGender(@RequestBody @Valid SApiRequest<UserUpdateGenderData> request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getField());
+        }
+        UserUpdateGenderData userUpdateGenderData = request.getData();
+        LoginInfo loginInfo =  request.getLoginInfo();
+        if (!ApiUtility.checkLoginInfo(loginInfo)) {
+            return new SApiResponse<>(ErrMsg.RC_NOT_LOGGED_IN);
+        }
+        String uid = loginInfo.getUid();
+        int gender = userUpdateGenderData.getGender();
+        User user = userController.userUpdateGender(gender, uid);
+        return new SApiResponse<>(ErrMsg.RC_OK, user);
+    }
+
+    @ApiOperation(value = "用户修改头像", notes = "根据登录信息中的uid修改", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @RequestMapping(value = "/avatar", method = {RequestMethod.POST})
+    public SApiResponse<User> userUpdateAvatar(@RequestBody @Valid SApiRequest<UserUpdateAvatarData> request) {
+        UserUpdateAvatarData userUpdateAvatarData = request.getData();
+        LoginInfo loginInfo = request.getLoginInfo();
+        if (!ApiUtility.checkLoginInfo(loginInfo)) {
+            return new SApiResponse<>(ErrMsg.RC_NOT_LOGGED_IN);
+        }
+        String uid = loginInfo.getUid();
+        String avatar = userUpdateAvatarData.getAvatar();
+        User user = userController.userUpdateAvatar(uid, avatar);
+        return new SApiResponse<>(ErrMsg.RC_OK, user);
+    }
+
+    @ApiOperation(value = "用户修改手机号码", notes = "根据登录信息中的uid修改", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @RequestMapping(value = "/mobile_number", method = {RequestMethod.POST})
+    public SApiResponse<User> userUpdateMobileNumber(@RequestBody @Valid SApiRequest<UserUpdateMobileNumberData> request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getField());
+        }
+        LoginInfo loginInfo = request.getLoginInfo();
+        if (!ApiUtility.checkLoginInfo(loginInfo)) {
+            return new SApiResponse<>(ErrMsg.RC_NOT_LOGGED_IN);
+        }
+        UserUpdateMobileNumberData userUpdateMobileNumberData = request.getData();
+        String uid = loginInfo.getUid();
+        String mobileNumber = userUpdateMobileNumberData.getMobileNumber();
+        User user = userController.userUpdateMobileNumber(uid, mobileNumber);
+        if (ObjectUtils.isEmpty(user)) {
+            return new SApiResponse<>(userController.getLastErrCode(), userController.getLastErrMsg());
+        }
+        return new SApiResponse<>(ErrMsg.RC_OK, user);
+    }
+
+
 
 }

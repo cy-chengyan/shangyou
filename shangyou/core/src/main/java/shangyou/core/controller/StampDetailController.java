@@ -1,12 +1,12 @@
 package shangyou.core.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import shangyou.core.common.ErrMsg;
 import shangyou.core.data.repo.StampDetailRepo;
 import shangyou.core.model.StampDetail;
 
-@Controller
+@Component
 public class StampDetailController extends BaseController {
 
     @Autowired
