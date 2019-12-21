@@ -25,7 +25,7 @@ task apiRpmProd(type: Rpm, dependsOn: ['bootJar']) {
     }
 
     from("${rootProject.projectDir}/script/conf") {
-        include 'api_dist.conf'
+        include 'api-dist.conf'
         rename { String fileName ->
             fileName.replace("api-dist.conf", "${project.name}-${project.version}.conf".toString())
         }
