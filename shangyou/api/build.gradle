@@ -9,6 +9,7 @@ dependencies {
     compile(
             libraries.spring_boot_web,
             libraries.spring_boot_jetty,
+            libraries.spring_boot_aop,
             libraries.mybatis_spring_boot,
             libraries.swagger,
             libraries.swagger_ui,
@@ -25,3 +26,5 @@ configurations {
     runtime.exclude module: 'spring-boot-starter-tomcat'
     compile.exclude module: 'spring-boot-starter-tomcat'
 }
+
+apply from: './rpm.gradle'

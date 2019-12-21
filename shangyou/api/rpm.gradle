@@ -1,0 +1,38 @@
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+String PACKAGE_NAME = "shangyou-api"
+GString INSTALL_DIR = "/usr/share/${PACKAGE_NAME}"
+GString LOG_DIR = "/var/log/${PACKAGE_NAME}"
+
+task apiRpmProd(type: Rpm, dependsOn: ['bootJar']) {
+    packageName "shangyou-api"
+    version project.version
+    release '1'
+    arch 'x86_64'
+    os 'linux'
+    packageGroup 'Shuoen'
+    user 'shuoen'
+    permissionGroup 'shuoen'
+    vendor 'Shuoen'
+    url 'http://www.shangyou.life/'
+
+    into INSTALL_DIR
+
+    from("${project.buildDir}/libs") {
+        include '*.jar'
+        fileMode 0500
+    }
+
+    from("${rootProject.projectDir}/script/conf") {
+        include 'api_dist.conf'
+        rename { String fileName ->
+            fileName.replace("api-dist.conf", "${project.name}-${project.version}.conf".toString())
+        }
+        filter(ReplaceTokens, tokens: [profile: "prod"])
+    }
+
+    directory(LOG_DIR, 0755, 'shuoen', 'shuoen')
+
+    link("/etc/init.d/${PACKAGE_NAME}", "${INSTALL_DIR}/${project.name}-${project.version}.jar")
+}
