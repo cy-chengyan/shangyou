@@ -56,24 +56,10 @@ public interface UserMapper {
 
     @Update({
             "<script>",
-            "UPDATE t_user SET gender = #{gender} WHERE uid = #{uid}",
+            "UPDATE t_user SET gender = #{gender}, avatar = #{avatar}, mobile_number = {mobileNumber} WHERE uid = #{uid}",
             "</script>"
     })
-    int updateGender(@Param("gender") int gender,@Param("uid") String uid);
-
-    @Update({
-            "<script>",
-            "UPDATE t_user SET avatar = #{avatar} WHERE uid = #{uid}",
-            "</script>"
-    })
-    int updateAvatar(@Param("uid")String uid, @Param("avatar")String avatar);
-
-    @Update({
-            "<script>",
-            "UPDATE t_user SET mobile_number = #{mobileNumber} WHERE uid = #{uid}",
-            "</script>"
-    })
-    int updateMobileNumber(@Param("mobileNumber")String mobileNumber, @Param("uid")String uid);
+    int updateGender(User user);
 
 }
 

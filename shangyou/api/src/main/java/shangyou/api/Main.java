@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 
+
 @ComponentScan({"shangyou.api", "shangyou.core"})
 @MapperScan({"shangyou.core.data.mapper"})
 @SpringBootApplication // 开启组件扫描和自动配置

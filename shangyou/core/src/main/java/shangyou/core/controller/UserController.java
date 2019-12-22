@@ -9,6 +9,7 @@ import shangyou.core.common.ErrMsg;
 import shangyou.core.data.repo.UserRepo;
 import shangyou.core.model.User;
 import java.time.ZonedDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -79,46 +80,34 @@ public class UserController extends BaseController {
         return user;
     }
 
-    public User userUpdateGender(int gender, String uid) {
+    public User userUpdate(Map<String, Object> map) {
+        String uid = (String)map.get("uid");
         User user = userRepo.queryUserByUid(uid);
-        if (user.getGender() == gender) {
+        int gender = (int)map.get("gender");
+        String avatar = (String)map.get("avatar");
+        String mobileNumber = (String)map.get("mobile_number");
+        if (user.getMobileNumber().equals(mobileNumber) && user.getGender() == gender && user.getAvatar().equals(avatar)) {
             return user;
-        }
-        userRepo.updateGender(gender, uid);
-        user = userRepo.queryUserByUid(uid);
-        return user;
-    }
-
-    public User userUpdateAvatar(String uid, String avatar) {
-        User user = userRepo.queryUserByUid(uid);
-        if (user.getAvatar().equals(avatar)) {
-            return user;
-        }
-        userRepo.updateAvatar(uid, avatar);
-        user = userRepo.queryUserByUid(uid);
-        return user;
-    }
-
-    public User userUpdateMobileNumber(String uid, String mobileNumber) {
-        User user = userRepo.queryUserByUid(uid);
-        log.info("user:{}",user);
-        if (user.getMobileNumber().equals(mobileNumber)) {
-            setLastErrWithPredefined(ErrMsg.RC_MOBILE_NUMBER_ALREADY_EXISTS);
-            return null;
         }
 
         user = userRepo.queryUserByMobileNumber(mobileNumber);
-        log.info("user:{}",user);
         if (!ObjectUtils.isEmpty(user)) {
             setLastErrWithPredefined(ErrMsg.RC_MOBILE_NUMBER_ALREADY_EXISTS);
             return null;
         }
-
-        userRepo.updateMobileNumber(mobileNumber, uid);
+        if (!StringUtils.isEmpty(gender)) {
+            user.setGender(gender);
+        }
+        if (!StringUtils.isEmpty(avatar)) {
+            user.setAvatar(avatar);
+        }
+        if (!StringUtils.isEmpty(mobileNumber)) {
+            user.setMobileNumber(mobileNumber);
+        }
+        userRepo.userUpdate(user);
         user = userRepo.queryUserByUid(uid);
         return user;
 
-    }
-
+        }
 
 }

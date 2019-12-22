@@ -1,6 +1,7 @@
 package shangyou.api.controller;
 
 
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,8 @@ import shangyou.core.model.User;
 
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -141,60 +144,33 @@ public class SyUserController {
         return new SApiResponse<>(ErrMsg.RC_OK, favorite);
     }
 
-    @ApiOperation(value = "用户修改性别", notes = "根据登录信息中的uid修改", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "用户修改信息", notes = "根据登录信息中的uid修改", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @RequestMapping(value = "/gender", method = {RequestMethod.POST})
-    public SApiResponse<User> userUpdateGender(@RequestBody @Valid SApiRequest<UserUpdateGenderData> request, BindingResult bindingResult) {
+    public SApiResponse<User> userUpdateGender(@RequestBody @Valid SApiRequest<UserUpdateData> request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getField());
         }
-        UserUpdateGenderData userUpdateGenderData = request.getData();
+        UserUpdateData userUpdateData = request.getData();
         LoginInfo loginInfo =  request.getLoginInfo();
         if (!ApiUtility.checkLoginInfo(loginInfo)) {
             return new SApiResponse<>(ErrMsg.RC_NOT_LOGGED_IN);
         }
-        String uid = loginInfo.getUid();
-        int gender = userUpdateGenderData.getGender();
-        User user = userController.userUpdateGender(gender, uid);
-        return new SApiResponse<>(ErrMsg.RC_OK, user);
-    }
 
-    @ApiOperation(value = "用户修改头像", notes = "根据登录信息中的uid修改", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    @RequestMapping(value = "/avatar", method = {RequestMethod.POST})
-    public SApiResponse<User> userUpdateAvatar(@RequestBody @Valid SApiRequest<UserUpdateAvatarData> request) {
-        UserUpdateAvatarData userUpdateAvatarData = request.getData();
-        LoginInfo loginInfo = request.getLoginInfo();
-        if (!ApiUtility.checkLoginInfo(loginInfo)) {
-            return new SApiResponse<>(ErrMsg.RC_NOT_LOGGED_IN);
-        }
         String uid = loginInfo.getUid();
-        String avatar = userUpdateAvatarData.getAvatar();
-        User user = userController.userUpdateAvatar(uid, avatar);
-        return new SApiResponse<>(ErrMsg.RC_OK, user);
-    }
-
-    @ApiOperation(value = "用户修改手机号码", notes = "根据登录信息中的uid修改", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    @RequestMapping(value = "/mobile_number", method = {RequestMethod.POST})
-    public SApiResponse<User> userUpdateMobileNumber(@RequestBody @Valid SApiRequest<UserUpdateMobileNumberData> request, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getField());
-        }
-        LoginInfo loginInfo = request.getLoginInfo();
-        if (!ApiUtility.checkLoginInfo(loginInfo)) {
-            return new SApiResponse<>(ErrMsg.RC_NOT_LOGGED_IN);
-        }
-        UserUpdateMobileNumberData userUpdateMobileNumberData = request.getData();
-        String uid = loginInfo.getUid();
-        String mobileNumber = userUpdateMobileNumberData.getMobileNumber();
-        User user = userController.userUpdateMobileNumber(uid, mobileNumber);
+        String avatar = userUpdateData.getAvatar();
+        String mobileNumber = userUpdateData.getMobileNumber();
+        int gender = userUpdateData.getGender();
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", uid);
+        map.put("avatar", avatar);
+        map.put("mobile_number", mobileNumber);
+        map.put("gender", gender);
+        User user = userController.userUpdate(map);
         if (ObjectUtils.isEmpty(user)) {
             return new SApiResponse<>(userController.getLastErrCode(), userController.getLastErrMsg());
         }
         return new SApiResponse<>(ErrMsg.RC_OK, user);
     }
-
-
 
 }
