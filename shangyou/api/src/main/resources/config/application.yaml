@@ -22,5 +22,12 @@ spring:
         max-idle: 8
         min-idle: 2
 
+logging:
+  pattern:
+    file: "[%d{yyyy-MM-dd HH:mm:ss}][%p][%file : %line] %m%n"
+    console: "[%d{yyyy-MM-dd HH:mm:ss}][%p] %m%n"
+  file:
+    name: /var/log/shangyou-api/api.log
+
 swagger:
   host: 127.0.0.1:8080

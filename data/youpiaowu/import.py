@@ -3,7 +3,7 @@
 
 #
 # 1. 解析product.json
-# 2. 将数据dump到数据表 
+# 2. 将数据import到数据表 
 #
 
 import sys
