@@ -32,7 +32,7 @@ public class UserRepo {
     }
 
     public int userUpdate(User user) {
-        return userMapper.updateGender(user);
+        return userMapper.userUpdate(user);
     }
 
 }

@@ -59,7 +59,7 @@ public interface UserMapper {
             "UPDATE t_user SET gender = #{gender}, avatar = #{avatar}, mobile_number = {mobileNumber} WHERE uid = #{uid}",
             "</script>"
     })
-    int updateGender(User user);
+    int userUpdate(User user);
 
 }
 
