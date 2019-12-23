@@ -1,0 +1,43 @@
+
+{
+  "mappings": {
+    "properties": {
+      "stid": {
+        "type": "keyword"
+      },
+      "name": {
+        "type": "text",
+        "analyzer": "jieba_index",
+        "search_analyzer": "jieba_search"
+      },
+      "issued_date": {
+        "type": "date",
+        "format": "yyyy-MM-dd"
+      },
+      "background": {
+        "type": "text",
+        "analyzer": "jieba_index",
+        "search_analyzer": "jieba_search"
+      },
+      "sub_stamps": {
+        "properties": {
+          "sstid": {
+            "type": "keyword"
+          },
+          "title": {
+            "type": "text",
+            "analyzer": "jieba_index",
+            "search_analyzer": "jieba_search"
+          },            
+          "order": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  },
+  "settings": {
+    "number_of_shards" : "1",
+    "number_of_replicas" : "1"
+  }
+}
