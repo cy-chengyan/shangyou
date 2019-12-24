@@ -1,0 +1,33 @@
+
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/shangyou_v1?characterEncoding=utf-8&useUnicode=true&autoReconnect=true
+    username: shuoen
+    password: 'TewtQ81_%&$'
+    connectionInitSqls: 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;'
+    hikari:
+      connection-init-sql: 'SET NAMES utf8mb4'
+
+  redis:
+    host: '127.0.0.1'
+    port: 6379
+    password:
+    database: 0
+    timeout: 3s
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 2
+
+logging:
+  pattern:
+    file: "[%d{yyyy-MM-dd HH:mm:ss}][%p][%file : %line] %m%n"
+    console: "[%d{yyyy-MM-dd HH:mm:ss}][%p] %m%n"
+  file:
+    name: /var/log/shangyou-api/api.log
+
+swagger:
+  host: 49.235.164.199
