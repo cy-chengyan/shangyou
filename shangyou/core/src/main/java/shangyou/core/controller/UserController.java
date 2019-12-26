@@ -12,6 +12,8 @@ import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.UUID;
 
+import static shangyou.core.common.Constant.MOBILE_NUMBER_REGEX;
+
 @Slf4j
 @Component
 public class UserController extends BaseController {
@@ -95,13 +97,14 @@ public class UserController extends BaseController {
             setLastErrWithPredefined(ErrMsg.RC_MOBILE_NUMBER_ALREADY_EXISTS);
             return null;
         }
+        user = userRepo.queryUserByUid(uid);
         if (!StringUtils.isEmpty(gender)) {
             user.setGender(gender);
         }
         if (!StringUtils.isEmpty(avatar)) {
             user.setAvatar(avatar);
         }
-        if (!StringUtils.isEmpty(mobileNumber)) {
+        if (!StringUtils.isEmpty(mobileNumber) && mobileNumber.matches(MOBILE_NUMBER_REGEX)) {
             user.setMobileNumber(mobileNumber);
         }
         userRepo.userUpdate(user);

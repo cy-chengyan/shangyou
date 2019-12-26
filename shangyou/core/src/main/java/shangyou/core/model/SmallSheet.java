@@ -28,7 +28,7 @@ public class SmallSheet {
     private String size;
 
     @ApiModelProperty("小型张邮票主图")
-    private String image;
+    private String picture;
 
     @ApiModelProperty("小型张齿孔")
     private String chikong;

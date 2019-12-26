@@ -13,7 +13,7 @@ import java.util.List;
 public interface SmallSheetMaaper {
     @Select({
             "<script>",
-            "SELECT slsid, stid, face_value, size, image, chikong, designer, draw FROM t_small_sheet WHERE stid = #{stid}",
+            "SELECT slsid, stid, face_value, size, picture, chikong, designer, draw FROM t_small_sheet WHERE stid = #{stid}",
             "</script>"
     })
     @Results({

@@ -33,7 +33,7 @@ public class SwaggerConfigure {
                 .genericModelSubstitutes(DeferredResult.class)
                 .useDefaultResponseMessages(false)
                 .forCodeGeneration(false)
-                .pathMapping("/")
+                .pathMapping("/mp/")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("shangyou.api.controller"))
                 .build();

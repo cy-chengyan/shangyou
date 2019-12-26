@@ -125,7 +125,7 @@ public class SyUserController {
     @RequestMapping(value = "/favorite", method = {RequestMethod.POST})
     public SApiResponse<Favorite> userFavorite(@RequestBody @Valid SApiRequest<FavoriteRequestData> request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getField());
+            return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getDefaultMessage());
         }
         FavoriteRequestData favoriteRequestData = request.getData();
         LoginInfo loginInfo = request.getLoginInfo();
@@ -145,10 +145,10 @@ public class SyUserController {
 
     @ApiOperation(value = "用户修改信息", notes = "根据登录信息中的uid修改", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @RequestMapping(value = "/gender", method = {RequestMethod.POST})
+    @RequestMapping(value = "/update", method = {RequestMethod.POST})
     public SApiResponse<User> userUpdateGender(@RequestBody @Valid SApiRequest<UserUpdateData> request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getField());
+            return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getDefaultMessage());
         }
         UserUpdateData userUpdateData = request.getData();
         LoginInfo loginInfo =  request.getLoginInfo();
