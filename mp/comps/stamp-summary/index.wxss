@@ -1,0 +1,110 @@
+
+.stamp-summary-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  margin-top: 10px;
+}
+
+.stamp-summary-main {
+  background: #fff;
+  box-sizing: border-box;
+  padding: 7px 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.stamp-summary-name {
+  font-size: 17px;
+  font-weight: bolder;
+}
+
+.stamp-summary-brief {
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 27px;
+  white-space: pre-line;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;    
+}
+
+.stamp-summary-top-border {
+	width: 100%;
+  height: 10px;
+	display: inline-block;
+	background: white;
+	position: relative;
+	/*The stamp cutout will be created using crisp radial gradients*/
+	background: radial-gradient(
+		transparent 0px, 
+		transparent 4px, 
+		#fff 4px,
+		#fff
+	);
+	/*reducing the gradient size*/
+	background-size: 20px 20px;
+	/*Offset to move the holes to the edge*/
+	background-position: -10px -10px;
+}
+
+.stamp-summary-top-border:after {
+	content: '';
+	position: absolute;
+	/*We can shrink the pseudo element here to hide the shadow edges*/
+	left: 5px; top: 5px; right: 5px; bottom: 5px;
+	/*Shadow - doesn't look good because of the stamp cutout. We can still move this into another pseudo element behind the .stamp main element*/
+	box-shadow: 0 0 20px 1px #eee;
+	/*pushing it back*/
+	z-index: -1;
+}
+
+.stamp-summary-bottom-border {
+	width: 100%;
+  height: 10px;
+	display: inline-block;
+	background: white;
+	position: relative;
+	/*The stamp cutout will be created using crisp radial gradients*/
+	background: radial-gradient(
+		transparent 0px, 
+		transparent 4px, 
+		#fff 4px,
+		#fff
+	);
+	/*reducing the gradient size*/
+	background-size: 20px 20px;
+	/*Offset to move the holes to the edge*/
+	/*background-position: -10px -10px;*/
+}
+
+.stamp-summary-bottom-border:after {
+	content: '';
+	position: absolute;
+	/*We can shrink the pseudo element here to hide the shadow edges*/
+	left: 5px; top: 5px; right: 5px; bottom: 5px;
+	/*Shadow - doesn't look good because of the stamp cutout. We can still move this into another pseudo element behind the .stamp main element*/
+	box-shadow: 0 0 20px 1px #eee;
+	/*pushing it back*/
+	z-index: -1;
+}
+
+.stamp-summary-pictures {
+  margin: 7px 0;
+}
+
+.stamp-summary-tags {
+	display: flex;
+	margin: 4px 0 0 0;
+}
+
+.stamp-summary-tag {
+	margin-right:7px;
+	font-size: 14px;
+	color: #888;
+}

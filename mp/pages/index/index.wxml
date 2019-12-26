@@ -1,4 +1,20 @@
 
+
 <view class="container">
+
+  <van-sticky>
+    <van-search
+      value="{{ value }}"
+      placeholder="请输入搜索关键词"
+      bind:search="onSearch"
+      bind:cancel="onCancel"
+    />
+    <van-dropdown-menu active-color="#2BA245">
+      <van-dropdown-item value="{{ type }}" options="{{ typeOptions }}" bind:change="onTypeChange" />
+      <van-dropdown-item value="{{ year }}" options="{{ yearOptions }}" bind:change="onYearChange" />
+    </van-dropdown-menu>
+  </van-sticky>
+
+  <stamp-summary wx:for="{{ stampList }}" wx:key="stid" stampSummary="{{ item }}" />
 
 </view>

@@ -15,6 +15,15 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+function removeHtml(content) {
+  if (!content)
+    return content
+  content = content.replace(/\s/ig, '')
+  content = content.replace(/<[^>]+>/ig, '')
+  return content
+}
+
 module.exports = {
-  formatTime: formatTime
+  formatTime,
+  removeHtml,
 }

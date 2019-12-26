@@ -9,8 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@vant/weapp": "^1.0.0",
+    "@vant/weapp": "1.0.0",
     "uri-js": "^4.2.2"
   },
-  "devDependencies": {}  
+  "devDependencies": {}
 }

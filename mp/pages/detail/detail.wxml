@@ -1,0 +1,149 @@
+
+<view class="container">
+
+  <view id="base_stamp" class="section">
+    <view class='section-title'>基本信息</view>  
+    <!--
+    <van-sticky container="{{ container_base_stamp }}">
+      <view class='section-title'>基本信息</view>
+    </van-sticky>
+    -->    
+    <van-cell-group>
+      <van-cell title="邮票名称" value="{{ stampDetail.base_stamp.name }}"/>    
+      <van-cell title="编号" value="{{ stampDetail.base_stamp.number }}"/>
+      <van-cell title="发行日期" value="{{ stampDetail.base_stamp.issued_date }}" wx:if="{{ stampDetail.base_stamp.issued_date }}"/>
+      <van-cell title="联合发行" value="{{ stampDetail.base_stamp.joint_issue }}" wx:if="{{ stampDetail.base_stamp.joint_issue }}"/>
+      <van-cell title="尺寸" value="{{ stampDetail.base_stamp.size }}" wx:if="{{ stampDetail.base_stamp.size }}"/>      
+      <van-cell title="齿孔" value="{{ stampDetail.base_stamp.chikong }}" wx:if="{{ stampDetail.base_stamp.chikong }}"/>      
+      <van-cell title="版式" value="{{ stampDetail.base_stamp.format }}" wx:if="{{ stampDetail.base_stamp.format }}"/>      
+      <van-cell title="防伪技术" value="{{ stampDetail.base_stamp.fanwei }}" wx:if="{{ stampDetail.base_stamp.fanwei }}"/>      
+      <van-cell title="责任编辑" value="{{ stampDetail.base_stamp.editor }}" wx:if="{{ stampDetail.base_stamp.editor }}"/>
+      <van-cell title="雕刻者" value="{{ stampDetail.base_stamp.carve }}" wx:if="{{ stampDetail.base_stamp.carve }}"/>      
+      <van-cell title="设计" value="{{ stampDetail.base_stamp.designer }}" wx:if="{{ stampDetail.base_stamp.designer }}"/>      
+      <van-cell title="边饰设计" value="{{ stampDetail.base_stamp.side_designer }}" wx:if="{{ stampDetail.base_stamp.side_designer }}"/>
+      <van-cell title="绘画" value="{{ stampDetail.base_stamp.draw }}" wx:if="{{ stampDetail.base_stamp.draw }}"/>      
+      <van-cell title="摄影" value="{{ stampDetail.base_stamp.shoot }}" wx:if="{{ stampDetail.base_stamp.shoot }}"/>  
+      <van-cell title="印刷厂" value="{{ stampDetail.base_stamp.printing_hourse }}" wx:if="{{ stampDetail.base_stamp.printing_hourse }}"/>
+    </van-cell-group>  
+  </view>
+
+  <view id="sub_stamps" class="section" wx:if="{{ stampDetail.sub_stamps && stampDetail.sub_stamps.length > 0 }}">
+    <view class='section-title'>图序</view>  
+    <!--
+    <van-sticky container="{{ container_sub_stamps }}">
+      <view class='section-title'>图序</view>
+    </van-sticky>
+    -->    
+    <view style="padding:0 15px;">
+      <van-row>
+        <van-col span="14" custom-class="sub-stamps-col-title">图案</van-col>
+        <van-col span="4" custom-class="sub-stamps-col-title">面值</van-col>
+        <van-col span="6" custom-class="sub-stamps-col-title">发行量</van-col>
+      </van-row>    
+      <van-row wx:for="{{ stampDetail.sub_stamps  }}" wx:key="sstid">
+        <van-col span="14" custom-class="sub-stamps-col">{{ item.title }}</van-col>
+        <van-col span="4" custom-class="sub-stamps-col">{{ item.face_value ? item.face_value : '' }}</van-col>
+        <van-col span="6" custom-class="sub-stamps-col">{{ item.issued_number ? item.issued_number : '' }}</van-col>
+      </van-row>
+    </view>
+  </view>
+
+  <view id="big_formats" class="section" wx:if="{{ stampDetail.big_formats && stampDetail.big_formats.length > 0 }}">
+    <view class='section-title'>大版</view>  
+    <!--
+    <van-sticky container="{{ container_big_formats }}">
+      <view class='section-title'>大版</view>
+    </van-sticky>
+    -->    
+    <view style="padding:0 15px;">
+      <van-row>
+        <van-col span="14" custom-class="sub-stamps-col-title">尺寸</van-col>
+        <van-col span="10" custom-class="sub-stamps-col-title">枚数</van-col>
+      </van-row>    
+      <van-row wx:for="{{ stampDetail.big_formats  }}" wx:key="bgid">
+        <van-col span="14" custom-class="sub-stamps-col">{{ item.bgsize }}</van-col>
+        <van-col span="10" custom-class="sub-stamps-col">{{ item.bgnumber }}</van-col>
+      </van-row>
+    </view>
+  </view>
+
+  <view id="small_formats" class="section" wx:if="{{ stampDetail.small_formats && stampDetail.small_formats.length > 0 }}">
+    <view class='section-title'>小版</view>  
+    <!--
+    <van-sticky container="{{ container_small_formats }}">
+      <view class='section-title'>小版</view>
+    </van-sticky>
+    -->    
+    <view style="padding:0 15px;">
+      <van-row>
+        <van-col span="14" custom-class="sub-stamps-col-title">尺寸</van-col>
+        <van-col span="10" custom-class="sub-stamps-col-title">枚数</van-col>
+      </van-row>    
+      <van-row wx:for="{{ stampDetail.small_formats  }}" wx:key="slfid">
+        <van-col span="14" custom-class="sub-stamps-col">{{ item.slsize }}</van-col>
+        <van-col span="10" custom-class="sub-stamps-col">{{ item.slnumber }}</van-col>
+      </van-row>
+    </view>
+  </view>
+
+  <view id="zeng_songs" class="section" wx:if="{{ stampDetail.zeng_songs && stampDetail.zeng_songs.length > 0 }}">
+    <view class='section-title'>赠送版</view>  
+    <!--
+    <van-sticky container="{{ container_zeng_songs }}">
+      <view class='section-title'>赠送版</view>
+    </van-sticky>
+    -->    
+    <view style="padding:0 15px;">
+      <van-row>
+        <van-col span="14" custom-class="sub-stamps-col-title">尺寸</van-col>
+        <van-col span="10" custom-class="sub-stamps-col-title">枚数</van-col>
+      </van-row>    
+      <van-row wx:for="{{ stampDetail.zeng_songs  }}" wx:key="zengid">
+        <van-col span="14" custom-class="sub-stamps-col">{{ item.zeng_size }}</van-col>
+        <van-col span="10" custom-class="sub-stamps-col">{{ item.zeng_number }}</van-col>
+      </van-row>
+    </view>
+  </view>  
+
+  <view id="xiaoben" class="section" wx:if="{{ stampDetail.xiao_bens && stampDetail.xiao_bens.length > 0 }}">
+    <view class='section-title'>小本票</view>
+    <!--
+    <van-sticky container="{{ container_xiaoben }}">
+      <view class='section-title'>小本票</view>
+    </van-sticky>
+    -->
+    <van-cell-group>
+      <van-cell title="编号" value="{{ stampDetail.xiao_bens[0].number }}"/>
+      <van-cell title="尺寸" value="{{ stampDetail.xiao_bens[0].size }}" wx:if="{{ stampDetail.xiao_bens[0].size }}"/>      
+      <van-cell title="设计" value="{{ stampDetail.xiao_bens[0].designer }}" wx:if="{{ stampDetail.xiao_bens[0].designer }}"/>   
+      <van-cell title="责任编辑" value="{{ stampDetail.xiao_bens[0].editor }}" wx:if="{{ stampDetail.xiao_bens[0].editor }}"/>         
+      <van-cell title="面值" value="{{ stampDetail.xiao_bens[0].face_value }}" wx:if="{{ stampDetail.xiao_bens[0].face_value }}"/>      
+      <van-cell title="发行量" value="{{ stampDetail.xiao_bens[0].issued_number }}" wx:if="{{ stampDetail.xiao_bens[0].issued_number }}"/> 
+      <van-cell title="印刷厂" value="{{ stampDetail.xiao_bens[0].printing_hourse }}" wx:if="{{ stampDetail.xiao_bens[0].printing_hourse }}"/>
+    </van-cell-group>  
+  </view>
+
+  <view id="brief" class="section" wx:if="{{ stampDetail.base_stamp.background }}">
+    <view class='section-title'>简介</view>
+    <view class='stamp-brief'>
+      <rich-text nodes="{{ stampDetail.base_stamp.background }}"></rich-text>
+    </view>
+  </view>  
+
+  <view id="pictures" class="section" wx:if="{{ stampDetail.base_stamp.pictures && stampDetail.base_stamp.pictures.length > 0 }}">
+    <view class='section-title'>邮票图片</view>
+    <view style="padding:0 15px;">
+      <image
+        wx:for="{{ stampDetail.base_stamp.pictures }}"
+        wx:key="*this"
+        style="width:100%;margin:7px 0;"
+        mode="widthFix"
+        lazy-load="{{ true }}"
+        src="{{ item }}"
+        data-cur_picture="{{ item }}"
+        catchtap="onPreview"
+      />
+    </view>
+  </view>
+
+</view>
