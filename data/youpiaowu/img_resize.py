@@ -7,7 +7,7 @@ from PIL import Image
 SRC_FILE = './pics.lst'
 IMG_SRC_DIR = '/home/chengyan/data/imgs/'
 IMG_DEST_DIR = '/home/chengyan/data/thumbnail/'
-MAX_SIZE = 400, 400
+MAX_SIZE = 800, 800
 
 def proc(line):
     line = line.strip()
