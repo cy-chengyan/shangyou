@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "van-cell": "@vant/weapp/cell",
+    "van-cell-group": "@vant/weapp/cell-group",
+    "van-sticky": "@vant/weapp/sticky",
+    "van-row": "@vant/weapp/row",
+    "van-col": "@vant/weapp/col"
+  },
+  "enablePullDownRefresh": false,
+  "disableScroll": false    
+}

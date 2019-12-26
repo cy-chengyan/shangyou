@@ -1,4 +1,6 @@
 
+const CONST = require('./utils/const')
+
 App({
 
   onLaunch: function () {
@@ -6,7 +8,12 @@ App({
   },
 
   globalData: {
-    userInfo: null
+    userInfo: null,
+    loginInfo: {
+      uid: CONST.UNKNOWN_UID,
+      login_at: null,
+      token: null,
+    }    
   },
 
 })

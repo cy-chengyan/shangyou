@@ -1,0 +1,47 @@
+
+.section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.section-title {
+  font-size: 17px;
+  padding: 30px 15px 15px 15px;
+  color: #000;
+  font-weight: bolder;
+  /*background: #fff;*/
+}
+
+.sub-stamps-col-title {
+  height: 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: bolder;
+  border-bottom: #eee solid 1px;
+}
+
+.sub-stamps-col {
+  /* height: 34px;*/
+  padding-top: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;  
+  font-size: 15px;
+  color: #888;
+}
+
+.stamp-brief {
+  box-sizing: border-box;
+  padding: 0 15px;
+  font-size: 17px;
+  font-weight: normal;
+  line-height: 30px;
+  color: #4d4d4d;
+}
