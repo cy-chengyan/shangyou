@@ -98,7 +98,7 @@ public class UserController extends BaseController {
             return null;
         }
         user = userRepo.queryUserByUid(uid);
-        if (!StringUtils.isEmpty(gender)) {
+        if (!StringUtils.isEmpty(gender) && (gender == 1 || gender == 2 || gender == 3)) {
             user.setGender(gender);
         }
         if (!StringUtils.isEmpty(avatar)) {
