@@ -12,7 +12,7 @@ CREATE TABLE t_user(
        `uid` char(8) PRIMARY KEY COMMENT '用户id',
        `mobile_number` varchar(32) NOT NULL COMMENT '手机号码',
        `nickname` varchar(32) COMMENT '昵称',
-       `gender` tinyint(1) NOT NULL COMMENT '性别,1男,2女,3未知',
+       `gender` tinyint(1) NOT NULL DEFAULT 0 COMMENT '性别,1男,2女,3未知',
        `avatar` varchar(256) COMMENT '用户头像',
        `created_at` bigint(20) NOT NULL COMMENT '创建时间',
        `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP() COMMENT '更新时间'
