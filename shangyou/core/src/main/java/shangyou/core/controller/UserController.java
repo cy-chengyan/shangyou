@@ -60,33 +60,27 @@ public class UserController extends BaseController {
         return user;
     }
 
-    public User userUpdate(Map<String, Object> map) {
-        String uid = (String)map.get("uid");
+    public User userUpdate(String uid, Map<String, Object> map) {
         User user = userRepo.queryUserByUid(uid);
-        int gender = (int)map.get("gender");
-        String avatar = (String)map.get("avatar");
-        String mobileNumber = (String)map.get("mobile_number");
-        if (user.getMobileNumber().equals(mobileNumber) && user.getGender() == gender && user.getAvatar().equals(avatar)) {
-            return user;
-        }
-
-        user = userRepo.queryUserByMobileNumber(mobileNumber);
-        if (!ObjectUtils.isEmpty(user)) {
-            setLastErrWithPredefined(ErrMsg.RC_MOBILE_NUMBER_ALREADY_EXISTS);
+        if (user == null) {
+            setLastErrWithPredefined(ErrMsg.RC_NOT_FOUND_USER);
             return null;
         }
-        user = userRepo.queryUserByUid(uid);
-        if (!StringUtils.isEmpty(gender) && (gender == 1 || gender == 2 || gender == 3)) {
-            user.setGender(gender);
+
+        Object gender = map.get("gender");
+        if (gender != null) {
+            user.setGender(Integer.parseInt(gender.toString()));
         }
-        if (!StringUtils.isEmpty(avatar)) {
+        String avatar = (String)map.get("avatar");
+        if (avatar != null) {
             user.setAvatar(avatar);
         }
-        if (!StringUtils.isEmpty(mobileNumber) && mobileNumber.matches(MOBILE_NUMBER_REGEX)) {
-            user.setMobileNumber(mobileNumber);
+        String nickname = (String)map.get("nickname");
+        if (nickname != null) {
+            user.setNickname(nickname);
         }
+
         userRepo.userUpdate(user);
-        user = userRepo.queryUserByUid(uid);
         return user;
     }
 

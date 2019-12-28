@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import shangyou.api.misc.ApiUtility;
@@ -125,21 +124,20 @@ public class SyUserController {
             return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getDefaultMessage());
         }
         UserUpdateData userUpdateData = request.getData();
-        LoginInfo loginInfo =  request.getLoginInfo();
+        LoginInfo loginInfo = request.getLoginInfo();
         if (!ApiUtility.checkLoginInfo(loginInfo)) {
             return new SApiResponse<>(ErrMsg.RC_NOT_LOGGED_IN);
         }
 
         String uid = loginInfo.getUid();
         String avatar = userUpdateData.getAvatar();
-        String mobileNumber = userUpdateData.getMobileNumber();
+        String nickname = userUpdateData.getNickname();
         int gender = userUpdateData.getGender();
         Map<String, Object> map = new HashMap<>();
-        map.put("uid", uid);
         map.put("avatar", avatar);
-        map.put("mobile_number", mobileNumber);
+        map.put("nickname", nickname);
         map.put("gender", gender);
-        User user = userController.userUpdate(map);
+        User user = userController.userUpdate(uid, map);
         if (ObjectUtils.isEmpty(user)) {
             return new SApiResponse<>(userController.getLastErrCode(), userController.getLastErrMsg());
         }

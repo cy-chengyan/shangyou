@@ -15,13 +15,15 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserUpdateData {
+
     @ApiModelProperty("用户头像")
     private String avatar;
 
     @ApiModelProperty("用户性别")
     private int gender;
 
-    @ApiModelProperty("用户电话号码")
-    @JsonProperty("mobile_number")
-    private String mobileNumber;
+    @ApiModelProperty("用户昵称")
+    @JsonProperty("nickname")
+    private String nickname;
+
 }

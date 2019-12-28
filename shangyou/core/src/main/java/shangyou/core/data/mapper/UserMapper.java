@@ -56,7 +56,7 @@ public interface UserMapper {
 
     @Update({
             "<script>",
-            "UPDATE t_user SET gender = #{gender}, avatar = #{avatar}, mobile_number = #{mobileNumber} WHERE uid = #{uid}",
+            "UPDATE t_user SET gender = #{gender}, avatar = #{avatar}, nickname = #{nickname} WHERE uid = #{uid}",
             "</script>"
     })
     int userUpdate(User user);
