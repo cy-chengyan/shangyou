@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import shangyou.core.common.ErrMsg;
-import shangyou.core.data.redis.CheckCodeRepo;
+import shangyou.core.data.repo.CheckCodeRepo;
 
 import java.util.Random;
 

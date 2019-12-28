@@ -3,16 +3,12 @@ package shangyou.core.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import shangyou.core.common.ErrMsg;
 import shangyou.core.data.repo.UserRepo;
 import shangyou.core.model.User;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.UUID;
-
-import static shangyou.core.common.Constant.MOBILE_NUMBER_REGEX;
 
 @Slf4j
 @Component

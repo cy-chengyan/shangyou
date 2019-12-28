@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.concurrent.TimeUnit;
 
 @Repository
-public class CheckCodeRepo {
+public class CheckCodeRedis {
 
     private final String CC_KEY_PREFIX = "CC_";
     private final int EXPIRED_SECONDS = 15 * 60;
