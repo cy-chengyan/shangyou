@@ -28,17 +28,25 @@ public class UserController extends BaseController {
         return user;
     }
 
-    public User userLogin(String mobileNumber, String checkCode) {
+    public User userRegOrLogin(String mobileNumber, String checkCode) {
         if (!checkCodeController.isMatched(mobileNumber, checkCode)) {
             setLastErrWithPredefined(ErrMsg.RC_CHECK_CODE_ERR);
             return null;
         }
 
+        // 如果已存在，返回存在的用户信息
         User user = userRepo.queryUserByMobileNumber(mobileNumber);
-        if (StringUtils.isEmpty(user)) {
-            setLastErrWithPredefined(ErrMsg.RC_NOT_FOUND_USER);
-            return null;
+        if (user != null) {
+            return user;
         }
+
+        // 如果不存在，则添加新用户
+        user = User.builder()
+                .uid(UUID.randomUUID().toString().substring(0, 8))
+                .createdAt(ZonedDateTime.now().toEpochSecond())
+                .mobileNumber(mobileNumber)
+                .build();
+        userRepo.userRegister(user);
         return user;
     }
 
@@ -49,36 +57,6 @@ public class UserController extends BaseController {
 
     public User queryUserByNickname(String nickname) {
         User user = userRepo.queryUserByNickname(nickname);
-        return user;
-    }
-
-    public User userRegister(String mobileNumber, String nickname, String checkCode, int gender, String avatar) {
-        if (!checkCodeController.isMatched(mobileNumber, checkCode)) {
-            setLastErrWithPredefined(ErrMsg.RC_CHECK_CODE_ERR);
-            return null;
-        }
-
-        User user = this.queryUserByPhone(mobileNumber);
-        if (!ObjectUtils.isEmpty(user)) {
-            setLastErrWithPredefined(ErrMsg.RC_USER_ALREADY_EXISTS);
-            return null;
-        }
-
-        user = this.queryUserByNickname(nickname);
-        if (!ObjectUtils.isEmpty(user)) {
-            setLastErrWithPredefined(ErrMsg.RC_NICKNAME_USED);
-            return null;
-        }
-
-        user = User.builder()
-                .uid(UUID.randomUUID().toString().substring(0, 8))
-                .gender(gender)
-                .createdAt(ZonedDateTime.now().toEpochSecond())
-                .mobileNumber(mobileNumber)
-                .nickname(nickname)
-                .avatar(avatar)
-                .build();
-        userRepo.userRegister(user);
         return user;
     }
 
@@ -110,7 +88,6 @@ public class UserController extends BaseController {
         userRepo.userUpdate(user);
         user = userRepo.queryUserByUid(uid);
         return user;
-
-        }
+    }
 
 }

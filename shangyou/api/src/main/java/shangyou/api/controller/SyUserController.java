@@ -41,7 +41,7 @@ public class SyUserController {
     @Autowired
     private FavoriteController favoritecontroller;
 
-    @ApiOperation(value = "用户登录", notes = "根据验证码验证用户登录结果", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "用户登录/注册", notes = "用户登录和注册", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @RequestMapping(value = "/login", method = {RequestMethod.POST})
     public SApiResponse<LoginOrRegResponseData> userLogin(@RequestBody @Valid SApiRequest<MobileNumberAndCheckCodeRequestData> request, BindingResult bindingResult) {
@@ -51,32 +51,7 @@ public class SyUserController {
         MobileNumberAndCheckCodeRequestData requestData = request.getData();
         String mobileNumber = requestData.getMobileNumber();
         String checkCode = requestData.getCheckCode();
-        User user = userController.userLogin(mobileNumber, checkCode);
-        if (StringUtils.isEmpty(user)) {
-            return new SApiResponse<>(userController.getLastErrCode(), userController.getLastErrMsg());
-        }
-
-        LoginOrRegResponseData loginOrRegResponseData = LoginOrRegResponseData.builder()
-                .user(user)
-                .loginInfo(ApiUtility.generalLoginInfoWithUser(user))
-                .build();
-        return new SApiResponse<>(ErrMsg.RC_OK, loginOrRegResponseData);
-    }
-
-    @ApiOperation(value = "用户注册", notes = "根据验证码验证用户注册结果", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    @RequestMapping(value = "/reg", method = {RequestMethod.POST})
-    public SApiResponse<LoginOrRegResponseData> userRegistered(@RequestBody @Valid SApiRequest<UserRegisteredRequestData> request, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getDefaultMessage());
-        }
-        UserRegisteredRequestData registeredRequestData = request.getData();
-        String mobileNumber = registeredRequestData.getMobileNumber();
-        String checkCode = registeredRequestData.getCheckCode();
-        String nickname = registeredRequestData.getNickname();
-        int gender = registeredRequestData.getGender();
-        String avatar = registeredRequestData.getAvatar();
-        User user = userController.userRegister(mobileNumber, nickname, checkCode, gender, avatar);
+        User user = userController.userRegOrLogin(mobileNumber, checkCode);
         if (user == null) {
             return new SApiResponse<>(userController.getLastErrCode(), userController.getLastErrMsg());
         }
@@ -86,7 +61,6 @@ public class SyUserController {
                 .loginInfo(ApiUtility.generalLoginInfoWithUser(user))
                 .build();
         return new SApiResponse<>(ErrMsg.RC_OK, loginOrRegResponseData);
-
     }
 
     @ApiOperation(value = "发送验证码", notes = "根据手机号给用户发送验证码", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
