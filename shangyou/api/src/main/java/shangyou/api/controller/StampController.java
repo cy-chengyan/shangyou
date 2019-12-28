@@ -8,7 +8,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import shangyou.api.model.SApiRequest;
 import shangyou.api.model.SApiResponse;
-import shangyou.api.model.req.StampIdRequestData;
+import shangyou.api.model.req.SimilarStampRequestData;
 import shangyou.api.model.req.StampListRequestData;
 import shangyou.core.common.ErrMsg;
 import shangyou.core.controller.BaseStampController;
@@ -85,9 +85,10 @@ public class StampController {
     @ApiOperation(value = "相关邮票列表", notes = "获取和某张邮票相似的邮票", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @RequestMapping(value = "/sim", method = {RequestMethod.POST})
-    public SApiResponse<List<BaseStamp>> querySimilarList(@RequestBody @Valid SApiRequest<StampIdRequestData> request) {
+    public SApiResponse<List<BaseStamp>> querySimilarList(@RequestBody @Valid SApiRequest<SimilarStampRequestData> request) {
         String stid = request.getData().getStid();
-        List<BaseStamp> baseStamps = recomController.querySimilars(stid);
+        int size = request.getData().getSize();
+        List<BaseStamp> baseStamps = recomController.querySimilars(stid, size);
         return new SApiResponse<>(ErrMsg.RC_OK, baseStamps);
     }
 

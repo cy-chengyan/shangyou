@@ -23,21 +23,28 @@ public class RecomController extends BaseController {
     @Autowired
     private BaseStampController baseStampController;
 
-    public List<BaseStamp> querySimilars(String stid) {
+    public List<BaseStamp> querySimilars(String stid, int size) {
         List<Pair<String, BigDecimal>> similars = simStampRepo.getSimilar(stid);
         if (CollectionUtils.isEmpty(similars)) {
             return Lists.newArrayList();
         }
 
         List<BaseStamp> ret = Lists.newArrayList();
-        similars.forEach(pair -> {
+        int n = 0;
+        for (Pair<String, BigDecimal> pair : similars) {
             BigDecimal score = pair.getSecond();
-            if (score.compareTo(MIN_SCORE) > 0) {
-                String similarStId = pair.getFirst();
-                BaseStamp baseStamp = baseStampController.queryBaseStampByStampId(similarStId);
-                ret.add(baseStamp);
+            if (score.compareTo(MIN_SCORE) <= 0) {
+                continue;
             }
-        });
+
+            String similarStId = pair.getFirst();
+            BaseStamp baseStamp = baseStampController.queryBaseStampByStampId(similarStId);
+            ret.add(baseStamp);
+            n++;
+            if (n >= size) {
+                break;
+            }
+        }
 
         return ret;
     }
