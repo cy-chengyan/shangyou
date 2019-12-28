@@ -35,8 +35,8 @@ public class StampController {
 
     @ApiOperation(value = "子邮票", notes = "子邮票", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @RequestMapping(value = "/sub/{stid}", method = {RequestMethod.GET})
-    public List<SubStamp> querySubStamps(@PathVariable("stid") String stid) {
+    @RequestMapping(value = "/sub/{stid}", method = {RequestMethod.POST})
+    public List<SubStamp> querySubStamps(@PathVariable("stid") String stid, @RequestBody @Valid SApiRequest request) {
         if (StringUtils.isEmpty(stid)) {
             return new ArrayList<>();
         }
@@ -45,8 +45,8 @@ public class StampController {
 
     @ApiOperation(value = "邮票基本信息", notes = "邮票基本信息", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @RequestMapping(value = "/base/{stid}", method = {RequestMethod.GET})
-    public SApiResponse<BaseStamp> queryBaseStamps(@PathVariable("stid") String stid) {
+    @RequestMapping(value = "/base/{stid}", method = {RequestMethod.POST})
+    public SApiResponse<BaseStamp> queryBaseStamps(@PathVariable("stid") String stid, @RequestBody @Valid SApiRequest request) {
         BaseStamp baseStamp = baseStampController.queryBaseStampByStampId(stid);
         if (baseStamp == null) {
             return new SApiResponse<>(baseStampController.getLastErrCode(), baseStampController.getLastErrMsg());
@@ -56,8 +56,8 @@ public class StampController {
 
     @ApiOperation(value = "邮票详情", notes = "邮票详情", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @RequestMapping(value = "/detail/{stid}", method = {RequestMethod.GET})
-    public SApiResponse<StampDetail> queryStampDetail(@PathVariable("stid") String stid) {
+    @RequestMapping(value = "/detail/{stid}", method = {RequestMethod.POST})
+    public SApiResponse<StampDetail> queryStampDetail(@PathVariable("stid") String stid, @RequestBody @Valid SApiRequest request) {
         StampDetail stampDetail = stampDetailController.queryStampDetailByStampId(stid);
         if (stampDetail == null) {
             return new SApiResponse<>(stampDetailController.getLastErrCode(), stampDetailController.getLastErrMsg());
