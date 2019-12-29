@@ -16,15 +16,16 @@ import shangyou.api.model.SApiResponse;
 import shangyou.api.model.req.*;
 import shangyou.api.model.res.LoginOrRegResponseData;
 import shangyou.core.common.ErrMsg;
-import shangyou.core.controller.CheckCodeController;
-import shangyou.core.controller.FavoriteController;
-import shangyou.core.controller.UserController;
+import shangyou.core.controller.*;
+import shangyou.core.model.BaseStamp;
 import shangyou.core.model.Favorite;
+import shangyou.core.model.StampDetail;
 import shangyou.core.model.User;
 
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -39,6 +40,8 @@ public class SyUserController {
     private CheckCodeController checkCodeController;
     @Autowired
     private FavoriteController favoritecontroller;
+    @Autowired
+    private BaseStampController baseStampController;
 
     @ApiOperation(value = "用户登录/注册", notes = "用户登录和注册", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -95,7 +98,7 @@ public class SyUserController {
 
     @ApiOperation(value = "用户收藏", notes = "根据邮票id收藏；状态值status：1-收藏状态，2-未收藏状态", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    @RequestMapping(value = "/favorite", method = {RequestMethod.POST})
+    @RequestMapping(value = "/favorite/add", method = {RequestMethod.POST})
     public SApiResponse<Favorite> userFavorite(@RequestBody @Valid SApiRequest<FavoriteRequestData> request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getDefaultMessage());
@@ -114,6 +117,29 @@ public class SyUserController {
             return new SApiResponse<>(favoritecontroller.getLastErrCode(),favoritecontroller.getLastErrMsg());
         }
         return new SApiResponse<>(ErrMsg.RC_OK, favorite);
+    }
+
+    @ApiOperation(value = "展现用户收藏", notes = "根据用户uid展现收藏", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @RequestMapping(value = "/favorite/show", method = {RequestMethod.POST})
+    public SApiResponse<BaseStamp> showFavorite(@RequestBody @Valid SApiRequest request) {
+        LoginInfo loginInfo = request.getLoginInfo();
+        if (!ApiUtility.checkLoginInfo(loginInfo)) {
+            return new SApiResponse<>(ErrMsg.RC_NOT_LOGGED_IN);
+        }
+        BaseStamp baseStamp = null;
+        String uid = request.getLoginInfo().getUid();
+        List<Favorite> list = favoritecontroller.queryFavoriteByUid(uid);
+        if (list == null) {
+            return null;
+        }
+        for (Favorite f : list) {
+            if (f.getStatus() == 1) {
+                String stid = f.getStid();
+                baseStamp = baseStampController.queryBaseStampByStampId(stid);
+            }
+        }
+        return new SApiResponse<>(ErrMsg.RC_OK, baseStamp);
     }
 
     @ApiOperation(value = "用户修改信息", notes = "根据登录信息中的uid修改", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

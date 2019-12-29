@@ -45,4 +45,14 @@ public interface FavoriteMapper {
             "</script>"
     })
     int updateStampStatusByStid(@Param("status")int status, @Param("stid")String stid);
+
+    @Select({
+            "<script>",
+            "SELECT faid, uid, stid, status, created_at FROM t_favorite WHERE uid = #{uid}",
+            "</script>"
+    })
+    @Results({
+            @Result(property = "createdAt", column = "created_at")
+    })
+    List<Favorite> queryFavoriteByUid(@Param("uid")String uid);
 }

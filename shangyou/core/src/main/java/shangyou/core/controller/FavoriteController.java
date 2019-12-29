@@ -8,6 +8,7 @@ import shangyou.core.data.repo.FavoriteRepo;
 import shangyou.core.model.Favorite;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -41,6 +42,14 @@ public class FavoriteController extends BaseController {
         favorite = favoriteRepo.queryStampByStid(stid);
         return favorite;
 
+    }
+
+    public List<Favorite> queryFavoriteByUid(String uid) {
+        List<Favorite> favorites = favoriteRepo.queryFavoriteByUid(uid);
+        if (favorites == null) {
+            return null;
+        }
+        return favorites;
     }
 
 }

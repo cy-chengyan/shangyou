@@ -29,4 +29,9 @@ public class FavoriteRepo {
     public int updateStampStatusByStid(int status, String stid) {
       return favoriteMapper.updateStampStatusByStid(status, stid);
     }
+
+    public List<Favorite> queryFavoriteByUid(String uid) {
+        return favoriteMapper.queryFavoriteByUid(uid);
+    }
+
 }
