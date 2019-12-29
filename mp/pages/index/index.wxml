@@ -1,11 +1,12 @@
 
+<van-notify id="van-notify" />
 
 <view class="container">
 
   <van-sticky>
     <van-search
       value="{{ value }}"
-      placeholder="请输入搜索关键词"
+      placeholder="请输入搜索关键词(暂未实现)"
       bind:search="onSearch"
       bind:cancel="onCancel"
     />

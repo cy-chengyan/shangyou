@@ -1,4 +1,6 @@
 
+<van-notify id="van-notify" />
+
 <view class="container">
 
   <view id="base_stamp" class="section">

@@ -17,13 +17,29 @@
   align-items: stretch;
 }
 
+.stamp-summary-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .stamp-summary-name {
+	flex: 2;
   font-size: 17px;
   font-weight: bolder;
 }
 
+.stamp-summary-more {
+	padding: 0px 4px 0px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;	
+}
+
 .stamp-summary-brief {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: normal;
   line-height: 27px;
   white-space: pre-line;
@@ -105,6 +121,14 @@
 
 .stamp-summary-tag {
 	margin-right:7px;
-	font-size: 14px;
+	font-size: 17px;
 	color: #888;
+}
+
+.stamp-summary-similar-wrapper {
+	display: flex;
+	flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;	
 }

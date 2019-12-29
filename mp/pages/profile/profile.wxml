@@ -1,5 +1,79 @@
 
+<van-notify id="van-notify" />
+
 <view class="container">
+
+  <view wx:if="{{ !isLogin }}" class="view-unlogined">
+    <van-notice-bar
+      scrollable = "false"
+      text = "登录后，你可以收藏喜欢的邮票。"
+    />
+
+    <van-cell-group>    
+
+      <van-field
+        value="{{ mobileNumber }}"
+        type="number"
+        maxlength="11"        
+        required
+        clearable
+        center
+        use-button-slot        
+        label="手机号"
+        placeholder="请输入手机号"
+        bind:change="onInputMobileNumber"
+      >       
+        <count-button id='count-button' slot="button" caption="发送验证码" bind:click="onSendCheckCode" />
+      </van-field>
+
+      <van-field
+        value="{{ checkCode }}"
+        type="number"
+        maxlength="4"        
+        required
+        clearable
+        label="验证码"
+        placeholder="请输入验证码"
+        bind:change="onInputCheckCode"        
+      />
+
+    </van-cell-group>
+
+    <view class="view-submit-button">
+      <van-button loading="{{ isSubmitting }}" color="#2BA245" size="large" disabled="{{ !canSubmit || isSubmitting }}" bind:click="onSubmit">注册/登录</van-button>
+    </view>
+
+  </view>
+
+  <view wx:if="{{ isLogin }}" class="view-logined">
+    <view class="logined-header">
+      <image
+        mode="aspectFill"
+        class="avatar"   
+        src="{{ avatar }}"
+      />        
+      <view class="view-baseinfo">
+        <text>{{ nickname }}</text>
+      </view>
+      <van-button 
+        open-type="getUserInfo" 
+        color="#2BA245" 
+        icon="exchange" 
+        size="small" 
+        type="primary" 
+        bind:getuserinfo="onSyncWxInfo">更新</van-button>      
+    </view>
+
+    <van-cell
+      is-link
+      icon='star-o'
+      title="收藏的邮票"
+      link-type="navigateTo"
+      url="/pages/fav-stamp/index"
+    />
+
+  </view>  
+
 
 </view>
 

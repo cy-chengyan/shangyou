@@ -1,6 +1,15 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "van-notice-bar": "@vant/weapp/notice-bar",
+    "van-field": "@vant/weapp/field",  
+    "van-cell-group": "@vant/weapp/cell-group",
+    "van-notify": "@vant/weapp/notify",
+    "van-button": "@vant/weapp/button",         
+    "van-image": "@vant/weapp/image",
+    "van-cell": "@vant/weapp/cell", 
+    "count-button": "/comps/count-button/index"
+  },
   "enablePullDownRefresh": false,
   "disableScroll": true,
-  "navigationBarTitleText": "我的赏邮"  
+  "navigationBarTitleText": "我的赏邮"
 }

@@ -54,7 +54,7 @@ function bizPostRequest({ path, data, succ, fail, complete, customErrMsg }) {
   const app = getApp()
   const fdata = {
     data,
-    login: app.globalData.loginInfo,
+    login_info: app.globalData.loginInfo,
   }
   // console.debug(path)
   // console.debug(fdata)
@@ -171,15 +171,71 @@ function stampList({ offset, size, type, year, succ, complete }) {
 }
 
 function stampDetail({ stid, succ, complete }) {
-  bizGetRequest({
+  bizPostRequest({
     path: CONST.API_ROOT_URL_V1 + '/stamp/detail/' + stid,
+    data: null,
     succ,
     complete,
   })
 }
 
+function sendCheckCode({ mobileNumber, succ, fail, complete }) {
+  bizPostRequest({
+    path: CONST.API_ROOT_URL_V1 + '/user/cc/send',
+    data: {
+      mobile_number: mobileNumber,
+    },
+    succ,
+    fail,
+    complete,
+  })
+}
+
+function regAndLogin({ mobileNumber, checkCode, succ, fail, complete }) {
+  bizPostRequest({
+    path: CONST.API_ROOT_URL_V1 + '/user/login',
+    data: {
+      mobile_number: mobileNumber,
+      check_code: checkCode,
+    },
+    succ,
+    fail,
+    complete,
+  })
+}
+
+function updateUserInfo({ nickname, avatar, gender, succ, fail, complete }) {
+  bizPostRequest({
+    path: CONST.API_ROOT_URL_V1 + '/user/update',
+    data: {
+      nickname,
+      avatar,
+      gender,
+    },
+    succ,
+    fail,
+    complete,
+  })
+}
+
+function querySimilarStamp({ stid, size, succ, fail, complete }) {
+  bizPostRequest({
+    path: CONST.API_ROOT_URL_V1 + '/stamp/sim',
+    data: {
+      stid,
+      size,
+    },
+    succ,
+    fail,
+    complete,
+  })
+}
 
 module.exports = {
   stampList,
-  stampDetail,  
+  stampDetail,
+  sendCheckCode,
+  regAndLogin,
+  updateUserInfo,
+  querySimilarStamp,
 }

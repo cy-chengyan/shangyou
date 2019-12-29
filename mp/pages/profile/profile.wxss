@@ -1,0 +1,47 @@
+
+.view-unlogined {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;  
+}
+
+.view-submit-button {
+  box-sizing: border-box;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;    
+}
+
+.view-logined {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;  
+}
+
+.logined-header {
+  box-sizing: border-box;
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;   
+  border-bottom: #eee solid 7px; 
+}
+
+.avatar {
+  height: 64px;
+  width: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.view-baseinfo {
+  flex: 2;
+  font-weight: bolder;
+  font-size: 17px;
+  padding: 0 14px;
+}

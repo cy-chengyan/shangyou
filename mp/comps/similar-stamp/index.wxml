@@ -1,0 +1,12 @@
+
+<view class='similar-stamp-container'>
+
+  <text class='similar-stamp-title'>相关邮票</text>
+  <view wx:if="{{ showLoading }}" class='similar-stamp-loading'>
+    <van-loading color="#2BA245"/>
+  </view>
+  <view class='similar-stamp-stamps'>
+    <stamp-card wx:for="{{ stamps }}" stamp="{{ item }}" wx:key="stid"/>
+  </view>
+
+</view>

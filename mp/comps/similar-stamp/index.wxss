@@ -1,0 +1,35 @@
+
+.similar-stamp-container {
+  box-sizing: border-box;
+  padding: 15px 20px;
+  width: 300px;
+  background: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+
+	display: flex;
+  flex-direction: column;
+  justify-content: flex-start;   
+  align-items: stretch;
+}
+
+.similar-stamp-title {
+  font-weight: bolder;
+  font-size: 17px;
+}
+
+.similar-stamp-loading {
+  height: 70px;
+  display: flex;
+  flex-direction: column;  
+  align-items: center;
+  justify-content: center;   
+}
+
+.similar-stamp-stamps {
+  margin-top: 7px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+}

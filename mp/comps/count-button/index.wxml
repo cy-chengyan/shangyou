@@ -1,0 +1,2 @@
+
+<van-button color="#2BA245" size="small" type="primary" disabled="{{ counting || disabled }}" bind:click="onClick">{{ caption }}</van-button>

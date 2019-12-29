@@ -1,11 +1,30 @@
 
+<van-action-sheet
+  show="{{ showActions }}"
+  actions="{{ actions }}"
+  round="{{ false }}"
+  bind:close="onActionClose"
+  bind:select="onActionSelect"
+  context="{{ context }}"
+/>
+
+<van-overlay z-index="1000" show="{{ showSimilar }}" bind:click="onHideSimilar">
+  <view class="stamp-summary-similar-wrapper">
+    <similar-stamp id="similar-stamp" stid="{{ stampSummary.stid }}" />
+  </view>
+</van-overlay>
 
 <view class='stamp-summary-container'>
 
     <view class='stamp-summary-top-border'/>
     
     <view class='stamp-summary-main' bind:tap='onStampDetail'>
-      <view class='stamp-summary-name'>{{ stampSummary.name }}</view>
+      <view class='stamp-summary-header'>
+        <view class='stamp-summary-name'>{{ stampSummary.name }}</view>
+        <view class='stamp-summary-more' catchtap="onMore">
+          <van-icon name="apps-o" color="#2BA245" size="24"/>      
+        </view>
+      </view>
       <view class='stamp-summary-tags'>
         <label class="stamp-summary-tag" wx:if="{{ stampSummary.issued_date }}">{{ stampSummary.issued_date }}</label>            
         <!--<label class="stamp-summary-tag" wx:if="{{ stampSummary.format }}">{{ stampSummary.format }}</label>-->

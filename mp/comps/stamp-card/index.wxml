@@ -1,0 +1,12 @@
+
+<view class="stamp-card-container" catchtap="onStampDetail">
+  <text class='stamp-card-title'>{{ stamp.name }}</text>
+  <text>{{ stamp.issued_date }}</text>
+  <image
+    wx:if="{{ stamp.pictures }}"
+    style="width:100%;"
+    mode="widthFix"
+    lazy-load="{{ true }}"
+    src="{{ stamp.pictures[0] }}"
+  />    
+</view>

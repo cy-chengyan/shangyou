@@ -21,8 +21,8 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  font-size: 15px;
-  font-weight: bolder;
+  font-size: 17px;
+  /*font-weight: bolder;*/
   border-bottom: #eee solid 1px;
 }
 
@@ -33,8 +33,8 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;  
-  font-size: 15px;
-  color: #888;
+  font-size: 17px;
+  color: #000;
 }
 
 .stamp-brief {
@@ -43,5 +43,10 @@
   font-size: 17px;
   font-weight: normal;
   line-height: 30px;
-  color: #4d4d4d;
+  color: #000;
+}
+
+van-cell view {
+  font-size: 17px;
+  color: #000 !important;
 }

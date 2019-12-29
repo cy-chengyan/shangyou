@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    stid: null,
     stampDetail: null,
 
     container_base_stamp: null,
@@ -16,6 +17,14 @@ Page({
     container_small_formats: null,   
     container_zeng_songs: null, 
   },
+
+  onShareAppMessage: function (ops) {
+    return {
+      title: '我在《赏邮》发现一套邮票，推荐给你',
+      path: 'pages/index/index?lp=detail&stid=' + this.data.stid,
+      imageUrl: this.data.stampDetail.base_stamp.pictures[0]
+    }
+  },  
 
   /**
    * 生命周期函数--监听页面加载
@@ -27,6 +36,8 @@ Page({
     if (!stampId) {
       return
     }
+
+    this.data.stid = stampId
 
     let that = this
     request.stampDetail({

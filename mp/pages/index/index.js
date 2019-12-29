@@ -7,19 +7,7 @@ const PAGE_SIZE = 10
 Page({
   
   data: {
-    yearOptions: [
-      { text: '所有年份', value: 0 },
-      { text: '1980', value: 1980 },      
-      { text: '1981', value: 1981 },
-      { text: '1982', value: 1982 },
-      { text: '1983', value: 1983 },
-      { text: '1984', value: 1984 },      
-      { text: '1985', value: 1985 },
-      { text: '1986', value: 1986 },      
-      { text: '1987', value: 1987 },                      
-      { text: '2018', value: 2018 },                         
-      { text: '2019', value: 2019 }      
-    ],
+    yearOptions: [],
     typeOptions: [ 
       { text: '所有类型', value: 0 },
       { text: '编年邮票', value: 1 },
@@ -47,8 +35,51 @@ Page({
     hasMore: 1,
   },
 
-  onLoad: function () {
+  onShareAppMessage: function (ops) {
+    console.log(ops)
+    let from = ops.from
+    if (from == 'button') {
+      let stid = ops.target.dataset.context.stid
+      let cover = ops.target.dataset.context.cover
+      return {
+        title: '我在《赏邮》发现一套邮票，推荐给你',
+        path: 'pages/index/index?lp=detail&stid=' + stid,  
+        imageUrl: cover,              
+      }
+    }
+
+    return {
+      title: '赏邮 - 方寸之间, 大千世界',
+      path: 'pages/index/index',
+    }      
+  },
+
+  onLoad: function (opt) {
+    let options = [
+      { text: '所有年份', value: 0 }
+    ]
+    var date = new Date()
+    var year = date.getFullYear()  
+    for (let i = year; i >= 1949; i--) {
+      let opt = { text: i.toString(), value: i }
+      options.push(opt)
+    }
+    this.setData({
+      yearOptions: options,      
+    })
+
     this.requestMoreList({ refresh: true })
+
+    // console.log(opt)
+    if (opt && opt.lp) {
+      let lp = opt.lp
+      if (lp == 'detail') {
+        let stid = opt.stid
+        wx.navigateTo({
+          url: '/pages/detail/detail?id=' + stid,
+        })
+      }
+    }
   },
 
   requestMoreList: function({ refresh }) {

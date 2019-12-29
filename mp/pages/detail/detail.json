@@ -4,7 +4,8 @@
     "van-cell-group": "@vant/weapp/cell-group",
     "van-sticky": "@vant/weapp/sticky",
     "van-row": "@vant/weapp/row",
-    "van-col": "@vant/weapp/col"
+    "van-col": "@vant/weapp/col",
+    "van-notify": "@vant/weapp/notify"    
   },
   "enablePullDownRefresh": false,
   "disableScroll": false    

@@ -1,0 +1,17 @@
+
+.stamp-card-container {
+  box-sizing: border-box;
+  width: 124px;
+  display: flex;
+  flex-direction: column;  
+  align-items: stretch;
+  justify-content: flex-start;  
+  padding: 7px;
+  border: solid 1px #ddd;
+  font-size: 10px;
+  background: #fafafa;
+}
+
+.stamp-card-title {
+  font-weight: bolder;
+}

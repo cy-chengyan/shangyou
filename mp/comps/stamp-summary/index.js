@@ -4,7 +4,10 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    stampSummary: null,
+    stampSummary: {
+      type: Object,
+      value: null,
+    }
   },
 
   /**
@@ -12,6 +15,30 @@ Component({
    */
   data: {
     // pictures: [],
+    showActions: false,    
+    actions: [
+      {
+        name: '相关邮票',
+        value: 1,
+      },      
+      {
+        name: '收藏(暂未实现)',
+        value: 2,
+      },
+      {
+        name: '分享',
+        value: 3,
+        openType: 'share'  
+      }
+    ],
+
+    showSimilar: false, 
+    viewSimilarStamp: null,
+    context: null,
+  },
+
+  view: {
+    similarStamp: null,
   },
 
   attached: function () {
@@ -29,6 +56,12 @@ Component({
       // this.data.pictures = pictures
     }
     */
+    
+    this.data.viewSimilarStamp = this.selectComponent('#similar-stamp')
+    let stampSummary = this.properties.stampSummary    
+    this.setData({
+      context: { stid: stampSummary.stid, cover: stampSummary.pictures[0] }
+    })
   },  
 
   /**
@@ -39,6 +72,40 @@ Component({
       wx.navigateTo({
         url: '/pages/detail/detail?id=' + this.properties.stampSummary.stid,
       })
-    }    
+    },
+
+    onMore: function() {
+      this.setData({
+        showActions: true,
+      })
+    },
+
+    onActionClose: function(e) {
+      // console.log(e)
+      this.setData({
+        showActions: false,
+      })
+    }, 
+
+    onActionSelect: function(e) {
+      // console.log(e)
+      this.setData({
+        showActions: false,
+      })
+
+      let v = e.detail.value
+      if (v == 1) {
+        this.setData({
+          showSimilar: true,          
+        })
+        this.data.viewSimilarStamp.showSimilar()
+      }
+    },
+
+    onHideSimilar: function(e) {
+      this.setData({
+        showSimilar: false,          
+      })
+    },   
   }
 })
