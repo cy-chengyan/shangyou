@@ -31,3 +31,4 @@ logging:
 
 swagger:
   host: 192.168.7.7:8080
+  rootPath: /

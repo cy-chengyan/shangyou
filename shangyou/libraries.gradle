@@ -15,4 +15,5 @@ ext.libraries = [
         aliyun_core         : "com.aliyun:aliyun-java-sdk-core:4.4.9",
         swagger             : "io.springfox:springfox-swagger2:2.9.2",
         swagger_ui          : "io.springfox:springfox-swagger-ui:2.9.2",
+        es_rest_hl_client   : "org.elasticsearch.client:elasticsearch-rest-high-level-client:7.5.0",
 ]

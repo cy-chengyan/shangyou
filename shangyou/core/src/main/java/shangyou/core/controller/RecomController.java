@@ -39,13 +39,15 @@ public class RecomController extends BaseController {
 
             String similarStId = pair.getFirst();
             BaseStamp baseStamp = baseStampController.queryBaseStampByStampId(similarStId);
+            if (baseStamp == null) {
+                continue;
+            }
             ret.add(baseStamp);
             n++;
             if (n >= size) {
                 break;
             }
         }
-
         return ret;
     }
 

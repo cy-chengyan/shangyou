@@ -22,6 +22,9 @@ public class SwaggerConfigure {
     @Value("${swagger.host}")
     private String swaggerHost;
 
+    @Value("${swagger.rootPath}")
+    private String swaggerRootPath;
+
     @Bean
     public Docket ProductApi() {
 
@@ -33,7 +36,7 @@ public class SwaggerConfigure {
                 .genericModelSubstitutes(DeferredResult.class)
                 .useDefaultResponseMessages(false)
                 .forCodeGeneration(false)
-                .pathMapping("/mp/")
+                .pathMapping(swaggerRootPath)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("shangyou.api.controller"))
                 .build();

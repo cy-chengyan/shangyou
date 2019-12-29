@@ -19,6 +19,7 @@ dependencies {
             libraries.commons_pool2,
             libraries.aliyun_core,
             libraries.swagger,
+            libraries.es_rest_hl_client
     )
 }
 

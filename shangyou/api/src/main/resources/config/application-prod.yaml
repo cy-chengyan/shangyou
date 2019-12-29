@@ -31,3 +31,4 @@ logging:
 
 swagger:
   host: 49.235.164.199
+  rootPath: /mp/

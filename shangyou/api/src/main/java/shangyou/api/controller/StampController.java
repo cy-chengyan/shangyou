@@ -10,11 +10,9 @@ import shangyou.api.model.SApiRequest;
 import shangyou.api.model.SApiResponse;
 import shangyou.api.model.req.SimilarStampRequestData;
 import shangyou.api.model.req.StampListRequestData;
+import shangyou.api.model.req.StampSearchRequestData;
 import shangyou.core.common.ErrMsg;
-import shangyou.core.controller.BaseStampController;
-import shangyou.core.controller.RecomController;
-import shangyou.core.controller.StampDetailController;
-import shangyou.core.controller.SubStampController;
+import shangyou.core.controller.*;
 import shangyou.core.model.BaseStamp;
 import shangyou.core.model.StampDetail;
 import shangyou.core.model.SubStamp;
@@ -36,6 +34,8 @@ public class StampController {
     private StampDetailController stampDetailController;
     @Autowired
     private RecomController recomController;
+    @Autowired
+    private EsController esController;
 
     @ApiOperation(value = "子邮票", notes = "子邮票", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -89,6 +89,20 @@ public class StampController {
         String stid = request.getData().getStid();
         int size = request.getData().getSize();
         List<BaseStamp> baseStamps = recomController.querySimilars(stid, size);
+        return new SApiResponse<>(ErrMsg.RC_OK, baseStamps);
+    }
+
+    @ApiOperation(value = "搜索邮票", notes = "搜索邮票", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @RequestMapping(value = "/search", method = {RequestMethod.POST})
+    public SApiResponse<List<BaseStamp>> search(@RequestBody @Valid SApiRequest<StampSearchRequestData> request) {
+        StampSearchRequestData requestData = request.getData();
+        String query = requestData.getQuery().trim();
+        int type = requestData.getType();
+        int year = requestData.getYear();
+        int offset = requestData.getOffset();
+        int size = requestData.getSize();
+        List<BaseStamp> baseStamps = esController.search(query, type, year, offset, size);
         return new SApiResponse<>(ErrMsg.RC_OK, baseStamps);
     }
 
