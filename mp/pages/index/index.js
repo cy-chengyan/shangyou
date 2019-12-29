@@ -29,6 +29,7 @@ Page({
     ],
 
     stampList: [],
+    query: '',
     type: 0,    
     year: 0,
     offset: 0,
@@ -94,14 +95,17 @@ Page({
       return
     }
 
+    let query = this.data.query.trim()
     let type = this.data.type    
     let year = this.data.year
     let offset = this.data.offset
 
     let that = this
-    request.stampList({ 
+    let func = query.length > 0 ? request.searchStamp : request.stampList
+    func({ 
       offset, 
       size: PAGE_SIZE, 
+      query,
       type, 
       year, 
       succ: function(res) {
@@ -116,7 +120,8 @@ Page({
           that.setData({
             stampList: newPageData,
             offset: newPageData.length,
-            hasMore: newPageData.length >= PAGE_SIZE, 
+            // hasMore: newPageData.length >= PAGE_SIZE, 
+            hasMore: newPageData.length > 0,
           }, function () {
             wx.pageScrollTo({
               scrollTop: 0,
@@ -129,7 +134,8 @@ Page({
           that.setData({
             stampList,
             offset,
-            hasMore: newPageData.length >= PAGE_SIZE,
+            // hasMore: newPageData.length >= PAGE_SIZE,
+            hasMore: newPageData.length > 0,            
           })
         }
       },
@@ -169,5 +175,10 @@ Page({
       that.requestMoreList({ refresh: true })
     })    
   },
+
+  onSearch: function(e) {
+    this.data.query = e.detail
+    this.requestMoreList({ refresh: true })    
+  }, 
 
 })

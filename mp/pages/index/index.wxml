@@ -5,10 +5,9 @@
 
   <van-sticky>
     <van-search
-      value="{{ value }}"
-      placeholder="请输入搜索关键词(暂未实现)"
+      placeholder="请输入搜索关键词"
       bind:search="onSearch"
-      bind:cancel="onCancel"
+      bind:change="onSearch"
     />
     <van-dropdown-menu active-color="#2BA245">
       <van-dropdown-item value="{{ type }}" options="{{ typeOptions }}" bind:change="onTypeChange" />
@@ -17,5 +16,9 @@
   </van-sticky>
 
   <stamp-summary wx:for="{{ stampList }}" wx:key="stid" stampSummary="{{ item }}" />
+
+  <view class="not-more-result" wx:if="{{ !hasMore }}">
+    <text>查询不到更多的邮票了</text>
+  </view>
 
 </view>

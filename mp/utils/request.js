@@ -170,6 +170,32 @@ function stampList({ offset, size, type, year, succ, complete }) {
   })
 }
 
+function searchStamp({ offset, size, query, type, year, succ, complete }) {
+  bizPostRequest({
+    path: CONST.API_ROOT_URL_V1 + '/stamp/search',
+    data: {
+      offset,
+      size,
+      query,
+      type,
+      year,
+    },
+    succ: function(res) {
+      // console.log(res)
+      if (succ) {
+        if (res) {
+          for (let i = 0; i < res.length; i++) {
+            let stamp = res[i]
+            stamp.background = util.removeHtml(stamp.background)
+          }
+        }
+        succ(res)
+      }
+    },
+    complete,
+  })
+}
+
 function stampDetail({ stid, succ, complete }) {
   bizPostRequest({
     path: CONST.API_ROOT_URL_V1 + '/stamp/detail/' + stid,
@@ -233,6 +259,7 @@ function querySimilarStamp({ stid, size, succ, fail, complete }) {
 
 module.exports = {
   stampList,
+  searchStamp,  
   stampDetail,
   sendCheckCode,
   regAndLogin,
