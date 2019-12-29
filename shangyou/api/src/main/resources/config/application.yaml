@@ -31,7 +31,7 @@ logging:
 
 es:
   hosts: "192.168.7.7:9200"
-  timeout: 200 # ms
+  timeout: 1000 # ms
   maxRetry: 2
 
 swagger:

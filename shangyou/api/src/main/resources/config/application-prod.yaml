@@ -29,6 +29,11 @@ logging:
   file:
     name: /var/log/shangyou-api/api.log
 
+es:
+  hosts: "127.0.0.1:9200"
+  timeout: 500 # ms
+  maxRetry: 2
+
 swagger:
   host: 49.235.164.199
   rootPath: /mp/
