@@ -59,6 +59,23 @@ public interface FavoriteMapper {
 
     @Select({
             "<script>",
+            "select t.stid, `type`, year, `name`, countryid, `number`, issued_date, joint_issue, size, chikong, format, fanwei, designer,",
+            " editor, carve, side_design, draw, shoot, printing_house, background, picture FROM",
+            " t_stamp as t join t_favorite as f on t.stid = f.stid WHERE uid = #{uid} AND f.status = 1",
+            " ORDER BY f.created_at DESC",
+            "<if test=\"offset >= 0 and size > 0\"> LIMIT ${offset}, #{size}</if>",
+            "</script>"
+    })
+    @Results({
+            @Result(property = "issuedDate", column = "issued_date"),
+            @Result(property = "jointIssue", column = "joint_issue"),
+            @Result(property = "sideDesign", column = "side_design"),
+            @Result(property = "printingHouse", column = "printing_house")
+    })
+    List<BaseStamp> queryFavoriteStamp(@Param("uid")String uid, int offset, int size);
+
+    @Select({
+            "<script>",
             "SELECT stid, `type`, year, `name`, countryid, `number`, issued_date, joint_issue, size, chikong, format, fanwei, designer, editor,",
             " carve, side_design, draw, shoot, printing_house, background, picture FROM t_stamp WHERE 1 = 1",
             "<if test=\"type != 0\"> AND `type` = #{type}</if>",
