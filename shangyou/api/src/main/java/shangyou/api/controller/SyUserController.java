@@ -39,8 +39,6 @@ public class SyUserController {
     private CheckCodeController checkCodeController;
     @Autowired
     private FavoriteController favoritecontroller;
-    @Autowired
-    private BaseStampController baseStampController;
 
     @ApiOperation(value = "用户登录/注册", notes = "用户登录和注册", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -121,24 +119,20 @@ public class SyUserController {
     @ApiOperation(value = "展现用户收藏", notes = "根据用户uid展现收藏", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @RequestMapping(value = "/favorite/show", method = {RequestMethod.POST})
-    public SApiResponse<BaseStamp> showFavorite(@RequestBody @Valid SApiRequest<ShowFavoriteRequestData> request) {
+    public SApiResponse<List<BaseStamp>> showFavorite(@RequestBody @Valid SApiRequest<ShowFavoriteRequestData> request,BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new SApiResponse<>(ErrMsg.RC_MISS_PARAM, bindingResult.getFieldError().getDefaultMessage());
+        }
+        ShowFavoriteRequestData showFavoriteRequestData = request.getData();
         LoginInfo loginInfo = request.getLoginInfo();
         if (!ApiUtility.checkLoginInfo(loginInfo)) {
             return new SApiResponse<>(ErrMsg.RC_NOT_LOGGED_IN);
         }
-        BaseStamp baseStamp = null;
         String uid = request.getLoginInfo().getUid();
-        List<Favorite> list = favoritecontroller.queryFavoriteByUid(uid);
-        if (list == null) {
-            return null;
-        }
-        for (Favorite f : list) {
-            if (f.getStatus() == 1) {
-                String stid = f.getStid();
-                baseStamp = baseStampController.queryBaseStampByStampId(stid);
-            }
-        }
-        return new SApiResponse<>(ErrMsg.RC_OK, baseStamp);
+        int offset = showFavoriteRequestData.getOffset();
+        int size = showFavoriteRequestData.getSize();
+        List<BaseStamp> baseStamps = favoritecontroller.queryFavoriteStamp(uid, offset, size);
+        return new SApiResponse<>(ErrMsg.RC_OK, baseStamps);
     }
 
     @ApiOperation(value = "用户修改信息", notes = "根据登录信息中的uid修改", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

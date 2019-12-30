@@ -3,6 +3,7 @@ package shangyou.core.data.repo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import shangyou.core.data.mapper.FavoriteMapper;
+import shangyou.core.model.BaseStamp;
 import shangyou.core.model.Favorite;
 
 import java.util.List;
@@ -30,8 +31,8 @@ public class FavoriteRepo {
       return favoriteMapper.updateStampStatusByStid(status, stid);
     }
 
-    public List<Favorite> queryFavoriteByUid(String uid) {
-        return favoriteMapper.queryFavoriteByUid(uid);
+    public List<BaseStamp> queryFavoriteStamp(String uid, int offset, int size) {
+        return favoriteMapper.queryFavoriteStamp(uid, offset, size);
     }
 
 }

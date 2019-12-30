@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import shangyou.core.common.ErrMsg;
+import shangyou.core.data.repo.BaseStampRepo;
 import shangyou.core.data.repo.FavoriteRepo;
+import shangyou.core.model.BaseStamp;
 import shangyou.core.model.Favorite;
 
 import java.time.ZonedDateTime;
@@ -44,12 +46,12 @@ public class FavoriteController extends BaseController {
 
     }
 
-    public List<Favorite> queryFavoriteByUid(String uid) {
-        List<Favorite> favorites = favoriteRepo.queryFavoriteByUid(uid);
-        if (favorites == null) {
+    public List<BaseStamp> queryFavoriteStamp(String uid, int offset, int size) {
+        List<BaseStamp> baseStamps = favoriteRepo.queryFavoriteStamp(uid, offset, size);
+        if (baseStamps == null) {
             return null;
         }
-        return favorites;
+        return baseStamps;
     }
 
 }
