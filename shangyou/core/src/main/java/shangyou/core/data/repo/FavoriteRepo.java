@@ -35,4 +35,8 @@ public class FavoriteRepo {
         return favoriteMapper.queryFavoriteStamp(uid, offset, size);
     }
 
+    public List<String> queryStidByUid (String uid) {
+        return favoriteMapper.queryStidByUid(uid);
+    }
+
 }

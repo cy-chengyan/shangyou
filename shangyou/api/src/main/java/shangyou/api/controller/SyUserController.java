@@ -135,6 +135,19 @@ public class SyUserController {
         return new SApiResponse<>(ErrMsg.RC_OK, baseStamps);
     }
 
+    @ApiOperation(value = "收藏邮票id", notes = "收藏邮票id", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @RequestMapping(value = "/favorite/list", method = {RequestMethod.POST})
+    public SApiResponse<List<String>> showFavorite(@RequestBody @Valid SApiRequest request) {
+        LoginInfo loginInfo = request.getLoginInfo();
+        if (!ApiUtility.checkLoginInfo(loginInfo)) {
+            return new SApiResponse<>(ErrMsg.RC_NOT_LOGGED_IN);
+        }
+        String uid = request.getLoginInfo().getUid();
+        List<String> stids = favoritecontroller.queryStidByUid(uid);
+        return new SApiResponse<>(ErrMsg.RC_OK, stids);
+    }
+
     @ApiOperation(value = "用户修改信息", notes = "根据登录信息中的uid修改", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @RequestMapping(value = "/update", method = {RequestMethod.POST})

@@ -54,4 +54,12 @@ public class FavoriteController extends BaseController {
         return baseStamps;
     }
 
+    public List<String> queryStidByUid(String uid) {
+        List<String> stids = favoriteRepo.queryStidByUid(uid);
+        if (stids == null) {
+            return null;
+        }
+        return stids;
+    }
+
 }
