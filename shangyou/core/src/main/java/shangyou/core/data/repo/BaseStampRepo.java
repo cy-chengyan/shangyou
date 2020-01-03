@@ -17,7 +17,7 @@ public class BaseStampRepo {
     @Autowired
     private BaseStampMapper baseStampMapper;
 
-    private void fillFieldPictures(BaseStamp baseStamp) {
+    public void fillFieldPictures(BaseStamp baseStamp) {
         if (baseStamp == null || StringUtils.isEmpty(baseStamp.getPicture())) {
             return;
         }
