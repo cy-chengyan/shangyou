@@ -55,6 +55,7 @@ public class EsController {
         this.client = new RestHighLevelClient(builder);
     }
 
+
     private List<String> rawSearch(String query, int type, int year, int offset, int size) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         if (!StringUtils.isEmpty(query)) {

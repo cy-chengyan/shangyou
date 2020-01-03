@@ -64,4 +64,11 @@ public interface FavoriteMapper {
     })
     List<BaseStamp> queryFavoriteStamp(@Param("uid")String uid, int offset, int size);
 
+    @Select({
+            "<script>",
+            "SELECT stid FROM t_favorite WHERE uid = #{uid} AND status = 1",
+            "</script>"
+    })
+    List<String> queryStidByUid(@Param("uid")String uid);
+
 }

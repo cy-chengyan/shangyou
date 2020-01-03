@@ -18,6 +18,8 @@ import java.util.UUID;
 public class FavoriteController extends BaseController {
     @Autowired
     private FavoriteRepo favoriteRepo;
+    @Autowired
+    private BaseStampRepo baseStampRepo;
 
     public Favorite userFavorite(String uid, String stid, int status) {
         Favorite favorite = favoriteRepo.queryStampByStid(stid);
@@ -51,7 +53,16 @@ public class FavoriteController extends BaseController {
         if (baseStamps == null) {
             return null;
         }
+        baseStamps.forEach(baseStamp -> baseStampRepo.fillFieldPictures(baseStamp));
         return baseStamps;
+    }
+
+    public List<String> queryStidByUid(String uid) {
+        List<String> stids = favoriteRepo.queryStidByUid(uid);
+        if (stids == null) {
+            return null;
+        }
+        return stids;
     }
 
 }
