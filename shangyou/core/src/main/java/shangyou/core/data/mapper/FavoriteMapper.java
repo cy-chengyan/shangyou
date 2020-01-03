@@ -32,20 +32,20 @@ public interface FavoriteMapper {
 
     @Select({
             "<script>",
-            "SELECT faid, uid, stid, status, created_at FROM t_favorite WHERE stid = #{stid}",
+            "SELECT faid, uid, stid, status, created_at FROM t_favorite WHERE uid = #{uid} AND stid = #{stid}",
             "</script>"
     })
     @Results({
             @Result(property = "createdAt", column = "created_at")
     })
-    Favorite queryStampByStid(@Param("stid")String stid);
+    Favorite queryStampByUidAndStid(@Param("uid")String uid, @Param("stid")String stid);
 
     @Update({
             "<script>",
-            "UPDATE t_favorite SET status=#{status} WHERE stid=#{stid}",
+            "UPDATE t_favorite SET status = #{status} WHERE uid = #{uid} AND stid = #{stid}",
             "</script>"
     })
-    int updateStampStatusByStid(@Param("status")int status, @Param("stid")String stid);
+    int updateStampStatusByUidAndStid(@Param("uid")String uid, @Param("stid")String stid, @Param("status")int status);
 
     @Select({
             "<script>",

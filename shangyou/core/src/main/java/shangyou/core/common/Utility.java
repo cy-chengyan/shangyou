@@ -17,6 +17,7 @@ public class Utility {
     static {
         objMapper = new ObjectMapper();
         objMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         objMapper.disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         objMapper.registerModule(javaTimeModule);

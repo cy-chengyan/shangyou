@@ -10,6 +10,7 @@ import java.util.List;
 
 @Controller
 public class FavoriteRepo {
+
     @Autowired
     private FavoriteMapper favoriteMapper;
 
@@ -19,16 +20,15 @@ public class FavoriteRepo {
     }
 
     public void userFavorite(Favorite favorite) {
-
         favoriteMapper.userFavorite(favorite);
     }
 
-    public Favorite queryStampByStid(String stid) {
-     return favoriteMapper.queryStampByStid(stid);
+    public Favorite queryStampByUidAndStid(String uid, String stid) {
+        return favoriteMapper.queryStampByUidAndStid(uid, stid);
     }
 
-    public int updateStampStatusByStid(int status, String stid) {
-      return favoriteMapper.updateStampStatusByStid(status, stid);
+    public int updateStampStatusByUidAndStid(String uid, String stid, int status) {
+        return favoriteMapper.updateStampStatusByUidAndStid(uid, stid, status);
     }
 
     public List<BaseStamp> queryFavoriteStamp(String uid, int offset, int size) {
