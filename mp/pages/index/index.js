@@ -1,8 +1,10 @@
 
 
 const request = require('../../utils/request')
+const biz = require('../../utils/biz')
 
 const PAGE_SIZE = 10
+const app = getApp()
 
 Page({
   
@@ -69,7 +71,21 @@ Page({
       yearOptions: options,      
     })
 
-    this.requestMoreList({ refresh: true })
+    let that = this
+    if (biz.isLogined()) {
+      request.favStampIds({
+        succ: function(res) {
+          // console.log(res)
+          app.globalData.favStamps = new Set(res)
+        },
+        fail: function() {
+          console.error('获取收藏邮票列表失败')
+        },
+        complete: function() {
+          that.requestMoreList({ refresh: true })
+        },
+      })
+    }
 
     // console.log(opt)
     if (opt && opt.lp) {

@@ -21,13 +21,15 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  align-items: center;
+  /*align-items: center;*/
 }
 
 .stamp-summary-name {
-	flex: 2;
+	/*flex: 2;*/
   font-size: 17px;
-  font-weight: bolder;
+	font-weight: bolder;
+	margin: 0px;
+	padding: 0px;
 }
 
 .stamp-summary-more {
@@ -131,4 +133,18 @@
   align-items: center;
   justify-content: center;
   height: 100%;	
+}
+
+.stamp-summary-btns {
+	flex: 2;
+	padding: 0 4px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+	align-items: center;
+}
+
+.stamp-summary-fav-image {
+	width: 14px;
+	height: 14px;
 }

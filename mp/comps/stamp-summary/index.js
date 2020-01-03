@@ -1,4 +1,8 @@
 
+const util = require("../../utils/util")
+const request = require("../../utils/request")
+const biz = require("../../utils/biz")
+
 Component({
   /**
    * 组件的属性列表
@@ -15,14 +19,13 @@ Component({
    */
   data: {
     // pictures: [],
-    showActions: false,    
-    actions: [
+    unfaved_actions: [
       {
         name: '相关邮票',
         value: 1,
       },      
       {
-        name: '收藏(暂未实现)',
+        name: '收藏',
         value: 2,
       },
       {
@@ -31,7 +34,22 @@ Component({
         openType: 'share'  
       }
     ],
-
+    faved_actions: [
+      {
+        name: '相关邮票',
+        value: 1,
+      },      
+      {
+        name: '取消收藏',
+        value: 2,
+      },
+      {
+        name: '分享',
+        value: 3,
+        openType: 'share'  
+      }
+    ],    
+    showActions: false,
     showSimilar: false, 
     viewSimilarStamp: null,
     context: null,
@@ -99,6 +117,25 @@ Component({
           showSimilar: true,          
         })
         this.data.viewSimilarStamp.showSimilar()
+      } else if (v == 2) {
+        let param = "stampSummary.fav"
+        let v = this.properties.stampSummary.fav == 1 ? 2 : 1
+        let msg = v == 1 ? '收藏' : '取消收藏'
+        let that = this
+        request.favAddOrDel({
+          stid: this.properties.stampSummary.stid,
+          status: v,
+          succ: function() {
+            util.notify({ msg: msg + '成功' })
+            biz.setFav({ stid: that.properties.stampSummary.stid, status: v })
+            that.setData({
+              [param]: v
+            })
+          },
+          fail: function(res) {
+            util.notify({ msg: msg + '失败', type: 'ERROR' })
+          },
+        })
       }
     },
 

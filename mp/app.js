@@ -22,6 +22,7 @@ App({
       login_at: null,
       token: null,
     },
+    favStamps: new Set([]), // 收藏的邮票ids
   },
 
 })

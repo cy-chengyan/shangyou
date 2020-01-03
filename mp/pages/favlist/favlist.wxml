@@ -1,0 +1,12 @@
+
+<van-notify id="van-notify" />
+
+<view class="container">
+
+  <stamp-summary wx:for="{{ stampList }}" wx:key="stid" stampSummary="{{ item }}" />
+
+  <view class="not-more-result" wx:if="{{ !hasMore }}">
+    <text>查询不到更多的邮票了</text>
+  </view>
+
+</view>

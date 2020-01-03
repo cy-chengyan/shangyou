@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/detail/detail",    
-    "pages/profile/profile"
+    "pages/profile/profile",
+    "pages/favlist/favlist"    
   ],
   "window": {
     "backgroundTextStyle": "light",

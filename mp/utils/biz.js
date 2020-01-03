@@ -25,9 +25,23 @@ function nickname() {
   return '未设置用户名'
 }
 
+function isFav(stid) {
+  return app.globalData.favStamps.has(stid) ? 1 : 2
+}
+
+function setFav({stid, status}) {
+  if (status == 1) {
+    app.globalData.favStamps.add(stid)    
+  } else {
+    app.globalData.favStamps.delete(stid)
+  }
+}
+
 
 module.exports = {
   isLogined,
   avatar,
   nickname,
+  isFav,
+  setFav,  
 }

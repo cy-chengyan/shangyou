@@ -1,6 +1,7 @@
 
 const CONST = require('./const')
 const util = require('./util')
+const biz = require('./biz')
 
 ///////////////
 // private
@@ -161,6 +162,7 @@ function stampList({ offset, size, type, year, succ, complete }) {
           for (let i = 0; i < res.length; i++) {
             let stamp = res[i]
             stamp.background = util.removeHtml(stamp.background)
+            stamp.fav = biz.isFav(stamp.stid)            
           }
         }
         succ(res)
@@ -187,6 +189,7 @@ function searchStamp({ offset, size, query, type, year, succ, complete }) {
           for (let i = 0; i < res.length; i++) {
             let stamp = res[i]
             stamp.background = util.removeHtml(stamp.background)
+            stamp.fav = biz.isFav(stamp.stid)            
           }
         }
         succ(res)
@@ -257,6 +260,54 @@ function querySimilarStamp({ stid, size, succ, fail, complete }) {
   })
 }
 
+function favList({ offset, size, succ, complete }) {
+  bizPostRequest({
+    path: CONST.API_ROOT_URL_V1 + '/user/favorite/show',
+    data: {
+      offset,
+      size,
+    },
+    succ: function(res) {
+      // console.log(res)
+      if (succ) {
+        if (res) {
+          for (let i = 0; i < res.length; i++) {
+            let stamp = res[i]
+            stamp.background = util.removeHtml(stamp.background)
+            stamp.fav = biz.isFav(stamp.stid)
+          }
+        }
+        succ(res)
+      }
+    },
+    complete,
+  })
+}
+
+function favStampIds({ succ, fail, complete, }) {
+  bizPostRequest({
+    path: CONST.API_ROOT_URL_V1 + '/user/favorite/list',
+    data: {
+    },
+    succ,
+    fail,
+    complete,
+  })
+}
+
+function favAddOrDel({ stid, status, succ, fail, }) {
+  bizPostRequest({
+    path: CONST.API_ROOT_URL_V1 + '/user/favorite/collection',
+    data: {
+      stid,
+      status,
+    },
+    succ,
+    fail,
+  })
+}
+
+
 module.exports = {
   stampList,
   searchStamp,  
@@ -265,4 +316,7 @@ module.exports = {
   regAndLogin,
   updateUserInfo,
   querySimilarStamp,
+  favList,
+  favStampIds,
+  favAddOrDel,
 }

@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "van-sticky": "@vant/weapp/sticky",
+    "van-notify": "@vant/weapp/notify",
+    "stamp-summary": "/comps/stamp-summary/index"    
+  },
+  "enablePullDownRefresh": true,
+  "disableScroll": false  
+}

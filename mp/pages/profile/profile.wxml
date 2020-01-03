@@ -58,18 +58,17 @@
       <van-button 
         open-type="getUserInfo" 
         color="#2BA245" 
-        icon="exchange" 
         size="small" 
         type="primary" 
-        bind:getuserinfo="onSyncWxInfo">更新</van-button>      
+        bind:getuserinfo="onSyncWxInfo">使用微信昵称</van-button>      
     </view>
 
     <van-cell
       is-link
       icon='star-o'
-      title="收藏的邮票"
+      title="我收藏的邮票"
       link-type="navigateTo"
-      url="/pages/fav-stamp/index"
+      url="/pages/favlist/favlist"
     />
 
   </view>  

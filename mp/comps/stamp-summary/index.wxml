@@ -1,7 +1,7 @@
 
 <van-action-sheet
   show="{{ showActions }}"
-  actions="{{ actions }}"
+  actions="{{ stampSummary.fav == 1 ? faved_actions : unfaved_actions }}"
   round="{{ false }}"
   bind:close="onActionClose"
   bind:select="onActionSelect"
@@ -21,6 +21,9 @@
     <view class='stamp-summary-main' bind:tap='onStampDetail'>
       <view class='stamp-summary-header'>
         <view class='stamp-summary-name'>{{ stampSummary.name }}</view>
+        <view class='stamp-summary-btns'>
+          <image wx:if="{{ stampSummary.fav == 1 }}" class="stamp-summary-fav-image" src="/assets/fav.png"/>
+        </view>
         <view class='stamp-summary-more' catchtap="onMore">
           <van-icon name="apps-o" color="#2BA245" size="24"/>      
         </view>

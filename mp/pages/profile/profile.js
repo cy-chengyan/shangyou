@@ -94,7 +94,7 @@ Page({
         checkCode,
         succ: function(res) {
           // console.log(res)
-          util.notify({msg: '登录成功'})
+          util.notify({msg: '登录/注册成功'})
           app.globalData.loginInfo = res.login_info
           app.globalData.userInfo = res.user
           wx.setStorageSync('loginInfo', app.globalData.loginInfo)
@@ -110,7 +110,7 @@ Page({
           // console.log(res)
           let msg = res.data.msg
           if (!msg) {
-            msg = '登录失败'
+            msg = '登录/注册失败'
           }
           util.notify({msg, type: 'ERROR'})
         },
@@ -131,7 +131,7 @@ Page({
       return
     }
 
-    console.log(detail['userInfo'])
+    // console.log(detail['userInfo'])
     const u = detail['userInfo']
     let nickname = u.nickName
     let avatar = u.avatarUrl
