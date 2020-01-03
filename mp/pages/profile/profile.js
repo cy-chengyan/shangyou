@@ -104,7 +104,17 @@ Page({
             isLogin: true,
             avatar: biz.avatar(),
             nickname: biz.nickname(),
-          })          
+          })    
+          // 获取用户收藏的邮票数据
+          request.favStampIds({
+            succ: function(res) {
+              // console.log(res)
+              app.globalData.favStamps = new Set(res)
+            },
+            fail: function() {
+              console.error('获取收藏邮票列表失败')
+            },
+          })
         },
         fail: function(res) {
           // console.log(res)

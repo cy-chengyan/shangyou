@@ -85,6 +85,8 @@ Page({
           that.requestMoreList({ refresh: true })
         },
       })
+    } else {
+      that.requestMoreList({ refresh: true })
     }
 
     // console.log(opt)
