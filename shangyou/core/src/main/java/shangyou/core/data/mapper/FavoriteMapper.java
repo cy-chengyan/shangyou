@@ -66,7 +66,7 @@ public interface FavoriteMapper {
 
     @Select({
             "<script>",
-            "SELECT stid FROM t_favorite WHERE uid = #{uid}",
+            "SELECT stid FROM t_favorite WHERE uid = #{uid} AND status = 1",
             "</script>"
     })
     List<String> queryStidByUid(@Param("uid")String uid);
