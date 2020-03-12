@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html><head>
+<title>中国剪纸（二）</title>
+
+<meta charset="utf-8">
+<meta name="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta content="telephone=no" name="format-detection">
+<meta name="renderer" content="webkit">
+<meta name="theme-color" content="#ffffff">
+
+
+<script src="/vendor/js/jquery.min.js" ></script>
+<script src="/vendor/js/popper.min.js" ></script>
+<script src="/vendor/js/bootstrap.min.js" ></script>
+<script src="/vendor/js/smooth-scroll.polyfills.min.js" ></script>
+<link type="text/css" rel="stylesheet" href="/vendor/css/bootstrap.min.css">
+<script src="/vendor/js/vue.min.js" ></script>
+
+
+
+
+<link rel="stylesheet" href="https://shangyou.life/scss/journal.min.924d7f42e9795a4f9530e8d5023b7316b0eef973795e58c23c2413691b80fa40.css" integrity="sha256-kk1/Qul5Wk&#43;VMOjVAjtzFrDu&#43;XN5XljCPCQTaRuA&#43;kA=" media="screen">
+
+<script src="https://shangyou.life//js/loadCSS.js"></script>
+<script src="https://shangyou.life//js/table.js"></script>
+
+
+<script src="https://shangyou.life//js/toc.js"></script>
+
+
+</head><body>
+    	<div id="app"><div ref="sideContainer" class="side-container">
+    
+    <a class="a-block nav-head false" href="https://shangyou.life/">
+    
+        <div class="nav-title">
+            赏邮
+        </div>
+        
+        <div class="nav-subtitle">
+            方寸之间，大千世界
+        </div>
+        
+    </a>
+
+    <div class="nav-link-list">
+        
+        
+            
+                
+                
+                    
+                
+                <a class="a-block nav-link-item active" href="/posts">
+                    归档
+                </a>
+        
+            
+                
+                
+                <a class="a-block nav-link-item false" href="/categories">
+                    年份
+                </a>
+        
+            
+                
+                
+                <a class="a-block nav-link-item false" href="/tags">
+                    标签
+                </a>
+        
+    </div>
+
+    
+
+    <div class="nav-footer">
+        <img width="240" height="240" src="/images/gh_9b08148441a0_344.jpg"/>
+<br>
+&copy;
+	
+	赏邮
+	
+<br>
+陇ICP备20000034号
+    </div>
+    
+</div><div ref="extraContainer" class="extra-container">
+    
+    <div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+			
+				
+				
+					
+						
+						
+							<ul>
+						
+						
+								<li>
+				 					<a href="#%e5%9f%ba%e6%9c%ac%e5%b1%9e%e6%80%a7" v-on:click="closeDrawer" id="基本属性-nav">
+										 基本属性
+									</a>
+								</li>
+						
+							</ul>
+						
+					
+				
+			
+				
+				
+					
+						
+						
+							<ul>
+						
+						
+								<li>
+				 					<a href="#%e5%a4%a7%e7%89%88" v-on:click="closeDrawer" id="大版-nav">
+										 大版
+									</a>
+								</li>
+						
+							</ul>
+						
+					
+				
+			
+				
+				
+					
+						
+						
+							<ul>
+						
+						
+								<li>
+				 					<a href="#%e5%8f%91%e8%a1%8c%e8%83%8c%e6%99%af" v-on:click="closeDrawer" id="发行背景-nav">
+										 发行背景
+									</a>
+								</li>
+						
+							</ul>
+						
+					
+				
+			
+				
+				
+					
+						
+						
+							<ul>
+						
+						
+								<li>
+				 					<a href="#%e9%82%ae%e7%a5%a8%e5%9b%be%e6%a1%88" v-on:click="closeDrawer" id="邮票图案-nav">
+										 邮票图案
+									</a>
+								</li>
+						
+							</ul>
+						
+					
+				
+			
+				
+				
+					
+						
+						
+							<ul>
+						
+						
+								<li>
+				 					<a href="#%e9%80%b8%e9%97%bb%e8%b6%a3%e4%ba%8b" v-on:click="closeDrawer" id="逸闻趣事-nav">
+										 逸闻趣事
+									</a>
+								</li>
+						
+							</ul>
+						
+					
+				
+			
+	</div>
+
+</div>
+    
+    <div class="pagination">
+        <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top" :class="{ invisible: scrollY == 0 }">
+            <i class="material-icons pagination-action-icon">
+                keyboard_arrow_up
+            </i>
+        </a>
+        
+    </div>
+</div><div class="single-column-drawer-container" ref="drawer"
+     v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+    <div class="drawer-content">
+        <div class="drawer-menu">
+            
+            
+                
+                    
+                    
+                        
+                    
+                    <a class="a-block drawer-menu-item active" href="/posts">
+                        归档
+                    </a>
+            
+                
+                    
+                    
+                    <a class="a-block drawer-menu-item false" href="/categories">
+                        年份
+                    </a>
+            
+                
+                    
+                    
+                    <a class="a-block drawer-menu-item false" href="/tags">
+                        标签
+                    </a>
+            
+            
+            <div class="toc">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+			
+				
+				
+					
+						
+						
+							<ul>
+						
+						
+								<li>
+				 					<a href="#%e5%9f%ba%e6%9c%ac%e5%b1%9e%e6%80%a7" v-on:click="closeDrawer" id="基本属性-nav">
+										 基本属性
+									</a>
+								</li>
+						
+							</ul>
+						
+					
+				
+			
+				
+				
+					
+						
+						
+							<ul>
+						
+						
+								<li>
+				 					<a href="#%e5%a4%a7%e7%89%88" v-on:click="closeDrawer" id="大版-nav">
+										 大版
+									</a>
+								</li>
+						
+							</ul>
+						
+					
+				
+			
+				
+				
+					
+						
+						
+							<ul>
+						
+						
+								<li>
+				 					<a href="#%e5%8f%91%e8%a1%8c%e8%83%8c%e6%99%af" v-on:click="closeDrawer" id="发行背景-nav">
+										 发行背景
+									</a>
+								</li>
+						
+							</ul>
+						
+					
+				
+			
+				
+				
+					
+						
+						
+							<ul>
+						
+						
+								<li>
+				 					<a href="#%e9%82%ae%e7%a5%a8%e5%9b%be%e6%a1%88" v-on:click="closeDrawer" id="邮票图案-nav">
+										 邮票图案
+									</a>
+								</li>
+						
+							</ul>
+						
+					
+				
+			
+				
+				
+					
+						
+						
+							<ul>
+						
+						
+								<li>
+				 					<a href="#%e9%80%b8%e9%97%bb%e8%b6%a3%e4%ba%8b" v-on:click="closeDrawer" id="逸闻趣事-nav">
+										 逸闻趣事
+									</a>
+								</li>
+						
+							</ul>
+						
+					
+				
+			
+	</div>
+
+</div>
+            
+        </div>
+    </div>
+</div>
+<transition name="fade">
+    <div v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if="isDrawerOpen" v-on:click="toggleDrawer"></div>
+</transition>
+<nav ref="navBar" class="navbar sticky-top navbar-light single-column-nav-container">
+    <div ref="navBackground" class="nav-background"></div>
+    <div class="container container-narrow nav-content">
+        <button id="nav_dropdown_btn" class="nav-dropdown-toggle" type="button" v-on:click="toggleDrawer">
+            <i class="material-icons">
+                menu
+            </i>
+        </button>
+        <a ref="navTitle" class="navbar-brand" href="https://shangyou.life/">
+            赏邮
+        </a>
+    </div>
+</nav>
+<div class="single-column-header-container" ref="pageHead"
+     v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+    <a href="https://shangyou.life/">
+        <div class="single-column-header-title">赏邮</div>
+        
+        <div class="single-column-header-subtitle">方寸之间，大千世界</div>
+        
+
+    </a>
+</div>
+            <div id="content">
+<div ref="streamContainer" class="stream-container">
+    <div class="post-list-container post-list-container-shadow">
+        <div class="post">
+            
+            
+            
+                
+            
+
+            <div class="post-head-wrapper"
+                 style="background-image: url('/images/2.jpeg')">
+                
+                <img src="https://shangyou.life/images/2.jpeg" style="display: none;"></img>
+                <div class="post-title">
+                    中国剪纸（二）
+                    <div class="post-meta">
+                        
+                        <time itemprop="datePublished">
+                            2020-02-10 15:02
+                        </time>
+                        
+
+                        
+                            <i class="material-icons" style="">folder</i>
+                                <a href="/categories/2020%E5%B9%B4%E9%82%AE%E7%A5%A8">2020年邮票</a>
+                                &nbsp;
+                        
+
+                        
+                            <i class="material-icons" style="">label</i>
+                            
+                                <a href="/tags/%E8%83%B6%E5%8D%B0">胶印</a>
+                                &nbsp;
+                            
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-body-wrapper">
+                <div class="post-body">
+                    <h1 id="基本属性">基本属性</h1>
+<ul>
+<li>编号：2020-3T</li>
+<li>发行日期：2020-02-08</li>
+<li>尺寸：50x30mm</li>
+<li>齿孔：13°</li>
+<li>版式胶印：（采用局部全息烫印工艺）</li>
+<li>防伪技术：防伪纸张，防伪油墨，异形齿孔，荧光喷码</li>
+<li>邮票设计：王虎鸣</li>
+<li>责任编辑：王静、干止戈</li>
+<li>剪纸作者：李秀芳（2），蔡兰英（3），倪友芝（4）</li>
+<li>印刷厂：河南省邮电印刷厂</li>
+</ul>
+<h1 id="大版">大版</h1>
+<ul>
+<li>尺寸：186x158mm</li>
+<li>枚数：12枚</li>
+</ul>
+<h1 id="发行背景">发行背景</h1>
+<p>中国剪纸是中国广大劳动人民在生产和生活实践中创作出来的一种平面剪刻艺术，它历史悠久，分布地域广阔，具有鲜明的民族艺术特色，是中国优秀的非物质文化遗产之一。剪纸作为一种平面造型艺术，与民居、服饰、器物、祭祀等各种生活形态关系密切，从某种意义上说，剪纸比较集中地反映了民间美术造型的思维特点，虽简括却多奇趣，于平易中见深奥，具有广泛群众基础。</p>
+<p>2020年2月8日，中国邮政为宣传中国非物资文化遗产——中国剪纸，发行此套邮票。</p>
+<h1 id="邮票图案">邮票图案</h1>
+<p>邮票一套四枚，山东胶东·三娘教子（4-1）图案取自《三娘教子》；陕西安塞·腰鼓贺春（4-2）图案为安塞人民打腰鼓、扭秧歌贺新春；河北献县·王小赶脚（4-3）图案取自民间戏曲《王小赶脚》；吉林通化·吉祥采参路（4-4）描绘了长白山地区的采参习俗。</p>
+<h1 id="逸闻趣事">逸闻趣事</h1>
+<p>为打造剪纸贴在玻璃窗上的效果，该套邮票采用局部全息烫印工艺，在邮票上能看到剪纸图案在纸张上面微微的凸起，用指尖触摸也能清晰的感受到剪纸边缘的棱角与整体的厚度。隐藏于邮票文字介绍中的无色荧光“福”字图案，延续了《中国剪纸（一）》邮票荧光图案的形式，形成系列统一的效果。</p>
+
+                    
+                    <HR width="100%" id="EOF">
+                    <p style="color:#777;">Last modified on 2020-02-10</p>
+                    
+                </div>
+            </div>
+            
+            
+            <nav class="post-pagination">
+
+                
+                <a class="newer-posts" href="https://shangyou.life/posts/2020-4t/">
+                    Next<br>吴冠中作品选
+                </a>
+                
+                
+                
+                <a class="older-posts" href="https://shangyou.life/posts/2020-2j/">
+                    Previous<br>北京2022年冬奥会吉祥物和冬残奥会吉祥物
+                </a>
+                
+            </nav>
+            <div class="post-comment-wrapper">
+                
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+            </div><div id="single-column-footer"><img width="240" height="240" src="/images/gh_9b08148441a0_344.jpg"/>
+<br>
+&copy;
+	
+	赏邮
+	
+<br>
+陇ICP备20000034号</div>
+    	</div>
+    <script src="https://shangyou.life//js/journal.js"></script>
+    </body>
+</html>
