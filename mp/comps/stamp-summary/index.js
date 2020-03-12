@@ -133,7 +133,15 @@ Component({
             })
           },
           fail: function(res) {
-            util.notify({ msg: msg + '失败', type: 'ERROR' })
+            console.log(res)
+            let data = res.data
+            let code = data.code
+            if (code === -12) {
+              msg = msg + '失败，请先登录/注册'
+            } else {
+              msg = msg + '失败'
+            }
+            util.notify({ msg, type: 'ERROR' })
           },
         })
       }

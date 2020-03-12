@@ -5,11 +5,6 @@
     </div>
     {{ end }}
     <div class="pagination">
-        <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top" :class="{ invisible: scrollY == 0 }">
-            <i class="material-icons pagination-action-icon">
-                keyboard_arrow_up
-            </i>
-        </a>
         {{ if .Paginator }}
         {{ if gt .Paginator.TotalPages 1 }}
             <div class="pagination-indicator">

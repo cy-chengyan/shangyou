@@ -100,6 +100,10 @@ Page({
           wx.setStorageSync('loginInfo', app.globalData.loginInfo)
           wx.setStorageSync('userInfo', app.globalData.userInfo)
 
+          wx.setNavigationBarTitle({
+            title: '我的赏邮',
+          })          
+
           that.setData({
             isLogin: true,
             avatar: biz.avatar(),

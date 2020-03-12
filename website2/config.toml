@@ -2,7 +2,7 @@ baseURL = "https://shangyou.life/"
 languageCode = "en-us"
 title = "赏邮"
 theme = "diary"
-copyright = "赏邮"
+copyright = "赏邮, 2020"
 
 [params]
 subtitle = "方寸之间，大千世界"
