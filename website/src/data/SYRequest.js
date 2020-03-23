@@ -1,8 +1,8 @@
 
-const apiUrl = 'https://shangyou.life/mp';
+import {API_URL} from "../Constant";
 
 function request({api, data, succ, failed, completed}) {
-    let url = apiUrl + api;
+    let url = API_URL + api;
     fetch(url, {
         method: 'POST',
         headers: {
@@ -22,20 +22,24 @@ function request({api, data, succ, failed, completed}) {
         if (res.status !== 200) {
             if (failed)
                 failed({msg:'网络请求失败',});
+            return;
         }
-        else
-            return res.text();
-    }).then(function(body) {
-        let obj = JSON.parse(body);
-        let code = obj.code;
-        if (code !== 0) {
-            if (failed) {
-                failed({msg: obj.msg});
+
+        res.json().then(function(obj) {
+            let code = obj.code;
+            if (code !== 0) {
+                if (failed) {
+                    failed({msg: obj.msg});
+                }
+            } else {
+                if (succ) {
+                    succ(obj.data);
+                }
             }
-        } else {
-            if (succ) {
-                succ(obj.data);
-            }
+        });
+    }).catch(function(err) {
+        if (failed) {
+            failed({msg: '网络请求错误:' + err})
         }
     }).finally(function(res) {
         console.debug("finally");
